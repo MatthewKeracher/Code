@@ -122,7 +122,7 @@ drawLabels();
 function permMap(){
 //Contains all map elements not included in the Gameloop, permMap() contains those left in.
 gridCTX.clearRect(0, 0, mapwidth, mapheight);
-drawBlackground();
+//drawBlackground();
 drawGreenGrid();
 fillMap(); //_Random 
 

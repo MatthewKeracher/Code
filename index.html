@@ -3,31 +3,28 @@
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-   
+    <link rel="stylesheet" href="css-folder/styles.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
    
     <title>Excel_DM</title>
     <style>
-     
-    img {
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-        }
-        
+  
     
     </style>
+
   </head>
   <body >
 
+    <div id='header'>
+    
+    <img src="images/BannerLogo.gif" alt="EXCEL_DM_LOGO" class="center" ><br>
+    
     <form id = "mapData" action = "https://script.google.com/macros/s/AKfycbwPvnxjAYDPwM-dHWjxT6Vgchw9TreyNeB1VfwICOOj0hZx2TRSIOCvD4qpvkzXO36z/exec"
   >    
   Location:
-  <input id= "testLocation" name="Location" type="text" style="width: 100px;"> <button type="submit"> Send </button> <button  button type="submit"> Reload </button> <br><br>
+  <input id= "testLocation" name="Location" type="text" style="width: 100px;"> <button type="submit"> Send </button> <br><br>
   Username:
   <input id= "user" name="Creator" type="text" style="width: 100px;" > 
-     
-  
         X:
       <input id= "testX" name="X" type="text" style="width: 15px;" > 
         Y:
@@ -62,8 +59,9 @@
       
   </form> <br> 
 
-    
+</div>
 
+<div id='body'>   
 
   <div style="position: relative;">
         
@@ -88,3 +86,4 @@
   </body>
 </html>
 
+</div>
