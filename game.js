@@ -288,7 +288,7 @@ for (let i = 0; i < data.length; i++) {
                 function drawUser(){
 
                   //User Information
-                  let user = "Matthew Keracher";
+                  let user = document.getElementById('user').value;
                   let x = (rx * tileSize)
                   let y = (ry * tileSize) 
                   let xward = user.length * 8
@@ -302,7 +302,7 @@ for (let i = 0; i < data.length; i++) {
                   
                   //Behind Name
                   mapCTX.fillStyle = 'black'
-                  mapCTX.fillRect(x + (tileSize * 1.2), y+ tileSize, xward - 20, yward);
+                  mapCTX.fillRect(x + (tileSize * 1.2), y+ tileSize, xward, yward);
                   //Write name
                   mapCTX.font = "12px Helvetica";
                   mapCTX.fillStyle = '#FFCCFF';
@@ -311,7 +311,7 @@ for (let i = 0; i < data.length; i++) {
                   }
 
                 
-                
+               
 
 function fillMap_Random(){
   
