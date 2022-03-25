@@ -15,12 +15,6 @@ var rx //nearest square
 var ry
 var rz 
 var rLocation
-var rCategory
-var textAcontents
-var textBcontents
-var textCcontents
-var textDcontents
-var textEcontents
 
 var lastLoop = new Date();
 var visible = window.toolbar.visible;
@@ -30,21 +24,14 @@ document.addEventListener('DOMContentLoaded',permMap);
 
 
 //-----------------------------------------------------------------------------
+//
+
 
 
 
 //-----------------------------------------------------------------------------
 
-const tx = document.getElementsByTagName("textarea");
-for (let i = 0; i < tx.length; i++) {
-  tx[i].setAttribute("style", "height:" + (tx[i].scrollHeight) + "px;overflow-y:hidden;");
-  tx[i].addEventListener("input", OnInput, false);
-}
 
-function OnInput() {
-  this.style.height = "auto";
-  this.style.height = (this.scrollHeight) + "px";
-}
 
 //-----------------------------------------------------------------------------
 //gridLOOP
@@ -59,7 +46,6 @@ function gridLoop() {
   
   //Draw The Map  
   loopMap()
-  
 
 
 }
@@ -123,7 +109,7 @@ fetch(url)
 })
 
 console.log('Rows returned from '+ sheetName + ' ' + carto.length)
-
+console.table(carto[10])
 
 }
 
@@ -337,21 +323,20 @@ console.log('running FillMap()')
 
 function drawLabels(){
 
-for (let i = 0; i < carto.length; i++) {
+for (let i = 0; i < data.length; i++) {
         
 
-      let location = carto[i].location   
-
-      
+      let location = data[i].location   
+                
                  if(location.length>0){
-                   
-                  let ix = carto[i].x * tileSize + (tileSize * 1.2)
-                  let iy = carto[i].y * tileSize
+                  
+                  let ix = data[i].x * tileSize + (tileSize * 1.2)
+                  let iy = data[i].y * tileSize
                   let iwidth = location.length * 8
                   let iheight =  tileSize
                   
 
-                  if(rx == carto[i].x && ry == carto[i].y){
+                  if(rx == data[i].x && ry == data[i].y){
 
                   //Behind Name
                   mapCTX.fillStyle = 'black'
@@ -365,7 +350,7 @@ for (let i = 0; i < carto.length; i++) {
                   mapCTX.fillText(location,ix+ 0.35 * tileSize, iy + 0.75 * tileSize);
                   } 
 
-                  if(Math.floor(x/tileSize) == carto[i].x && Math.floor(y/tileSize) == carto[i].y){
+                  if(Math.floor(x/tileSize) == data[i].x && Math.floor(y/tileSize) == data[i].y){
 
                     
                     //Behind Name
@@ -378,26 +363,12 @@ for (let i = 0; i < carto.length; i++) {
                     
                     //PAINTS LOCATION NAMES
                     mapCTX.fillText(location,ix+ 0.35 * tileSize, iy + 0.75 * tileSize);
-
-                    rLocation = carto[i].location
-                    rCategory = carto[i].category
-                    textAcontents = carto[i].desc1
-                    textBcontents = carto[i].desc2
-                    textCcontents = carto[i].desc3
-                    textDcontents = carto[i].desc4
-                    textEcontents = carto[i].desc5
-
-
-                    console.table(carto[i])
-                      
-
-                    mapData()
-
+                    rLocation = location
                     } 
         
                 }
               
-              
+              rLocation = ""
               
               }}
 
@@ -459,19 +430,12 @@ map.addEventListener('mousedown', e => {
 
 
   if( y > 12){
-
-              rLocation = ""
-              rCategory = ""
-              textAcontents = ""
-              textBcontents = ""
-              textCcontents = ""
-              textDcontents = ""
-              textEcontents = ""
-
-
   permMap() 
- 
-   
+
+  document.getElementById('TextDesc1')
+
+
+    
   }
     
 });
@@ -493,6 +457,25 @@ window.addEventListener('mouseup', e => {
   
   
 });
+
+function CallLocation(){
+
+  for (let i = 0; i < data.length; i++) {
+
+let ix = data[i].x 
+let iy = data[i].y
+
+    if(rx = ix && ry == iy){
+    let Location = data[i].location
+    let A = data[i].A
+    let B = data[i].B
+    let C = data[i].C
+    let D = data[i].D
+    let E = data[i].E
+
+    console.log(Location + ' ' + A + ' ' + B + ' ' + C + ' ' + D + ' ' + E)}
+    
+}}
 
 
 grid.addEventListener('mousemove', e => {
@@ -612,6 +595,7 @@ window.addEventListener("load", function() {
   const form = document.getElementById('mapData');
   form.addEventListener("submit", function(e) {
   
+
     e.preventDefault();
    
 
@@ -624,10 +608,6 @@ const mapData = e.target.action
     
   })
 
-  console.log('+++++++++++++++++++')
-  console.log('sending... ' + newData.length)
-
-
 LoadMap()
 
 })
@@ -636,23 +616,15 @@ LoadMap()
 )
 
 
+
+
 function mapData(){
 
   document.getElementById('testX').value = rx
   document.getElementById('testY').value = ry
-  document.getElementById('testZ').value = rz
+  document.getElementById('testZ').value = 0
   document.getElementById('testLocation').value = rLocation
-  document.getElementById('testCategory').value = rCategory
-
-  document.getElementById('TextA').value = textAcontents
-  document.getElementById('TextB').value = textBcontents
-  document.getElementById('TextC').value = textCcontents
-  document.getElementById('TextD').value = textDcontents
-  document.getElementById('TextE').value = textEcontents
-
-
   console.log('+++++++++++++++++++')
-  console.log(document.getElementById('testLocation').value)
   console.log('UPDATED')
   console.log('(X: ' + rx+','+'Y: ' + ry+')')
   console.log('FPS: ' +fps);

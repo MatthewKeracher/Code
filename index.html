@@ -13,69 +13,106 @@
     </style>
 
   </head>
+
   <body >
 
-    <div id='header'>
+    <div id='blackground'  style = "z-index: 0"> </div>
+
+    <div id='header' style = "z-index: 3">
     
-    <img src="images/BannerLogo.gif" alt="EXCEL_DM_LOGO" class="center" ><br>
+    <img id = 'logo' src="images/BannerLogo.gif" alt="EXCEL_DM_LOGO" ><br>
     
-    <form id = "mapData" action = "https://script.google.com/macros/s/AKfycbwPvnxjAYDPwM-dHWjxT6Vgchw9TreyNeB1VfwICOOj0hZx2TRSIOCvD4qpvkzXO36z/exec"
-  >    
-  Location:
-  <input id= "testLocation" name="Location" type="text" style="width: 100px;"> <button type="submit"> Send </button> <br><br>
-  Username:
-  <input id= "user" name="Creator" type="text" style="width: 100px;" > 
-        X:
-      <input id= "testX" name="X" type="text" style="width: 15px;" > 
-        Y:
-      <input id= "testY" name="Y" type="text" style="width: 15px;"> 
-        Z:
-      <input id= "testZ" name="Z" type="text" style="width: 15px;" > 
-        Fill:
-        <select id="testFill" name="fill">
-          <option value="0">black</option>
-          <option value="1">red</option>
-          <option value="2">orange</option>
-          <option value="3">yellow</option>
-          <option value="4">green</option>
-          <option value="5">blue</option>
-          <option value="6">indigo</option>
-          <option value="7">violet</option>
-          <option value="8">white</option>
-          <option value="9">cyan</option>
-          <option value="10">darkred</option>
-          <option value="11">darkorange</option>
-          <option value="12">wheat</option>
-          <option value="13">darkgreen</option>
-          
-          <option value="14">midnightblue</option>
-          <option value="15">purple</option>
-          <option value="16">brown</option>
-          <option value="17">gray</option>
-          <option value="18">random</option>
-      
-        </select> 
-      
-      
-  </form> <br> 
 
 </div>
 
-<div id='body'>   
+<div id='body'>  
+
+    
+  <form id = "mapData" action = "https://script.google.com/macros/s/AKfycbzo0jxnGS8EXxIa6WMgqPAyJ54ttM1WZj3V8ZtcYIYDE3PZY3DWvGFdwXSBDA44KdjV/exec" >    
+    Location:
+    <input id= "testLocation" name="Location" type="text" style="width: 100px;">
+    Category: 
+    <input id= "testCategory" name="Category" type="text" style="width: 100px;"> <button type="submit"> Send </button>
+    
+  
+      
+    <br><br>
+    Username:
+    <input id= "user" name="Creator" type="text" style="width: 100px;" > 
+          X:
+        <input id= "testX" name="X" type="text" style="width: 15px;" > 
+          Y:
+        <input id= "testY" name="Y" type="text" style="width: 15px;"> 
+          Z:
+        <input id= "testZ" name="Z" type="text" style="width: 15px;" > 
+        Fill:
+        <select id="testFill" name="fill">
+            <option value="0">black</option>
+            <option value="1">red</option>
+            <option value="2">orange</option>
+            <option value="3">yellow</option>
+            <option value="4">green</option>
+            <option value="5">blue</option>
+            <option value="6">indigo</option>
+            <option value="7">violet</option>
+            <option value="8">white</option>
+            <option value="9">cyan</option>
+            <option value="10">darkred</option>
+            <option value="11">darkorange</option>
+            <option value="12">wheat</option>
+            <option value="13">darkgreen</option>
+            <option value="14">midnightblue</option>
+            <option value="15">purple</option>
+            <option value="16">brown</option>
+            <option value="17">gray</option>
+            <option value="18">random</option>
+        
+          </select> 
+        
+        
+   <br> 
+
+  
+ 
+
+</form>
+
+<div id = 'editor' style = "z-index: 5">
+  EDITOR <br><br>
+
+  Question 1 <br>
+  <textarea id = "TextA" name = "Desc1" form = "mapData"></textarea> <br><br>
+
+  Question 2 <br>
+  <textarea id = "TextB" name = "Desc2" form = "mapData"></textarea> <br><br>
+
+  Question 3: <br>
+  <textarea id = "TextC" name = "Desc3" form = "mapData"></textarea> <br><br>
+
+  Question 4: <br>
+  <textarea id = "TextD" name = "Desc4" form = "mapData"></textarea> <br><br>
+
+  Question 5: <br>
+  <textarea id = "TextE" name = "Desc5" form = "mapData"></textarea> <br><br>
+
+</div>
 
   <div style="position: relative;">
         
           <canvas
           id="grid"
-          width="2000"
+          width= "1600"      
           height="1600"
-          style="position: absolute; left: 0; top: 0; z-index: 0;"></canvas>
+          style="position: absolute; left: 0; top: 0; z-index: 1;"></canvas>
 
-        <canvas
-        id="map"
-        width="2000"
-        height="1600"
-        style="position: absolute; left: 0; top: 0; z-index: 1;"></canvas>
+          <canvas
+          id="map"
+          width="1000"
+          height="1600"
+          style="position: absolute; left: 0; top: 0; z-index: 2;"></canvas>
+
+          
+        
       
     </div>
 
