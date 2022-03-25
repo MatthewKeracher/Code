@@ -33,6 +33,13 @@ document.addEventListener('DOMContentLoaded',permMap);
 
 
 
+function ShowHideDiv(chkEditor) {
+  console.log('hi')
+  var dvEditor = document.getElementById("editor");
+  dvEditor.style.display = chkEditor.checked ? "block" : "none";
+}
+
+
 //-----------------------------------------------------------------------------
 
 const tx = document.getElementsByTagName("textarea");
@@ -210,6 +217,8 @@ function loopMap(){
 mapCTX.clearRect(0, 0, mapwidth, mapheight);
 drawUser();
 drawLabels();
+
+
 
 }
 
@@ -409,6 +418,7 @@ for (let i = 0; i < carto.length; i++) {
                   for (var i = 0; i < users.length; i++) {
 
                   //User Information
+                  
                   let user = users[i].username
                   let x = (users[i].x * tileSize)
                   let y = (users[i].y * tileSize) 
@@ -417,8 +427,11 @@ for (let i = 0; i < carto.length; i++) {
                             
                   //Draw Selection 
                   
-                  mapCTX.fillStyle = 'rgb(' + parseInt(Math.random() * 255) + ',' + parseInt(Math.random() * 255) + ',' + parseInt(Math.random() * 255) + ')';
-                  mapCTX.fillRect(x,y,tileSize,tileSize);
+                  mapCTX.strokeStyle = "orange";
+                  mapCTX.strokeRect(x,y,tileSize,tileSize);
+
+                  mapCTX.strokeStyle = "pink";
+                  
                   
                   //Behind Name
                   mapCTX.fillStyle = 'black'
@@ -427,6 +440,8 @@ for (let i = 0; i < carto.length; i++) {
                   mapCTX.font = "12px Helvetica";
                   mapCTX.fillStyle = 'orange';
                   mapCTX.fillText(user, x + (tileSize * 1.2) + 6, y + (tileSize) * 1.75 );
+
+
 
                   }}
 
