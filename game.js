@@ -195,7 +195,7 @@ function LoadUsers(){
 
 const mapwidth = 2000
 const mapheight = 1600
-const p = 0;
+const p = 5;
 var tileSize = 18;
 const EndX = Math.floor(mapheight/tileSize)
 const EndY = Math.floor(mapwidth/tileSize)
@@ -238,13 +238,16 @@ function drawBlackground() {
 
 function drawGreenGrid() {
   
-  
+  gridCTX.beginPath()
+
   for (var x1 = 0; x1 <= mapwidth; x1 += tileSize) {
+    
     gridCTX.moveTo(0.5 + x1 + p, p);
     gridCTX.lineTo(0.5 + x1 + p, mapheight + p);
   }
   
   for (var x2 = 0; x2 <= mapheight; x2 += tileSize) {
+    
     gridCTX.moveTo(p, 0.5 + x2 + p);
     gridCTX.lineTo(mapwidth + p, 0.5 + x2 + p);
   }
@@ -581,11 +584,13 @@ document.onkeyup = function(e) {
     } else if (e.which == 187) {
            
       tileSize += 2
+      permMap()
     
     } else if (e.which == 189) {
            
       tileSize -= 2
-    
+      permMap()
+      
     }
 
 
