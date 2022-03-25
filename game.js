@@ -195,7 +195,7 @@ function LoadUsers(){
 
 const mapwidth = 2000
 const mapheight = 1600
-const p = 5;
+const p = 0;
 var tileSize = 18;
 const EndX = Math.floor(mapheight/tileSize)
 const EndY = Math.floor(mapwidth/tileSize)
