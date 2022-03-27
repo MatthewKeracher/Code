@@ -104,3 +104,102 @@ export default class TileMap {
         <i class="fa fa-bars"></i>
       </a>
     </div>
+
+    var isTyping = false
+
+document.getElementById('editor').onkeyup = function(e) {
+
+  isTyping = true
+
+}
+
+document.onkeyup = function(e) {
+
+  console.log(isTyping)
+  //function hotkey(e) {
+
+  if(isTyping = false){
+
+  if (e.shiftKey && e.which == 40 ) {
+    
+    ry += 10
+
+  } else if (e.shiftKey && e.which == 37) {
+      
+     rx -= 10
+          
+      
+  } else if (e.shiftKey && e.which == 39) {
+      
+      rx += 10
+  
+  } else if (e.shiftKey && e.which == 38) {
+      
+      ry -=  10
+  
+  } else if (e.which == 37) {
+    
+        -- rx
+    
+  } else if (e.which == 39) {
+        
+        rx++
+    
+  } else if (e.which == 38) {
+        
+        -- ry
+    
+  } else if (e.which == 40) {
+         
+          ry++
+  
+    
+    }else if (e.shiftKey && e.which == 83) {
+     
+      ry += 10
+  
+    }else if (e.shiftKey && e.which == 65) {
+        
+       rx -= 10
+    
+    } else if (e.shiftKey && e.which == 68) {
+        
+        rx += 10
+    
+    } else if (e.shiftKey && e.which == 87) {
+        
+        ry -=  10
+    
+    } else if (e.which == 65) {
+      
+          -- rx
+      
+    } else if (e.which == 68) {
+          
+          rx++
+      
+    } else if (e.which == 87) {
+          
+          -- ry
+      
+    } else if (e.which == 83) {
+           
+            ry++
+  
+      
+      
+    } else if (e.which == 187) {
+           
+      tileSize += 2
+      permMap()
+    
+    } else if (e.which == 189) {
+           
+      tileSize -= 2
+      permMap()
+      
+    }
+
+
+   
+    }}

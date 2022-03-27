@@ -21,10 +21,14 @@ var textBcontents
 var textCcontents
 var textDcontents
 var textEcontents
+var rFill
+var rUser
 
 var lastLoop = new Date();
 var visible = window.toolbar.visible;
+var isTyping 
 
+var activeElement
 
 document.addEventListener('DOMContentLoaded',permMap);
 
@@ -200,10 +204,12 @@ function LoadUsers(){
 //-----------------------------------------------------------------------------
 // DRAW MAP!
 
-const mapwidth = 2000
+
+const mapwidth = 1600
 const mapheight = 1600
 const p = 0;
 var tileSize = 18;
+
 const EndX = Math.floor(mapheight/tileSize)
 const EndY = Math.floor(mapwidth/tileSize)
 
@@ -398,12 +404,14 @@ for (let i = 0; i < carto.length; i++) {
                     textCcontents = carto[i].desc3
                     textDcontents = carto[i].desc4
                     textEcontents = carto[i].desc5
+                    rFill = carto[i].fill
+
 
 
                     console.table(carto[i])
                       
 
-                    mapData()
+                   
 
                     } 
         
@@ -415,16 +423,33 @@ for (let i = 0; i < carto.length; i++) {
 
                 function drawUser(){
 
+                  rUser = document.getElementById("user").value
+
+                  mapCTX.strokeStyle = "orange";
+                  mapCTX.strokeRect(rx * tileSize, ry * tileSize,tileSize,tileSize);
+                  //Behind Name
+                  mapCTX.fillStyle = 'black'
+                  mapCTX.fillRect(x + (tileSize * 1.2), y + tileSize, rUser.length * 8, tileSize);
+                  //Write name
+                  mapCTX.font = "12px Helvetica";
+                  mapCTX.fillStyle = 'orange';
+                  mapCTX.fillText(rUser, x + (tileSize * 1.2) + 6, y + (tileSize) * 1.75 );
+
+
                   for (var i = 0; i < users.length; i++) {
 
                   //User Information
-                  
+                                     
+
                   let user = users[i].username
                   let x = (users[i].x * tileSize)
                   let y = (users[i].y * tileSize) 
                   let xward = user.length * 8
                   let yward = tileSize
-                            
+
+                  if(user == rUser){
+
+                  }else{                            
                   //Draw Selection 
                   
                   mapCTX.strokeStyle = "orange";
@@ -443,7 +468,7 @@ for (let i = 0; i < carto.length; i++) {
 
 
 
-                  }}
+                  }}}
 
                 
                
@@ -485,6 +510,7 @@ map.addEventListener('mousedown', e => {
               textCcontents = ""
               textDcontents = ""
               textEcontents = ""
+              rFill = ""
 
 
   permMap() 
@@ -494,29 +520,29 @@ map.addEventListener('mousedown', e => {
     
 });
 
-window.addEventListener('mouseup', e => {
+map.addEventListener('mouseup', e => {
    
   console.log('+++++++++++++++++++')
   console.log('DEVELOPER VARIABLES')
   console.log('(x: ' + x+','+' y: ' + y+')')
   console.log('(rx: ' + rx+','+' ry: ' + ry+')')
   console.log('FPS: ' + fps);
+  console.log('Active Element: ' + activeElement);
     
-
-  //if( y > 12){
-  
     mapData()
 
-    //}
-  
-  
-});
+    }
+    
+);
 
 
 grid.addEventListener('mousemove', e => {
   
   x = e.offsetX;
   y = e.offsetY;
+
+  console.log('(x: ' + x+','+' y: ' + y+')')
+
 
 });
 
@@ -525,17 +551,19 @@ grid.addEventListener('mousemove', e => {
 //HOT KEYS
 var Reload 
 
-
 document.onkeyup = function(e) {
-  if (e.shiftKey && e.which == 40) {
-     
+ 
+  //function hotkey(e) {
+
+
+  if (e.shiftKey && e.which == 40 ) {
+    
     ry += 10
 
   } else if (e.shiftKey && e.which == 37) {
       
      rx -= 10
-     
-     
+          
       
   } else if (e.shiftKey && e.which == 39) {
       
@@ -612,6 +640,8 @@ document.onkeyup = function(e) {
    
     }
 
+
+
    
 //-----------------------------------------------------------------------------
 //TOOLBAR AT TOP
@@ -630,6 +660,7 @@ function topnav() {
 
 window.addEventListener("load", function() {
   const form = document.getElementById('mapData');
+
   form.addEventListener("submit", function(e) {
   
     e.preventDefault();
@@ -658,6 +689,8 @@ LoadMap()
 
 function mapData(){
 
+      
+
   document.getElementById('testX').value = rx
   document.getElementById('testY').value = ry
   document.getElementById('testZ').value = rz
@@ -670,6 +703,8 @@ function mapData(){
   document.getElementById('TextD').value = textDcontents
   document.getElementById('TextE').value = textEcontents
 
+  document.getElementById('testFill').value = rFill
+
 
   console.log('+++++++++++++++++++')
   console.log(document.getElementById('testLocation').value)
@@ -677,6 +712,52 @@ function mapData(){
   console.log('(X: ' + rx+','+'Y: ' + ry+')')
   console.log('FPS: ' +fps);
 
+
 }
     
-  
+  //-----------------------------------------------------------------------------
+  //DRAGGABLE EDITOR
+
+  // Make the DIV element draggable:
+dragElement(document.getElementById("editor"));
+
+function dragElement(elmnt) {
+  var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+  if (document.getElementById(elmnt.id + "header")) {
+    // if present, the header is where you move the DIV from:
+    document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
+  } else {
+    // otherwise, move the DIV from anywhere inside the DIV:
+    elmnt.onmousedown = dragMouseDown;
+  }
+
+  function dragMouseDown(e) {
+    e = e || window.event;
+    e.preventDefault();
+    // get the mouse cursor position at startup:
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    document.onmouseup = closeDragElement;
+    // call a function whenever the cursor moves:
+    document.onmousemove = elementDrag;
+  }
+
+  function elementDrag(e) {
+    e = e || window.event;
+    e.preventDefault();
+    // calculate the new cursor position:
+    pos1 = pos3 - e.clientX;
+    pos2 = pos4 - e.clientY;
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    // set the element's new position:
+    elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+    elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+  }
+
+  function closeDragElement() {
+    // stop moving when mouse button is released:
+    document.onmouseup = null;
+    document.onmousemove = null;
+  }
+}

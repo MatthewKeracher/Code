@@ -13,43 +13,59 @@
     </style>
 
 
+<br>
 
   </head>
 
-  <body >
+  
 
+  <div id = 'header'>
+
+    <img id = 'logo' src="images/BannerLogo.gif" alt="EXCEL_DM_LOGO" >  
+  
+    
+    
+  
+    <label for="chkEditor">
+      Show Editor?
+    </label>
+    <input type="checkbox" id="chkEditor" onclick="ShowHideDiv(this)"  />
+   
+    </label>
+
+
+  </div>
+
+  <body id = 'body' >
+
+   
     <div id='blackground'  style = "z-index: 0"> </div>
+
+   
 
     <div id='header' style = "z-index: 3">
     
-    <img id = 'logo' src="images/BannerLogo.gif" alt="EXCEL_DM_LOGO" ><br>
-
-    
-
-    
+ 
     
 </div>
 
-<div id='body'>  
+<div id = 'editor' name = 'editor' style = "z-index: 10; width: 500px;" >
+  <div id="editorheader">CELL EDITOR CLICK & DRAG HERE TO MOVE</div> <br>
 
-    
-  <form id = "mapData" action = "https://script.google.com/macros/s/AKfycbzo0jxnGS8EXxIa6WMgqPAyJ54ttM1WZj3V8ZtcYIYDE3PZY3DWvGFdwXSBDA44KdjV/exec" >    
+  <form id = "mapData" action = "https://script.google.com/macros/s/AKfycbzo0jxnGS8EXxIa6WMgqPAyJ54ttM1WZj3V8ZtcYIYDE3PZY3DWvGFdwXSBDA44KdjV/exec" style = "z-index: 5" >    
     Location:
-    <input id= "testLocation" name="Location" type="text" style="width: 100px;">
+    <input id= "testLocation" name="Location" type="text" style="background-color: rgb(0, 0, 0); color: orange; width: 400px;"> <br><br>
     Category: 
-    <input id= "testCategory" name="Category" type="text" style="width: 100px;"> <button type="submit"> Send </button>
+    <input id= "testCategory" name="Category" type="text" style="background-color: rgb(0, 0, 0); color: orange; width: 400px;"> <br> <br>
+   
+     
     
-  
-      
-    <br><br>
-    Username:
-    <input id= "user" name="Creator" type="text" style="width: 100px;" > 
           X:
-        <input id= "testX" name="X" type="text" style="width: 15px;" > 
+        <input id= "testX" name="X" type="text" style="background-color: rgb(0, 0, 0); color: orange; width:25px;" > 
           Y:
-        <input id= "testY" name="Y" type="text" style="width: 15px;"> 
+        <input id= "testY" name="Y" type="text" style="background-color: rgb(0, 0, 0); color: orange; width:25px;"> 
           Z:
-        <input id= "testZ" name="Z" type="text" style="width: 15px;" > 
+        <input id= "testZ" name="Z" type="text" style="background-color: rgb(0, 0, 0); color: orange; width:20px;" > 
         Fill:
         <select id="testFill" name="fill">
             <option value="0">black</option>
@@ -74,17 +90,20 @@
         
           </select> 
         
+          
         
-   <br> 
+   <br> <br>
 
-  
+   
+    
  
 
 </form>
 
-<div id = 'editor' name = 'editor' style = "z-index: 5">
+ 
+  
+  <br>
 
-  EDITOR <br><br>
 
   Question 1 <br>
   <textarea id = "TextA" name = "Desc1" form = "mapData"></textarea> <br><br>
@@ -101,26 +120,31 @@
   Question 5: <br>
   <textarea id = "TextE" name = "Desc5" form = "mapData"></textarea> <br><br>
 
+  Author:
+  <input id= "user"  style = "background-color: rgb(0, 0, 0); color: orange; width:200px;" name="username" type="text" form = "mapData"  required > <button type="submit" form = "mapData" style="float: right;"> Commit Changes </button>
+
 </div>
 
-  <div id = "canvases" style="position: relative; color: orange;">
-        
-          <label for="chkEditor">
-            <input type="checkbox" id="chkEditor" onclick="ShowHideDiv(this)" style = "position: fixed; top: 0px; left: 0px; color: orange;" />
-            Show Editor?
-          </label>
+<div id='body'>  
 
+
+
+  <div id = "canvases" style="position: relative; color: orange;" >
+        
+        
           <canvas
+          class = "center"
           id="grid"
           width= "1600"      
-          height="1600"
-          style="position: absolute; left: 0; top: 0; z-index: 1;"></canvas>
+          height="1600"></canvas>
+          
 
           <canvas
+          class = "center"
           id="map"
-          width="1000"
+          width="1600"
           height="1600"
-          style="position: absolute; left: 0; top: 0; z-index: 2;"></canvas>
+          ></canvas>
 
           
         
