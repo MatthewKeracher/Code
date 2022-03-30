@@ -45,7 +45,16 @@
   ;}
 
 
-#body{ margin-top: 100px; height: 3000px; overflow: auto; left : 0px; color: rgb(1, 250, 1)}
+#body{
+  
+  margin-top: 100px; 
+  height: 3000px; 
+  overflow: auto; 
+  left : 0px; 
+  color: rgb(1, 250, 1);
+  
+
+}
 
 #editor{
 
@@ -54,11 +63,41 @@ color: orange;
 position: fixed;
 top: 25%;
 right: 5%;
-padding-top: 15px;
+padding-top: 0px;
 padding-right: 15px;
 padding-bottom: 15px;
 padding-left: 15px;
 border: 5px solid rgb(175, 117, 8);
+font-family: 'Courier Prime', monospace;
+
+
+
+}
+
+#testFill{
+
+  font-family: 'Courier Prime', monospace;
+
+
+}
+
+#testLocation{
+
+  color: orange;
+  font-family: 'Courier Prime', monospace;
+  font-weight: bold;
+  border:none;
+  
+
+
+}
+
+#testCategory{
+
+  color: orange;
+  font-family: 'Courier Prime', monospace;
+  font-weight: bold;
+  border:none;
 
 
 }
@@ -67,11 +106,24 @@ border: 5px solid rgb(175, 117, 8);
 
   background-color: rgb(24, 23, 23);
   color: black;
-  top:0px ;
-  right: 0px;
+  padding-top: 0px;
+  padding-right: 0px;
+  padding-bottom: 0px;
+  padding-left: 0px;
   background-color:  rgb(175, 117, 8);
+  width: 500px;
+ 
 
+}
 
+#QA {
+ 
+  
+  color: orange;
+  font-family: 'Courier Prime', monospace;
+  font-weight: bold;
+  border:none;
+  
 }
 
 
@@ -81,8 +133,18 @@ border: 5px solid rgb(175, 117, 8);
   height: 50px;
   background-color: black;
   color: orange;
+  font-family: 'Courier Prime', monospace;
+  border:none;  
 }
 
+#QB {
+ 
+  
+  color: orange;
+  font-family: 'Courier Prime', monospace;
+  font-weight: bold;
+  border:none;
+}
 
 
 #TextB {
@@ -90,14 +152,35 @@ border: 5px solid rgb(175, 117, 8);
   height: 50px;
   background-color: black;
   color: orange;
+  font-family: 'Courier Prime', monospace;
+  border:none;
 }
 
+#QC {
+ 
+  
+  color: orange;
+  font-family: 'Courier Prime', monospace;
+  font-weight: bold;
+  border:none;
+}
 
 #TextC {
   width: 500px;
   height: 50px;
   background-color: black;
   color: orange;
+  font-family: 'Courier Prime', monospace;
+  border:none;
+}
+
+#QD {
+ 
+ 
+  color: orange;
+  font-family: 'Courier Prime', monospace;
+  font-weight: bold;
+  border:none;
 }
 
 
@@ -106,18 +189,30 @@ border: 5px solid rgb(175, 117, 8);
   height: 50px;
   background-color: black;
   color: orange;
+  font-family: 'Courier Prime', monospace;
+  border:none;
 }
 
+#QE {
+ 
+  
+  color: orange;
+  font-family: 'Courier Prime', monospace;
+  font-weight: bold;
+  border:none;
+}
 
 #TextE {
   width: 500px;
   height: 50px;
   background-color: black;
   color: orange;
+  font-family: 'Courier Prime', monospace;
+  border:none;
 }
 
 #canvases{
-
+ 
   
 
 }
@@ -138,7 +233,8 @@ border: 5px solid rgb(175, 117, 8);
   margin-left: auto;
   margin-right: auto;
   border: 5px solid rgb(0, 90, 0, 1);
-  z-index : 2
+  z-index : 2;
+  font-family: 'Courier Prime', monospace;
 
 }
 

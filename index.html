@@ -6,6 +6,11 @@
     <link rel="stylesheet" href="css-folder/styles.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital@1&display=swap" rel="stylesheet">
+
+
     <title>Excel_DM</title>
     <style>
   
@@ -54,12 +59,9 @@
 
   <form id = "mapData" action = "https://script.google.com/macros/s/AKfycbzo0jxnGS8EXxIa6WMgqPAyJ54ttM1WZj3V8ZtcYIYDE3PZY3DWvGFdwXSBDA44KdjV/exec" style = "z-index: 5" >    
     Location:
-    <input id= "testLocation" name="Location" type="text" style="background-color: rgb(0, 0, 0); color: orange; width: 400px;"> <br><br>
+    <input id= "testLocation" required  name="Location" type="text" style="background-color: rgb(0, 0, 0); color: orange; width: 400px;"> <br><br>
     Category: 
-    <input id= "testCategory" name="Category" type="text" style="background-color: rgb(0, 0, 0); color: orange; width: 400px;"> <br> <br>
-   
-     
-    
+    <input id= "testCategory" required  name="Category" type="text" style="background-color: rgb(0, 0, 0); color: orange; width: 400px;"> <br> <br>
           X:
         <input id= "testX" name="X" type="text" style="background-color: rgb(0, 0, 0); color: orange; width:25px;" > 
           Y:
@@ -67,7 +69,7 @@
           Z:
         <input id= "testZ" name="Z" type="text" style="background-color: rgb(0, 0, 0); color: orange; width:20px;" > 
         Fill:
-        <select id="testFill" name="fill">
+        <select id="testFill" name="fill" style="background-color: rgb(0, 0, 0); color: orange">
             <option value="0">black</option>
             <option value="1">red</option>
             <option value="2">orange</option>
@@ -89,15 +91,7 @@
             <option value="18">random</option>
         
           </select> 
-        
-          
-        
-   <br> <br>
-
    
-    
- 
-
 </form>
 
  
@@ -105,19 +99,19 @@
   <br>
 
 
-  <input id= "QA" name="Q" type="text" style="background-color: rgb(0, 0, 0); color: rgb(255, 165, 0); width: 500px;"> <br> <br>
+  <input id= "QA" name="Q" type="text" style="background-color: rgb(24, 23, 23); outline: 0 ; color: rgb(255, 165, 0); width: 500px;"> <br> <br>
   <textarea id = "TextA" name = "Desc1" form = "mapData"></textarea> <br><br>
 
-  <input id= "QB" name="Q" type="text" style="background-color: rgb(0, 0, 0); color: rgb(255, 165, 0); width: 500px;"> <br> <br>
+  <input id= "QB" name="Q" type="text" style="background-color: rgb(24, 23, 23); color: rgb(255, 165, 0); width: 500px;"> <br> <br>
   <textarea id = "TextB" name = "Desc2" form = "mapData"></textarea> <br><br>
 
-  <input id= "QC" name="Q" type="text" style="background-color: rgb(0, 0, 0); color: rgb(255, 165, 0); width: 500px;"> <br> <br>
+  <input id= "QC" name="Q" type="text" style="background-color: rgb(24, 23, 23); color: rgb(255, 165, 0); width: 500px;"> <br> <br>
   <textarea id = "TextC" name = "Desc3" form = "mapData"></textarea> <br><br>
 
-  <input id= "QD" name="Q" type="text" style="background-color: rgb(0, 0, 0); color: rgb(255, 165, 0); width: 500px;"> <br> <br>
+  <input id= "QD" name="Q" type="text" style="background-color: rgb(24, 23, 23); color: rgb(255, 165, 0); width: 500px;"> <br> <br>
   <textarea id = "TextD" name = "Desc4" form = "mapData"></textarea> <br><br>
 
-  <input id= "QE" name="Q" type="text" style="background-color: rgb(0, 0, 0); color: rgb(255, 165, 0); width: 500px;"> <br> <br>
+  <input id= "QE" name="Q" type="text" style="background-color: rgb(24, 23, 23); color: rgb(255, 165, 0); width: 500px;"> <br> <br>
   <textarea id = "TextE" name = "Desc5" form = "mapData"></textarea> <br><br>
 
   Author:
