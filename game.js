@@ -4,7 +4,11 @@
 var carto = []
 var users = []
 var questions = []
+var currentLocation = []
+var paintArray = []
 
+//Google Sheet Queries
+var sheetName 
 
 var xList = []
 var yList = []
@@ -32,27 +36,52 @@ var isTyping
 
 var activeElement
 
+var paintCheck = 0
+
+
 document.addEventListener('DOMContentLoaded',permMap);
 
 
+const targetDiv = document.getElementById("editor");
+const btn = document.getElementById("chkEditor");
+
+btn.onclick = function () {
+  if (targetDiv.style.display !== "block") {
+    targetDiv.style.display = "block";
+  } else {
+    targetDiv.style.display = "none";
+  }
+};
+
+const targetDiv2 = document.getElementById("painter");
+const btn2 = document.getElementById("chkPainter");
+
+btn2.onclick = function () {
+  if (targetDiv2.style.display !== "block") {
+    targetDiv2.style.display = "block";
+    paintCheck = 1
+  } else {
+    targetDiv2.style.display = "none";
+    paintCheck = 0
+  }
+};
+
+
+//- Using an anonymous function:
+document.getElementById("paintButton").onclick = function () { 
+  
+  console.log('paintArray has been copied to the clipboard')
+  
+  navigator.clipboard.writeText(console.table(paintArray)); };
+ 
+
 //-----------------------------------------------------------------------------
 
-
-
-function ShowHideDiv(chkEditor) {
-  console.log('hi')
-  var dvEditor = document.getElementById("editor");
-  dvEditor.style.display = chkEditor.checked ? "block" : "none";
-}
-
-
-//-----------------------------------------------------------------------------
-
-const tx = document.getElementsByTagName("textarea");
-for (let i = 0; i < tx.length; i++) {
-  tx[i].setAttribute("style", "height:" + (tx[i].scrollHeight) + "px;overflow-y:hidden;");
-  tx[i].addEventListener("input", OnInput, false);
-}
+//const tx = document.getElementsByTagName("textarea");
+//for (let i = 0; i < tx.length; i++) {
+  //tx[i].setAttribute("style", "height:" + (tx[i].scrollHeight) + "px;overflow-y:hidden;");
+  //tx[i].addEventListener("input", OnInput, false);
+//}
 
 function OnInput() {
   this.style.height = "auto";
@@ -91,7 +120,7 @@ function LoadMap(){
 const sheetID = '1lGlBfPSeCIjMOCyAUvtOiaUDU0f1J_l5FV_N0sRUY48';
 const base = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?`
 //SPECIFICS THAT CHANGE
-const sheetName = 'Global'
+
 const qu = 'Select *';
 const query = qu
 //AGGREGATE
@@ -137,6 +166,7 @@ fetch(url)
 })
 
 console.log('Rows returned from '+ sheetName + ' ' + carto.length)
+filterCarto()
 
 
 }
@@ -151,16 +181,16 @@ function LoadUsers(){
  const sheetID = '1lGlBfPSeCIjMOCyAUvtOiaUDU0f1J_l5FV_N0sRUY48';
  const base = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?`
  //SPECIFICS THAT CHANGE
- const sheetName = 'Users'
+ const users = 'Users'
  const qu = 'Select *';
  const query = qu
  //AGGREGATE
- const url = `${base}&sheet=${sheetName}&tq=${query}`;
+ const url = `${base}&sheet=${users}&tq=${query}`;
  //const output = document.querySelector('.output');
  console.log('')
  console.log('++++++++LOAD USERS+++++++++++')
- console.log('Connection to ' + sheetName + ' has been made.');
- console.log(qu + ' from ' + sheetName)
+ console.log('Connection to ' + users + ' has been made.');
+ console.log(qu + ' from ' + users)
  
 
 
@@ -186,7 +216,7 @@ function LoadUsers(){
    })
  
     jsData.table.rows.forEach((main)=>{
-      //console.log(main);
+      //console.log(main);c
       const row = {};
       colz.forEach((ele,ind) =>{
      // console.log(ele,ind);
@@ -199,7 +229,7 @@ function LoadUsers(){
  
  })
  
- console.log('Rows returned from '+ sheetName + ' ' + users.length)
+ console.log('Rows returned from Users ' + users.length)
  
  console.table(users.username)
  users = []
@@ -216,18 +246,19 @@ function LoadQuestions(){
  const sheetID = '1lGlBfPSeCIjMOCyAUvtOiaUDU0f1J_l5FV_N0sRUY48';
  const base = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?`
  //SPECIFICS THAT CHANGE
- const sheetName = 'Questions'
+ const sheet = 'Questions'
+ const category = document.getElementById('testCategory').value
  console.log('')
  console.log('+++++++++LOAD QUESTIONS++++++++++')
- console.log('Category is ' + rCategory + '.');
- const qu = 'Select * WHERE E = "' + rCategory +'"' ;
+ console.log('Category is ' + category + '.');
+ const qu = 'Select * WHERE E = "' + category +'"' ;
  const query = qu
  //AGGREGATE
- const url = `${base}&sheet=${sheetName}&tq=${query}`;
+ const url = `${base}&sheet=${sheet}&tq=${query}`;
  //const output = document.querySelector('.output');
 
- console.log('Connection to ' + sheetName + ' has been made.');
- console.log(qu + ' from ' + sheetName)
+ console.log('Connection to ' + sheet + ' has been made.');
+ console.log(qu + ' from ' + sheet)
  
 
  
@@ -263,7 +294,8 @@ function LoadQuestions(){
  
  })
  
- console.log('Rows returned from '+ sheetName + ' ' + questions.length)
+ console.log('Rows returned from '+ sheet + ' ' + questions.length)
+ console.table(questions)
 
  document.getElementById('QA').value  = questions[0].text
  document.getElementById('QB').value  = questions[1].text
@@ -297,6 +329,8 @@ const mapCTX = map.getContext("2d");
 function loopMap(){
 //Contains all map elements included in the Gameloop, permMap() contains those left out.
 mapCTX.clearRect(0, 0, mapwidth, mapheight);
+//The carto array is used to paint the map.
+fillMap(); 
 drawUser();
 drawLabels();
 
@@ -306,17 +340,22 @@ drawLabels();
 
 function permMap(){
 //Contains all map elements not included in the Gameloop, permMap() contains those left in.
-gridCTX.clearRect(0, 0, mapwidth, mapheight);
+//gridCTX.clearRect(0, 0, mapwidth, mapheight);
 
-
-drawBlackground();
+//Draws out Blank Map
+//drawBlackground();
 drawGreenGrid();
+
+//Queries sheet and returns map positions.
 LoadMap();
+
+//Queries sheet and returns user positions. 
 LoadUsers();
 
 
-fillMap(); //_Random 
 
+//We have taken everything we need from carto, and it can be erased.
+carto = [] 
 
 
 }
@@ -362,66 +401,9 @@ function fillMap(){
         
         //console.log(location)
         
-          //Paintbrush
-          switch (fill) {
-          case 0:
-          gridCTX.fillStyle = "black";
-          break;
-          case 1:
-          gridCTX.fillStyle = "red"
-          break;
-          case 2:
-          gridCTX.fillStyle = "orange"
-          break;
-          case 3:
-          gridCTX.fillStyle = "yellow"
-          break;
-          case 4:
-          gridCTX.fillStyle = "green"
-          break;
-          case 5:
-          gridCTX.fillStyle = "blue"
-          break;
-          case 6:
-          gridCTX.fillStyle = "indigo"
-          break;
-          case 7:
-          gridCTX.fillStyle = "violet"
-          break;
-          case 8:
-          gridCTX.fillStyle = "white"
-          break;
-          case 9:
-          gridCTX.fillStyle = "cyan"
-          break;
-          case 10:
-          gridCTX.fillStyle = "darkred"
-          break;
-          case 11:
-          gridCTX.fillStyle = "darkorange"
-          break;
-          case 12:
-          gridCTX.fillStyle = "wheat"
-          break;
-          case 13:
-          gridCTX.fillStyle = "darkgreen"
-          break;
-          case 14:
-          gridCTX.fillStyle = "midnightblue"
-          break;
-          case 15:
-          gridCTX.fillStyle = "purple"
-          break;
-          case 16:
-          gridCTX.fillStyle = "brown"
-          break;
-          case 17:
-          gridCTX.fillStyle = "gray"
-          break;
-          case 18:
-          gridCTX.fillStyle = 'rgb(' + parseInt(Math.random() * 255) + ',' + parseInt(Math.random() * 255) + ',' + parseInt(Math.random() * 255) + ')';
-          break;
-          }
+      
+          gridCTX.fillStyle = fill;
+         
           
           //PAINTS THE SQUARES
          gridCTX.fillRect(x * tileSize, y * tileSize, tileSize, tileSize)
@@ -432,14 +414,68 @@ function fillMap(){
           
           }  }  }
 
+          function paint() {
 
+            var paintColour = document.getElementById("paintFill").value
+           
+
+            gridCTX.fillStyle = paintColour;
+                 
+            //PAINTS THE SQUARE
+            console.log('')
+            console.log('+++++++++PAINTING DATA++++++++++')
+            console.log('Painting ' + gridCTX.fillStyle  + ' at ' + rx + ',' + ry)
+            gridCTX.fillRect(rx * tileSize, ry * tileSize, tileSize, tileSize)
+            paintArray.push({x:rx, y: ry, z: rz, fill: paintColour})
+            console.table(paintArray)
+            
+
+          }
+
+
+function filterCarto(){
+
+//filters Carto for data on current location  
+
+  var rXYZ = {
+    x: rx,
+    y: ry,
+    z: rz,
+  };
+
+
+  console.log('')
+  console.log('+++++++++CURRENT LOCATION++++++++++')
+  //console.log(rXYZ)
+  currentLocation = carto.filter(obj => obj.x == rXYZ.x && obj.y == rXYZ.y && obj.z == rXYZ.z)
+  console.table(currentLocation[0])
+  console.log(currentLocation.length + ' records found.')
+  console.log('(X: ' + rx+','+'Y: ' + ry+')')
+  console.log('FPS: ' +fps);
+
+  //EDITOR VARIABLES
+   
+    document.getElementById('testLocation').value =  currentLocation[0].location
+    document.getElementById('testCategory').value = currentLocation[0].category
+    document.getElementById('testFill').value = currentLocation[0].fill
+    document.getElementById('TextA').value = currentLocation[0].desc1
+    document.getElementById('TextB').value = currentLocation[0].desc2
+    document.getElementById('TextC').value = currentLocation[0].desc3
+    document.getElementById('TextD').value = currentLocation[0].desc4
+    document.getElementById('TextE').value = currentLocation[0].desc5
+    document.getElementById('user').value = currentLocation[0].username
+
+
+    LoadQuestions();
+  
+  }
+  
+ 
 function drawLabels(){
 
 for (let i = 0; i < carto.length; i++) {
         
-
       let location = carto[i].location   
-
       
                  if(location.length>0){
                    
@@ -448,55 +484,30 @@ for (let i = 0; i < carto.length; i++) {
                   let iwidth = location.length * 8
                   let iheight =  tileSize
                   
-
+                  
                   if(rx == carto[i].x && ry == carto[i].y){
 
                   //Behind Name
                   mapCTX.fillStyle = 'black'
                   mapCTX.fillRect(ix,iy,iwidth,iheight);
                   //Write name
-                  mapCTX.font = "12px Helvetica";
+                  mapCTX.font = "Courier Prime";
                   mapCTX.fillStyle = 'wheat';
-
                   
                   //PAINTS LOCATION NAMES
                   mapCTX.fillText(location,ix+ 0.35 * tileSize, iy + 0.75 * tileSize);
                   } 
 
-                  if(Math.floor(x/tileSize) == carto[i].x && Math.floor(y/tileSize) == carto[i].y){
-
-                    
+                  if(Math.floor(x/tileSize) == carto[i].x && Math.floor(y/tileSize) == carto[i].y){           
                     //Behind Name
                     mapCTX.fillStyle = 'black'
                     mapCTX.fillRect(ix,iy,iwidth,iheight);
                     //Write name
-                    mapCTX.font = "12px Helvetica";
+                    mapCTX.font = "italic calibri";
                     mapCTX.fillStyle = 'wheat';
-  
-                    
-                    //PAINTS LOCATION NAMES
+                        //PAINTS LOCATION NAMES
                     mapCTX.fillText(location,ix+ 0.35 * tileSize, iy + 0.75 * tileSize);
-
-
-                    //EDITOR VARIABLES
-                    rLocation = carto[i].location
-                    rCategory = carto[i].category
-                    textAcontents = carto[i].desc1
-                    textBcontents = carto[i].desc2
-                    textCcontents = carto[i].desc3
-                    textDcontents = carto[i].desc4
-                    textEcontents = carto[i].desc5
-                    rFill = carto[i].fill
-
-                    
-                    
-
-                    //console.table(carto[i])
-                      
-
-                   
-
-                    } 
+              } 
         
                 }
               
@@ -568,14 +579,40 @@ function fillMap_Random(){
             mapCTX.fillStyle = 'rgb(' + parseInt(Math.random() * 255) + ',' + parseInt(Math.random() * 255) + ',' + parseInt(Math.random() * 255) + ')';        
             mapCTX.fillRect(x, y, tileSize, tileSize)
                         
-  
-   }} }
+     }} }
   
 
 //-----------------------------------------------------------------------------
 
 // MOUSE TRACKING
+function Move(){
 
+//Everything that happens when we move either by mouse or wasd
+
+rLocation = ""
+rCategory = ""
+document.getElementById('testX').value = rx
+document.getElementById('testY').value = ry
+document.getElementById('testZ').value = rz
+document.getElementById('QA').value = ""
+textAcontents = ""
+document.getElementById('QB').value = ""
+textBcontents = ""
+document.getElementById('QC').value  = ""
+textCcontents = ""
+document.getElementById('QD').value  = ""
+textDcontents = ""
+document.getElementById('QE').value = ""
+textEcontents = ""
+rFill = ""
+
+currentLocation = []
+
+permMap() 
+//LoadQuestions()
+
+
+}
 
 
 // Add the event listeners for mousedown, mousemove, and mouseup
@@ -586,41 +623,36 @@ map.addEventListener('mousedown', e => {
 
   rx = Math.floor( x / tileSize) 
   ry = Math.floor( y / tileSize) 
+          
 
+  Move()
 
-  if( y > 12){
-
-              rLocation = ""
-              rCategory = ""
-              document.getElementById('QA').value = ""
-              textAcontents = ""
-              document.getElementById('QB').value = ""
-              textBcontents = ""
-              document.getElementById('QC').value  = ""
-              textCcontents = ""
-              document.getElementById('QD').value  = ""
-              textDcontents = ""
-              document.getElementById('QE').value = ""
-              textEcontents = ""
-              rFill = ""
-
-
-  permMap() 
   
-   
-  }
+
+ 
     
 });
 
 map.addEventListener('mouseup', e => {
+  
+  if(paintCheck === 1){
+   
+        paint()
+ 
+  }
+  
   console.log('')
   console.log('+++++++++DEVELOPER VARIABLES++++++++++')
   console.log('(x: ' + x+','+' y: ' + y+')')
   console.log('(rx: ' + rx+','+' ry: ' + ry+')')
   console.log('FPS: ' + fps);
   console.log('Active Element: ' + activeElement);
+  console.log('paintCheck: ' + paintCheck)
     
-    mapData()
+  mapData()
+ 
+  
+  
 
     }
     
@@ -643,14 +675,17 @@ grid.addEventListener('mousemove', e => {
 var Reload 
 
 document.onkeyup = function(e) {
- 
-  //function hotkey(e) {
-  
+
+  var ignoreElement = document.getElementById('editor');
+  var isNOTEditor = ignoreElement.contains(event.target);
+
+  if (!isNOTEditor) {
 
   if (e.shiftKey && e.which == 40 ) {
     
+    //shift + S
     ry += 10
-
+    
   } else if (e.shiftKey && e.which == 37) {
       
      rx -= 10
@@ -725,17 +760,57 @@ document.onkeyup = function(e) {
       tileSize -= 2
       permMap()
       
+    } else if (e.which == 69) {
+           
+      //E
+      //Enter
+      zoomIn()
+      console.log('Scale: '+sheetName)
+      
+    } else if (e.which == 81) {
+          
+      //Q
+      //Exit
+      zoomOut()
+      console.log('Scale: '+sheetName)
+
     }
 
-    
+    Move()
+    mapData()
+    permMap()
    
-    }
+  }};
 
+//-----------------------------------------------------------------------------
+function zoomIn(){
+
+  if(sheetName === "Global"){
+  
+      sheetName ="Local"
+  
+        } else if (sheetName === "Local") {
+  
+            sheetName = "Dungeon"}}
+  
+  function zoomOut(){
+  
+    if(sheetName == "Dungeon"){
+              
+      sheetName = "Local"
+              
+       } else if (sheetName === "Local") {
+              
+       sheetName = "Global"}}
+  
+  
 
 
    
 //-----------------------------------------------------------------------------
 //TOOLBAR AT TOP
+
+//something incase I want a top-screen positioned toolbar
 
 function topnav() {
   var x = document.getElementById("myTopnav");
@@ -748,6 +823,7 @@ function topnav() {
 
 //-----------------------------------------------------------------------------
 //FORM SUBMISSION 
+
 
 window.addEventListener("load", function() {
   const form = document.getElementById('mapData');
@@ -778,44 +854,7 @@ LoadMap()
 )
 
 
-function mapData(){
 
-  document.getElementById('testX').value = rx
-  document.getElementById('testY').value = ry
-  document.getElementById('testZ').value = rz
-  document.getElementById('testLocation').value = rLocation
-  document.getElementById('testCategory').value = rCategory
-
-
-  LoadQuestions();
-
-  //document.getElementById('QA').value = QA  
-  document.getElementById('TextA').value = textAcontents
-  //document.getElementById('QB').value = QB
-  document.getElementById('TextB').value = textBcontents
-  //document.getElementById('QC').value = QC 
-  document.getElementById('TextC').value = textCcontents
-  //document.getElementById('QD').value = QD
-  document.getElementById('TextD').value = textDcontents
-  //document.getElementById('QE').value = QE 
-  document.getElementById('TextE').value = textEcontents
-
-  document.getElementById('testFill').value = rFill
-
-  console.log('')
-  console.log('+++++++++++++++++++')
-  console.log(document.getElementById('testCategory').value)
-  console.log(document.getElementById('testLocation').value)
-  console.log('UPDATED')
-  console.log('(X: ' + rx+','+'Y: ' + ry+')')
-  console.log('FPS: ' +fps);
-
-
-
-  
-
-
-}
 //-----------------------------------------------------------------------------
   //FILL CATEGORY DROP DOWN
 

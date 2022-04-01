@@ -57,22 +57,24 @@
 }
 
 #editor{
-
+display: none;
 background-color: rgb(24, 23, 23);
 color: orange;
 position: fixed;
 top: 25%;
-right: 5%;
+left: 5%;
 padding-top: 0px;
 padding-right: 15px;
 padding-bottom: 15px;
 padding-left: 15px;
 border: 5px solid rgb(175, 117, 8);
 font-family: 'Courier Prime', monospace;
-
+z-index: 7;
 
 
 }
+
+
 
 #testFill{
 
@@ -102,6 +104,8 @@ font-family: 'Courier Prime', monospace;
 
 }
 
+
+
 #editorheader{
 
   background-color: rgb(24, 23, 23);
@@ -115,6 +119,50 @@ font-family: 'Courier Prime', monospace;
  
 
 }
+
+
+#control {
+
+  background-color: rgb(24, 23, 23);
+  color: orange;
+  position: fixed;
+  float: right;
+  bottom: 5%;
+  right: 5%;
+  padding-top: 0px;
+  padding-right: 15px;
+  padding-bottom: 15px;
+  padding-left: 15px;
+  border: 5px solid rgb(175, 117, 8);
+  font-family: 'Courier Prime', monospace;
+  z-index : 8;
+}
+
+#painter{
+  display: none;
+  background-color: rgb(24, 23, 23);
+  color: orange;
+  position: fixed;
+  top: 25%;
+  right: 5%;
+  padding-top: 0px;
+  padding-right: 15px;
+  padding-bottom: 15px;
+  padding-left: 15px;
+  border: 5px solid rgb(175, 117, 8);
+  font-family: 'Courier Prime', monospace;
+  z-index : 8;
+  width:200px;
+  
+  
+  }
+
+  #paintFill{
+   
+    font-family: 'Courier Prime', monospace;
+    
+       
+    }
 
 #QA {
  
@@ -211,11 +259,14 @@ font-family: 'Courier Prime', monospace;
   border:none;
 }
 
-#canvases{
- 
+#user {
   
-
+  background-color: black;
+  color: orange;
+  font-family: 'Courier Prime', monospace;
+  border:none;
 }
+
 
 #grid {
   position: absolute;

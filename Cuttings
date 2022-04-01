@@ -203,3 +203,59 @@ document.onkeyup = function(e) {
 
    
     }}
+
+    for (let i = 0; i < carto.length; i++) {
+        
+
+      let location = carto[i].location   
+
+      
+                 if(location.length>0){
+                   
+                  let ix = carto[i].x * tileSize + (tileSize * 1.2)
+                  let iy = carto[i].y * tileSize
+                  let iwidth = location.length * 8
+                  let iheight =  tileSize
+                  
+
+                  //if(rx == carto[i].x && ry == carto[i].y){
+
+                  //Behind Name
+                  mapCTX.fillStyle = 'black'
+                  mapCTX.fillRect(ix,iy,iwidth,iheight);
+                  //Write name
+                  mapCTX.font = "Courier Prime";
+                  mapCTX.fillStyle = 'wheat';
+
+                  
+                  //PAINTS LOCATION NAMES
+                  mapCTX.fillText(location,ix+ 0.35 * tileSize, iy + 0.75 * tileSize);
+                  //} 
+
+                  //if(Math.floor(x/tileSize) == carto[i].x && Math.floor(y/tileSize) == carto[i].y){
+
+                    
+                    //Behind Name
+                    mapCTX.fillStyle = 'black'
+                    mapCTX.fillRect(ix,iy,iwidth,iheight);
+                    //Write name
+                    mapCTX.font = "italic calibri";
+                    mapCTX.fillStyle = 'wheat';
+  
+                    
+                    //PAINTS LOCATION NAMES
+                    mapCTX.fillText(location,ix+ 0.35 * tileSize, iy + 0.75 * tileSize);
+                 
+                    //console.table(carto[i])
+                      
+
+                   
+
+                    } 
+        
+                //}
+              
+              
+              
+              }
+            
