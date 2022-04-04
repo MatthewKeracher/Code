@@ -10,6 +10,7 @@ var paintArray = []
 //Google Sheet Queries
 var sheetName 
 
+
 var xList = []
 var yList = []
 var fps = []
@@ -38,7 +39,7 @@ var activeElement
 
 var paintCheck = 0
 
-
+var rUsername = prompt("What is your name?");
 document.addEventListener('DOMContentLoaded',permMap);
 
 
@@ -98,6 +99,8 @@ function gridLoop() {
   fps = Math.floor(1000 / (thisLoop - lastLoop));
   lastLoop = thisLoop;
 
+  //USERNAME
+  document.getElementById('user').value = rUsername
   
   //Draw The Map  
   loopMap()
@@ -340,7 +343,7 @@ drawLabels();
 
 function permMap(){
 //Contains all map elements not included in the Gameloop, permMap() contains those left in.
-//gridCTX.clearRect(0, 0, mapwidth, mapheight);
+gridCTX.clearRect(0, 0, mapwidth, mapheight);
 
 //Draws out Blank Map
 //drawBlackground();
@@ -428,6 +431,24 @@ function fillMap(){
             gridCTX.fillRect(rx * tileSize, ry * tileSize, tileSize, tileSize)
             paintArray.push({x:rx, y: ry, z: rz, fill: paintColour})
             console.table(paintArray)
+
+           
+            //AUTOMATICALLY FILL EDITOR AS PAINTING
+            
+            //document.getElementById('testLocation').value =  currentLocation[0].location
+            //document.getElementById('testCategory').value = currentLocation[0].category
+            document.getElementById('testFill').value = paintColour
+            //document.getElementById('TextA').value = currentLocation[0].desc1
+            //document.getElementById('TextB').value = currentLocation[0].desc2
+            //document.getElementById('TextC').value = currentLocation[0].desc3
+            //document.getElementById('TextD').value = currentLocation[0].desc4
+            //document.getElementById('TextE').value = currentLocation[0].desc5
+
+            //AUTOMAGICALLY SUBMIT FORM DATA
+            document.forms['mapData'].submit();
+              
+            //NEED TO PREVENT DEFAULT
+            console.log('+++painting+++')
             
 
           }
@@ -463,7 +484,7 @@ function filterCarto(){
     document.getElementById('TextC').value = currentLocation[0].desc3
     document.getElementById('TextD').value = currentLocation[0].desc4
     document.getElementById('TextE').value = currentLocation[0].desc5
-    document.getElementById('user').value = currentLocation[0].username
+    
 
 
     LoadQuestions();
@@ -609,6 +630,7 @@ rFill = ""
 currentLocation = []
 
 permMap() 
+
 //LoadQuestions()
 
 
@@ -620,10 +642,11 @@ map.addEventListener('mousedown', e => {
   
   x = e.offsetX;
   y = e.offsetY;
+  //z = 0
 
   rx = Math.floor( x / tileSize) 
   ry = Math.floor( y / tileSize) 
-          
+  rz = 0        
 
   Move()
 
@@ -828,8 +851,11 @@ function topnav() {
 window.addEventListener("load", function() {
   const form = document.getElementById('mapData');
 
+  
+
   form.addEventListener("submit", function(e) {
   
+    console.log('+++++++++INTERCEPTING++++++++++')
     e.preventDefault();
    
 
@@ -842,7 +868,8 @@ const mapData = e.target.action
     
   })
 
-  //console.log('+++++++++++++++++++')
+ 
+  
   //console.log('sending... ' + newData.length)
 
 
