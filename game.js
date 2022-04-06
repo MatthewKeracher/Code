@@ -130,7 +130,7 @@ const query = qu
 const url = `${base}&sheet=${sheetName}&tq=${query}`;
 //const output = document.querySelector('.output');
 console.log('')
-console.log('++++++++LOAD CARTO+++++++++++')
+console.log('++++++++LOAD_CARTO+++++++++++')
 console.log('Connection to ' + sheetName + ' has been made.');
 console.log(qu + ' from ' + sheetName)
 
@@ -445,11 +445,12 @@ function fillMap(){
             //document.getElementById('TextE').value = currentLocation[0].desc5
 
             //AUTOMAGICALLY SUBMIT FORM DATA
-            document.forms['mapData'].submit();
-              
-            //NEED TO PREVENT DEFAULT
-            console.log('+++painting+++')
+            document.forms['mapData'].dispatchEvent(new Event('submit'));
+
             
+         
+            //NEED TO PREVENT DEFAULT
+                        
 
           }
 
@@ -629,7 +630,7 @@ rFill = ""
 
 currentLocation = []
 
-permMap() 
+
 
 //LoadQuestions()
 
@@ -848,19 +849,23 @@ function topnav() {
 //FORM SUBMISSION 
 
 
+
 window.addEventListener("load", function() {
   const form = document.getElementById('mapData');
 
   
 
   form.addEventListener("submit", function(e) {
-  
-    console.log('+++++++++INTERCEPTING++++++++++')
+      
     e.preventDefault();
    
 
 const newData = new FormData(form);
 const mapData = e.target.action
+
+console.log('+++++++++INTERCEPTING++++++++++')
+
+//LOOK UP THE SYNTAX FOR FETCH
 
   fetch(mapData, {
     method: 'POST',
