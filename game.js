@@ -172,6 +172,7 @@ console.log('Rows returned from '+ sheetName + ' ' + carto.length)
 filterCarto()
 
 
+
 }
 
 //-----------------------------------------------------------------------------
@@ -352,6 +353,9 @@ drawGreenGrid();
 //Queries sheet and returns map positions.
 LoadMap();
 
+
+
+
 //Queries sheet and returns user positions. 
 LoadUsers();
 
@@ -487,8 +491,8 @@ function filterCarto(){
     document.getElementById('TextE').value = currentLocation[0].desc5
     
 
-
-    LoadQuestions();
+LoadQuestions()
+    
   
   }
   
@@ -537,7 +541,7 @@ for (let i = 0; i < carto.length; i++) {
               
               }
             
-              
+             
             
             }
 
@@ -631,8 +635,8 @@ rFill = ""
 currentLocation = []
 
 
+filterCarto()
 
-//LoadQuestions()
 
 
 }
