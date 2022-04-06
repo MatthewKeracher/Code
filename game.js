@@ -185,17 +185,16 @@ function LoadUsers(){
  const sheetID = '1lGlBfPSeCIjMOCyAUvtOiaUDU0f1J_l5FV_N0sRUY48';
  const base = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?`
  //SPECIFICS THAT CHANGE
- const users = 'Users'
+ const sheet = 'Users'
  const qu = 'Select *';
  const query = qu
  //AGGREGATE
- const url = `${base}&sheet=${users}&tq=${query}`;
+ const url = `${base}&sheet=${sheet}&tq=${query}`;
  //const output = document.querySelector('.output');
  console.log('')
  console.log('++++++++LOAD USERS+++++++++++')
- console.log('Connection to ' + users + ' has been made.');
- console.log(qu + ' from ' + users)
- 
+ console.log('Connection to ' + sheet + ' has been made.');
+ console.log(qu + ' from ' + sheet)
 
 
 //const empty = users => users.length = 0;
@@ -235,7 +234,8 @@ function LoadUsers(){
  
  console.log('Rows returned from Users ' + users.length)
  
- console.table(users.username)
+ console.table(users)
+
  users = []
  
  }
@@ -333,8 +333,11 @@ const mapCTX = map.getContext("2d");
 function loopMap(){
 //Contains all map elements included in the Gameloop, permMap() contains those left out.
 mapCTX.clearRect(0, 0, mapwidth, mapheight);
+
+
 //The carto array is used to paint the map.
 fillMap(); 
+
 drawUser();
 drawLabels();
 
@@ -356,12 +359,8 @@ LoadMap();
 
 
 
-//Queries sheet and returns user positions. 
-LoadUsers();
-
-
-
 //We have taken everything we need from carto, and it can be erased.
+
 carto = [] 
 
 
@@ -463,6 +462,7 @@ function filterCarto(){
 
 //filters Carto for data on current location  
 
+
   var rXYZ = {
     x: rx,
     y: ry,
@@ -490,9 +490,10 @@ function filterCarto(){
     document.getElementById('TextD').value = currentLocation[0].desc4
     document.getElementById('TextE').value = currentLocation[0].desc5
     
+//Queries sheet and returns user positions. 
 
-LoadQuestions()
-    
+LoadQuestions();
+
   
   }
   
@@ -614,6 +615,10 @@ function fillMap_Random(){
 function Move(){
 
 //Everything that happens when we move either by mouse or wasd
+//Load Users and Current Locations
+LoadUsers();  
+
+
 
 rLocation = ""
 rCategory = ""
