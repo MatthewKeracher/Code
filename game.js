@@ -800,6 +800,11 @@ document.onkeyup = function(e) {
 
     }
 
+    if(paintCheck === 1){
+   
+      paint()
+
+}
     Move()
     mapData()
     permMap()
