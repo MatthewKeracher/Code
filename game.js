@@ -8,8 +8,10 @@ var currentLocation = []
 var paintArray = []
 
 //Google Sheet Queries
-var sheetName 
-
+var sheetName = 'Global'
+var scale = 'Select *';
+var parentID = 0
+var uniqueID = 0
 
 var xList = []
 var yList = []
@@ -124,15 +126,16 @@ const sheetID = '1lGlBfPSeCIjMOCyAUvtOiaUDU0f1J_l5FV_N0sRUY48';
 const base = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?`
 //SPECIFICS THAT CHANGE
 
-const qu = 'Select *';
-const query = qu
+
+const query = scale
 //AGGREGATE
 const url = `${base}&sheet=${sheetName}&tq=${query}`;
 //const output = document.querySelector('.output');
 console.log('')
 console.log('++++++++LOAD_CARTO+++++++++++')
 console.log('Connection to ' + sheetName + ' has been made.');
-console.log(qu + ' from ' + sheetName)
+console.log(scale + ' from ' + sheetName)
+console.log('parentID is ' + parentID)
 
 //carto = []
 
@@ -408,11 +411,11 @@ function fillMap(){
         //console.log(location)
         
       
-          gridCTX.fillStyle = fill;
+          mapCTX.fillStyle = fill;
          
           
           //PAINTS THE SQUARES
-         gridCTX.fillRect(x * tileSize, y * tileSize, tileSize, tileSize)
+          mapCTX.fillRect(x * tileSize, y * tileSize, tileSize, tileSize)
          
           if(x == rx && y == ry){
 
@@ -425,13 +428,13 @@ function fillMap(){
             var paintColour = document.getElementById("paintFill").value
            
 
-            gridCTX.fillStyle = paintColour;
+            mapCTX.fillStyle = paintColour;
                  
             //PAINTS THE SQUARE
             console.log('')
             console.log('+++++++++PAINTING DATA++++++++++')
-            console.log('Painting ' + gridCTX.fillStyle  + ' at ' + rx + ',' + ry)
-            gridCTX.fillRect(rx * tileSize, ry * tileSize, tileSize, tileSize)
+            console.log('Painting ' + mapCTX.fillStyle  + ' at ' + rx + ',' + ry)
+            mapCTX.fillRect(rx * tileSize, ry * tileSize, tileSize, tileSize)
             paintArray.push({x:rx, y: ry, z: rz, fill: paintColour})
             console.table(paintArray)
 
@@ -618,13 +621,16 @@ function Move(){
 //Load Users and Current Locations
 LoadUsers();  
 
-
+//Update the uniqueID
+uniqueID = '' + rx + ry + rz;
 
 rLocation = ""
 rCategory = ""
 document.getElementById('testX').value = rx
 document.getElementById('testY').value = ry
 document.getElementById('testZ').value = rz
+document.getElementById('uniqueID').value = uniqueID
+document.getElementById('parentID').value = parentID
 document.getElementById('QA').value = ""
 textAcontents = ""
 document.getElementById('QB').value = ""
@@ -681,8 +687,10 @@ map.addEventListener('mouseup', e => {
   console.log('FPS: ' + fps);
   console.log('Active Element: ' + activeElement);
   console.log('paintCheck: ' + paintCheck)
+  console.log('ParentID: ' + parentID)
+  console.log('uniqueID: ' + uniqueID)
     
-  mapData()
+  //mapData()
  
   
   
@@ -704,7 +712,7 @@ grid.addEventListener('mousemove', e => {
 
 //-----------------------------------------------------------------------------
 
-//HOT KEYS
+//HOTKEYS
 var Reload 
 
 document.onkeyup = function(e) {
@@ -799,6 +807,8 @@ document.onkeyup = function(e) {
       //Enter
       zoomIn()
       console.log('Scale: '+sheetName)
+      carto = []
+      LoadMap()
       
     } else if (e.which == 81) {
           
@@ -806,7 +816,8 @@ document.onkeyup = function(e) {
       //Exit
       zoomOut()
       console.log('Scale: '+sheetName)
-
+      carto = []
+      LoadMap()
     }
 
     if(paintCheck === 1){
@@ -815,7 +826,7 @@ document.onkeyup = function(e) {
 
 }
     Move()
-    mapData()
+    //mapData()
     permMap()
    
   }};
@@ -823,15 +834,21 @@ document.onkeyup = function(e) {
 //-----------------------------------------------------------------------------
 function zoomIn(){
 
+  parentID = uniqueID;
+
   if(sheetName === "Global"){
-  
-      sheetName ="Local"
+   
+          sheetName = "Local"
+              scale = "Select * WHERE B = " + parentID
+     
   
         } else if (sheetName === "Local") {
   
             sheetName = "Dungeon"}}
   
   function zoomOut(){
+
+    parentID = sheetName + rx + ry + rz
   
     if(sheetName == "Dungeon"){
               
@@ -839,7 +856,12 @@ function zoomIn(){
               
        } else if (sheetName === "Local") {
               
-       sheetName = "Global"}}
+       sheetName = "Global"
+       parentID = 0
+       uniqueID = 0 
+       scale = "Select * "
+      
+      }}
   
   
 
