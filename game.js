@@ -108,8 +108,7 @@ function gridLoop() {
   fps = Math.floor(1000 / (thisLoop - lastLoop));
   lastLoop = thisLoop;
 
-  //USERNAME
-  document.getElementById('user').value = rUsername
+  
   
   //Draw The Map  
   loopMap()
@@ -119,6 +118,10 @@ function gridLoop() {
 }
 
 //Something to do with how long each loop is...
+
+//USERNAME
+document.getElementById('user').value = rUsername
+
 document.getElementById('sheetName').value = sheetName
 setInterval(gridLoop, 1000 / 60);
 
