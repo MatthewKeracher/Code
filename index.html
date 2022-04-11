@@ -26,7 +26,7 @@
 
   <div id = 'header'>
 
-    <img id = 'logo' src="images/BannerLogo.gif" alt="EXCEL_DM_LOGO" >  
+    <img id = 'logo'  src="images/BannerLogo.gif" alt="EXCEL_DM_LOGO" >  
   
     
     
@@ -57,10 +57,11 @@
   <input type="checkbox" id="chkPainter"/> 
   <label for="chkPainter"> Show Painter?</label> <br><br>
 
-  <input type="checkbox" id="chkEditor"    /> 
+  <input type="checkbox" id="chkEditor" /> 
   <label for="chkEditor"> Show Editor?</label> <br><br>
   <label for="user"> Author:</label>  <br>
   <input id= "user"  style = "background-color: rgb(0, 0, 0); color: orange; width:200px;" name="username" type="text" form = "mapData"  required ><br> <br>
+  <input id= "sheetName"  style = "background-color: rgb(0, 0, 0); color: orange; width:50px;" name="sheetName" type="text" form = "mapData"  required >
   <input id= "parentID"  style = "background-color: rgb(0, 0, 0); color: orange; width:50px;" name="parentID" type="text" form = "mapData"  required >
   <input id= "uniqueID"  style = "background-color: rgb(0, 0, 0); color: orange; width:50px;" name="uniqueID" type="text" form = "mapData"  required >
  
@@ -94,7 +95,11 @@
     <option value="brown">brown</option>
     <option value="gray">gray</option>
     
-  </select> <br> <br>
+  </select> 
+  
+  
+  
+  <br> <br>
   
   <input id="paintButton" type="button" value="Copy to Clipboard" onclick="copyPaint();" />
 
@@ -103,10 +108,10 @@
 <div id = 'editor' name = 'editor' style = "width: 500px;" >
   <div id="editorheader">CELL EDITOR CLICK & DRAG HERE TO MOVE</div> <br>
 
-  <form id = "mapData" action = "https://script.google.com/macros/s/AKfycby12u1h9nEz2ZTHGP6IW_D1Efq0XWVpu9yGUEPJPL_X2h3J7Jzcj8oiHqK5_ZGre41m/exec" style = "z-index: 5" >    
+  <form id = "mapData" onsubmit = "google.script.run.processData(this.form);" action = "https://script.google.com/macros/s/AKfycby3dtjPZa5QQ-wPj1DxbxXkPo55WEXmjqNSQOsmAsf_lv6E4kxHPPgwX9qqH79318hp/exec" style = "z-index: 5" >    
     Location:
     <input id= "testLocation" required  name="Location" type="text" style="background-color: rgb(0, 0, 0); color: orange; width: 400px;"> <br><br>
-    Category: 
+    Category:   
     <input id= "testCategory" required  name="Category" type="text" style="background-color: rgb(0, 0, 0); color: orange; width: 400px;"> <br> <br>
           X:
         <input id= "testX" name="X" type="text" style="background-color: rgb(0, 0, 0); color: orange; width:25px;" > 
@@ -137,6 +142,8 @@
         
           </select> 
    
+      
+
 </form>
 
  
@@ -183,6 +190,7 @@
           width="1600"
           height="1600"
           ></canvas>
+
 
           
         

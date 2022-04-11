@@ -12,6 +12,7 @@ var sheetName = 'Global'
 var scale = 'Select *';
 var parentID = 0
 var uniqueID = 0
+var savedID = 0
 
 var xList = []
 var yList = []
@@ -70,6 +71,12 @@ btn2.onclick = function () {
 };
 
 
+
+
+
+
+
+
 //- Using an anonymous function:
 document.getElementById("paintButton").onclick = function () { 
   
@@ -112,6 +119,7 @@ function gridLoop() {
 }
 
 //Something to do with how long each loop is...
+document.getElementById('sheetName').value = sheetName
 setInterval(gridLoop, 1000 / 60);
 
 
@@ -426,17 +434,24 @@ function fillMap(){
           function paint() {
 
             var paintColour = document.getElementById("paintFill").value
-           
+             
 
-            mapCTX.fillStyle = paintColour;
+           mapCTX.fillStyle = paintColour;
+           gridCTX.fillStyle = paintColour;
                  
             //PAINTS THE SQUARE
             console.log('')
             console.log('+++++++++PAINTING DATA++++++++++')
             console.log('Painting ' + mapCTX.fillStyle  + ' at ' + rx + ',' + ry)
+
             mapCTX.fillRect(rx * tileSize, ry * tileSize, tileSize, tileSize)
-            paintArray.push({x:rx, y: ry, z: rz, fill: paintColour})
-            console.table(paintArray)
+            gridCTX.fillRect(rx * tileSize, ry * tileSize, tileSize, tileSize)
+
+
+
+
+            //paintArray.push({x:rx, y: ry, z: rz, fill: paintColour})
+            //console.table(paintArray)
 
            
             //AUTOMATICALLY FILL EDITOR AS PAINTING
@@ -456,7 +471,7 @@ function fillMap(){
             
          
             //NEED TO PREVENT DEFAULT
-                        
+                       
 
           }
 
@@ -631,6 +646,7 @@ document.getElementById('testY').value = ry
 document.getElementById('testZ').value = rz
 document.getElementById('uniqueID').value = uniqueID
 document.getElementById('parentID').value = parentID
+
 document.getElementById('QA').value = ""
 textAcontents = ""
 document.getElementById('QB').value = ""
@@ -808,7 +824,9 @@ document.onkeyup = function(e) {
       zoomIn()
       console.log('Scale: '+sheetName)
       carto = []
-      LoadMap()
+      permMap()
+      //LoadMap()
+      
       
     } else if (e.which == 81) {
           
@@ -817,7 +835,8 @@ document.onkeyup = function(e) {
       zoomOut()
       console.log('Scale: '+sheetName)
       carto = []
-      LoadMap()
+      permMap()
+      //LoadMap()
     }
 
     if(paintCheck === 1){
@@ -835,33 +854,57 @@ document.onkeyup = function(e) {
 function zoomIn(){
 
   parentID = uniqueID;
+  
 
   if(sheetName === "Global"){
    
           sheetName = "Local"
-              scale = "Select * WHERE B = " + parentID
+              scale = "Select * WHERE C = " + parentID
+              
      
   
         } else if (sheetName === "Local") {
   
-            sheetName = "Dungeon"}}
+            sheetName = "Dungeon"
+            savedID = parentID 
+            scale = "Select * WHERE C = " + parentID
+                   
+          
+          }
+            
+            
+            document.getElementById('sheetName').value = sheetName
+
+          }
   
   function zoomOut(){
 
-    parentID = sheetName + rx + ry + rz
-  
+    parentID = '' + rx + ry + rz
+    
+
     if(sheetName == "Dungeon"){
               
       sheetName = "Local"
+      console.log('savedID '+savedID)
+      parentID = savedID
+      scale = "Select * WHERE C = " + parentID
+      
+     
               
        } else if (sheetName === "Local") {
               
        sheetName = "Global"
        parentID = 0
        uniqueID = 0 
+       savedID = 0
        scale = "Select * "
+       
       
-      }}
+      }
+    
+      document.getElementById('sheetName').value = sheetName
+    
+    }
   
   
 
@@ -908,6 +951,8 @@ console.log('+++++++++INTERCEPTING++++++++++')
     body: newData,
     
   })
+
+  
 
  
   
