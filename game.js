@@ -853,6 +853,7 @@ document.onkeyup = function(e) {
 //-----------------------------------------------------------------------------
 function zoomIn(){
 
+  savedID = parentID 
   parentID = uniqueID;
   
 
@@ -866,7 +867,7 @@ function zoomIn(){
         } else if (sheetName === "Local") {
   
             sheetName = "Dungeon"
-            savedID = parentID 
+            console.log('savedID '+savedID)
             scale = "Select * WHERE C = " + parentID
                    
           
