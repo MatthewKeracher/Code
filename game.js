@@ -445,7 +445,25 @@ function fillMap(){
 
           }
 
+          document.getElementById('undoButton').onclick = function () {
 
+            //console.table(paintArray)
+
+            var lastEntry = paintArray.length - 1
+            var lastX = paintArray[lastEntry].x
+            var LastY =  paintArray[lastEntry].y
+
+            //console.log('')
+            //console.log('+++++++++ DELETING LAST ENTRY ++++++++++')
+            //console.log(lastX + ',' + LastY)
+       
+            gridTopCTX.clearRect(lastX * tileSize, LastY * tileSize, tileSize, tileSize);
+
+            paintArray.pop()
+
+            //console.table(paintArray)
+
+          }
 
           document.getElementById('paintButton').onclick = function () {
 
