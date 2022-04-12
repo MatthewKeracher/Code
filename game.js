@@ -130,6 +130,7 @@ setInterval(gridLoop, 1000 / 60);
 //FUNCTION TO IMPORT MAP DATA FROM SPREADSHEET
 
 function LoadMap(){
+ 
 
  //Connection to Google Sheet
 //Sheet URL between /d/ and /edit/
@@ -331,7 +332,7 @@ function LoadQuestions(){
 // DRAW MAP!
 
 
-const mapwidth = 1600
+const mapwidth = 3800
 const mapheight = 1600
 const p = 0;
 var tileSize = 18;
@@ -367,15 +368,14 @@ gridCTX.clearRect(0, 0, mapwidth, mapheight);
 //drawBlackground();
 drawGreenGrid();
 
+
+
 //Queries sheet and returns map positions.
 LoadMap();
 
 
 
 
-//We have taken everything we need from carto, and it can be erased.
-
-carto = [] 
 
 
 }
@@ -826,7 +826,11 @@ document.onkeyup = function(e) {
       //Enter
       zoomIn()
       console.log('Scale: '+sheetName)
-      carto = []
+      console.log('')
+      console.log('+++++++++DUMP CARTO++++++++++')
+      console.log('carto length: '+ carto.length)
+      carto = [] 
+      console.log('carto length: '+ carto.length)
       permMap()
       //LoadMap()
       
@@ -837,7 +841,11 @@ document.onkeyup = function(e) {
       //Exit
       zoomOut()
       console.log('Scale: '+sheetName)
-      carto = []
+      console.log('')
+      console.log('+++++++++DUMP CARTO++++++++++')
+      console.log('carto length: '+ carto.length)
+      carto = [] 
+      console.log('carto length: '+ carto.length)
       permMap()
       //LoadMap()
     }
@@ -945,7 +953,7 @@ window.addEventListener("load", function() {
 
 const newData = new FormData(form);
 const mapData = e.target.action
-
+console.log('')
 console.log('+++++++++INTERCEPTING++++++++++')
 
 //LOOK UP THE SYNTAX FOR FETCH
@@ -962,8 +970,15 @@ console.log('+++++++++INTERCEPTING++++++++++')
   
   //console.log('sending... ' + newData.length)
 
+  //We have taken everything we need from carto, and it can be erased.
+  //console.log('')
+  //console.log('+++++++++DUMP CARTO++++++++++')
+  //console.log('carto length: '+ carto.length)
+  //carto = [] 
+  //console.log('carto length: '+ carto.length)
 
-LoadMap()
+
+//LoadMap()
 
 })
 
