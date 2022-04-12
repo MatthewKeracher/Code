@@ -67,23 +67,10 @@ btn2.onclick = function () {
   } else {
     targetDiv2.style.display = "none";
     paintCheck = 0
+    
   }
 };
 
-
-
-
-
-
-
-
-//- Using an anonymous function:
-document.getElementById("paintButton").onclick = function () { 
-  
-  console.log('paintArray has been copied to the clipboard')
-  
-  navigator.clipboard.writeText(console.table(paintArray)); };
- 
 
 //-----------------------------------------------------------------------------
 
@@ -340,73 +327,64 @@ var tileSize = 18;
 const EndX = Math.floor(mapheight/tileSize)
 const EndY = Math.floor(mapwidth/tileSize)
 
-const grid = document.getElementById("grid");
-const map = document.getElementById("map");
-const gridCTX = grid.getContext("2d");
-const mapCTX = map.getContext("2d");
+//SHORTHANDS FOR DIVS IN HTML
+const gridBtm = document.getElementById("gridBtm");
+const gridBtmCTX = gridBtm.getContext("2d");
+
+const gridMid = document.getElementById("gridMid");
+const gridMidCTX = gridMid.getContext("2d");
+
+const gridTop = document.getElementById("gridTop");
+const gridTopCTX = gridTop.getContext("2d");
+
 
 function loopMap(){
 //Contains all map elements included in the Gameloop, permMap() contains those left out.
-mapCTX.clearRect(0, 0, mapwidth, mapheight);
-
-
+gridMidCTX.clearRect(0, 0, mapwidth, mapheight);
 //The carto array is used to paint the map.
 fillMap(); 
-
 drawUser();
 drawLabels();
-
-
-
 }
 
 function permMap(){
 //Contains all map elements not included in the Gameloop, permMap() contains those left in.
-gridCTX.clearRect(0, 0, mapwidth, mapheight);
-
+gridBtmCTX.clearRect(0, 0, mapwidth, mapheight);
+gridTopCTX.clearRect(0, 0, mapwidth, mapheight);
 //Draws out Blank Map
 //drawBlackground();
 drawGreenGrid();
-
-
-
 //Queries sheet and returns map positions.
 LoadMap();
-
-
-
-
-
-
 }
 
 function drawBlackground() {
   for (var x = 0; x <= mapwidth; x += tileSize) {
     for (var y = 0; y <= mapheight; y += tileSize) {
-      gridCTX.fillStyle = "black";
-      gridCTX.moveTo(p, 0.5 + x + p);
-      gridCTX.fillRect(x, y, tileSize, tileSize);
+      gridBtmCTX.fillStyle = "black";
+      gridBtmCTX.moveTo(p, 0.5 + x + p);
+      gridBtmCTX.fillRect(x, y, tileSize, tileSize);
     }
   }
 }
 
 function drawGreenGrid() {
   
-  gridCTX.beginPath()
+  gridBtmCTX.beginPath()
 
   for (var x1 = 0; x1 <= mapwidth; x1 += tileSize) {
     
-    gridCTX.moveTo(0.5 + x1 + p, p);
-    gridCTX.lineTo(0.5 + x1 + p, mapheight + p);
+    gridBtmCTX.moveTo(0.5 + x1 + p, p);
+    gridBtmCTX.lineTo(0.5 + x1 + p, mapheight + p);
   }
   
   for (var x2 = 0; x2 <= mapheight; x2 += tileSize) {
     
-    gridCTX.moveTo(p, 0.5 + x2 + p);
-    gridCTX.lineTo(mapwidth + p, 0.5 + x2 + p);
+    gridBtmCTX.moveTo(p, 0.5 + x2 + p);
+    gridBtmCTX.lineTo(mapwidth + p, 0.5 + x2 + p);
   }
-  gridCTX.strokeStyle = "rgb(0, 90, 0, 1)";
-  gridCTX.stroke();
+  gridBtmCTX.strokeStyle = "rgb(0, 90, 0, 1)";
+  gridBtmCTX.stroke();
 }
 
 function fillMap(){
@@ -418,15 +396,9 @@ function fillMap(){
         let fill = carto[i].fill
         let x = carto[i].x
         let y = carto[i].y
-        
-        //console.log(location)
-        
-      
-          mapCTX.fillStyle = fill;
-         
-          
-          //PAINTS THE SQUARES
-          mapCTX.fillRect(x * tileSize, y * tileSize, tileSize, tileSize)
+                
+        gridMidCTX.fillStyle = fill;
+        gridMidCTX.fillRect(x * tileSize, y * tileSize, tileSize, tileSize)
          
           if(x == rx && y == ry){
 
@@ -434,49 +406,102 @@ function fillMap(){
           
           }  }  }
 
-          function paint() {
+  function paint() {
 
-            var paintColour = document.getElementById("paintFill").value
+  var paintColour = document.getElementById("paintFill").value
              
-
-           mapCTX.fillStyle = paintColour;
-           gridCTX.fillStyle = paintColour;
+  gridTopCTX.fillStyle = paintColour;
+           //mapCTX.fillStyle = paintColour;
+           //gridCTX.fillStyle = paintColour;
                  
             //PAINTS THE SQUARE
             console.log('')
             console.log('+++++++++PAINTING DATA++++++++++')
-            console.log('Painting ' + mapCTX.fillStyle  + ' at ' + rx + ',' + ry)
+            console.log('Painting ' + gridTopCTX.fillStyle  + ' at ' + rx + ',' + ry)
 
-            mapCTX.fillRect(rx * tileSize, ry * tileSize, tileSize, tileSize)
-            gridCTX.fillRect(rx * tileSize, ry * tileSize, tileSize, tileSize)
+            //mapCTX.fillRect(rx * tileSize, ry * tileSize, tileSize, tileSize)
+            //gridBtmCTX.fillRect(rx * tileSize, ry * tileSize, tileSize, tileSize)
 
-
-
-
-            //paintArray.push({x:rx, y: ry, z: rz, fill: paintColour})
-            //console.table(paintArray)
-
+    gridTopCTX.fillRect(rx * tileSize, ry * tileSize, tileSize, tileSize)
+    paintArray.push({x:rx, y: ry, z: rz, fill: paintColour})
            
-            //AUTOMATICALLY FILL EDITOR AS PAINTING
-            
-            //document.getElementById('testLocation').value =  currentLocation[0].location
-            //document.getElementById('testCategory').value = currentLocation[0].category
-            document.getElementById('testFill').value = paintColour
-            //document.getElementById('TextA').value = currentLocation[0].desc1
-            //document.getElementById('TextB').value = currentLocation[0].desc2
-            //document.getElementById('TextC').value = currentLocation[0].desc3
-            //document.getElementById('TextD').value = currentLocation[0].desc4
-            //document.getElementById('TextE').value = currentLocation[0].desc5
+          }
 
+          
+          function sleep(milliseconds) {
+            const date = Date.now();
+            let currentDate = null;
+            do {
+              currentDate = Date.now();
+            } while (currentDate - date < milliseconds);
+          }
+          
+
+          document.getElementById('clearButton').onclick = function () {
+
+            paintArray = []
+
+            gridTopCTX.clearRect(0, 0, mapwidth, mapheight);
+
+          }
+
+
+
+          document.getElementById('paintButton').onclick = function () {
+
+            console.log('')
+            console.log('+++++++++ SAVING PAINT DATA ++++++++++')
+            console.table(paintArray)
+            console.log(paintArray.length + ' rows to save.')
+
+            try{
+
+            for (let i = 0; i < paintArray.length; i++) {
+        
+    //AUTOMATICALLY FILL EDITOR AS PAINTING
+            
+    console.log('Saving row ' + i + '/' + paintArray.length + ': ' + '' +  paintArray[i].x +  paintArray[i].y +  paintArray[i].z + ' ' + paintArray[i].fill + ' at ' + paintArray[i].x + ',' + paintArray[i].y)
+
+            document.getElementById('testLocation').value =  ''
+            document.getElementById('testCategory').value = ''
+
+            document.getElementById('testX').value = paintArray[i].x
+            document.getElementById('testY').value = paintArray[i].y
+            document.getElementById('testZ').value = paintArray[i].z
+
+            document.getElementById('uniqueID').value = '' +  paintArray[i].x +  paintArray[i].y +  paintArray[i].z
+            document.getElementById('parentID').value = parentID
+
+            document.getElementById('testFill').value = paintArray[i].fill
+            document.getElementById('TextA').value = ''
+            document.getElementById('TextB').value = ''
+            document.getElementById('TextC').value = ''
+            document.getElementById('TextD').value = ''
+            document.getElementById('TextE').value = ''
+
+             sleep(3000)
+                  
             //AUTOMAGICALLY SUBMIT FORM DATA
             document.forms['mapData'].dispatchEvent(new Event('submit'));
 
-            
-         
-            //NEED TO PREVENT DEFAULT
-                       
+       
+  
+}
 
-          }
+console.log('+++++++++ PAINT DATA SAVED SUCCESS ++++++++++')
+
+paintArray = []
+
+}catch{
+
+console.log('+++++++++ PAINT DATA SAVE FAILED ++++++++++')
+
+}
+
+
+
+}
+
 
 
 function filterCarto(){
@@ -536,25 +561,25 @@ for (let i = 0; i < carto.length; i++) {
                   if(rx == carto[i].x && ry == carto[i].y){
 
                   //Behind Name
-                  mapCTX.fillStyle = 'black'
-                  mapCTX.fillRect(ix,iy,iwidth,iheight);
+                  gridTopCTX.fillStyle = 'black'
+                  gridTopCTX.fillRect(ix,iy,iwidth,iheight);
                   //Write name
-                  mapCTX.font = "Courier Prime";
-                  mapCTX.fillStyle = 'wheat';
+                  gridTopCTX.font = "Courier Prime";
+                  gridTopCTX.fillStyle = 'wheat';
                   
                   //PAINTS LOCATION NAMES
-                  mapCTX.fillText(location,ix+ 0.35 * tileSize, iy + 0.75 * tileSize);
+                  gridTopCTX.fillText(location,ix+ 0.35 * tileSize, iy + 0.75 * tileSize);
                   } 
 
                   if(Math.floor(x/tileSize) == carto[i].x && Math.floor(y/tileSize) == carto[i].y){           
                     //Behind Name
-                    mapCTX.fillStyle = 'black'
-                    mapCTX.fillRect(ix,iy,iwidth,iheight);
+                    gridTopCTX.fillStyle = 'black'
+                    gridTopCTX.fillRect(ix,iy,iwidth,iheight);
                     //Write name
-                    mapCTX.font = "italic calibri";
-                    mapCTX.fillStyle = 'wheat';
+                    gridTopCTX.font = "italic calibri";
+                    gridTopCTX.fillStyle = 'wheat';
                         //PAINTS LOCATION NAMES
-                    mapCTX.fillText(location,ix+ 0.35 * tileSize, iy + 0.75 * tileSize);
+                    gridTopCTX.fillText(location,ix+ 0.35 * tileSize, iy + 0.75 * tileSize);
               } 
         
                 }
@@ -571,15 +596,15 @@ for (let i = 0; i < carto.length; i++) {
 
                   rUser = document.getElementById("user").value
 
-                  mapCTX.strokeStyle = "orange";
-                  mapCTX.strokeRect(rx * tileSize, ry * tileSize,tileSize,tileSize);
+                  gridMidCTX.strokeStyle = "orange";
+                  gridMidCTX.strokeRect(rx * tileSize, ry * tileSize,tileSize,tileSize);
                   //Behind Name
-                  mapCTX.fillStyle = 'black'
-                  mapCTX.fillRect(rx * tileSize + (tileSize * 1.2), ry * tileSize + tileSize, rUser.length * 8, tileSize);
+                  gridMidCTX.fillStyle = 'black'
+                  gridMidCTX.fillRect(rx * tileSize + (tileSize * 1.2), ry * tileSize + tileSize, rUser.length * 8, tileSize);
                   //Write name
-                  mapCTX.font = "12px Helvetica";
-                  mapCTX.fillStyle = 'orange';
-                  mapCTX.fillText(rUser, rx * tileSize + (tileSize * 1.2) + 6, ry * tileSize + (tileSize) * 1.75 );
+                  gridMidCTX.font = "12px Helvetica";
+                  gridMidCTX.fillStyle = 'orange';
+                  gridMidCTX.fillText(rUser, rx * tileSize + (tileSize * 1.2) + 6, ry * tileSize + (tileSize) * 1.75 );
 
 
                   for (var i = 0; i < users.length; i++) {
@@ -598,38 +623,26 @@ for (let i = 0; i < carto.length; i++) {
                   }else{                            
                   //Draw Selection 
                   
-                  mapCTX.strokeStyle = "orange";
-                  mapCTX.strokeRect(x,y,tileSize,tileSize);
+                  gridMidCTX.strokeStyle = "orange";
+                  gridMidCTX.strokeRect(x,y,tileSize,tileSize);
 
-                  mapCTX.strokeStyle = "pink";
+                  gridMidCTX.strokeStyle = "pink";
                   
                   
                   //Behind Name
-                  mapCTX.fillStyle = 'black'
-                  mapCTX.fillRect(x + (tileSize * 1.2), y+ tileSize, xward, yward);
+                  gridMidCTX.fillStyle = 'black'
+                  gridMidCTX.fillRect(x + (tileSize * 1.2), y+ tileSize, xward, yward);
                   //Write name
-                  mapCTX.font = "12px Helvetica";
-                  mapCTX.fillStyle = 'orange';
-                  mapCTX.fillText(user, x + (tileSize * 1.2) + 6, y + (tileSize) * 1.75 );
+                  gridMidCTX.font = "12px Helvetica";
+                  gridMidCTX.fillStyle = 'orange';
+                  gridMidCTX.fillText(user, x + (tileSize * 1.2) + 6, y + (tileSize) * 1.75 );
 
 
 
                   }}}
 
                 
-               
-
-function fillMap_Random(){
-  
-   for (var x = 0; x <= mapwidth; x += tileSize) {
-    for (var y = 0; y <= mapheight; y += tileSize) {
-   
-            mapCTX.fillStyle = 'rgb(' + parseInt(Math.random() * 255) + ',' + parseInt(Math.random() * 255) + ',' + parseInt(Math.random() * 255) + ')';        
-            mapCTX.fillRect(x, y, tileSize, tileSize)
-                        
-     }} }
-  
-
+     
 //-----------------------------------------------------------------------------
 
 // MOUSE TRACKING
@@ -672,8 +685,9 @@ filterCarto()
 }
 
 
-// Add the event listeners for mousedown, mousemove, and mouseup
-map.addEventListener('mousedown', e => {
+//MOUSE BUTTON LEFT RIGHT CLICK CONTROLS 
+
+gridTop.addEventListener('mousedown', e => {
   
   x = e.offsetX;
   y = e.offsetY;
@@ -685,13 +699,10 @@ map.addEventListener('mousedown', e => {
 
   Move()
 
-  
-
- 
     
 });
 
-map.addEventListener('mouseup', e => {
+gridTop.addEventListener('mouseup', e => {
   
   if(paintCheck === 1){
    
@@ -711,15 +722,11 @@ map.addEventListener('mouseup', e => {
     
   //mapData()
  
-  
-  
-
     }
     
 );
 
-
-grid.addEventListener('mousemove', e => {
+gridBtm.addEventListener('mousemove', e => {
   
   x = e.offsetX;
   y = e.offsetY;
@@ -939,8 +946,6 @@ function topnav() {
 //-----------------------------------------------------------------------------
 //FORM SUBMISSION 
 
-
-
 window.addEventListener("load", function() {
   const form = document.getElementById('mapData');
 
@@ -953,8 +958,8 @@ window.addEventListener("load", function() {
 
 const newData = new FormData(form);
 const mapData = e.target.action
-console.log('')
-console.log('+++++++++INTERCEPTING++++++++++')
+//console.log('')
+//console.log('+++++++++INTERCEPTING++++++++++')
 
 //LOOK UP THE SYNTAX FOR FETCH
 
