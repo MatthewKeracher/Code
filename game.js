@@ -9,7 +9,7 @@ var paintArray = []
 
 //Google Sheet Queries
 var sheetName = 'Global'
-var scale = 'Select *';
+var scale = 'Select *'
 var parentID = 0
 var uniqueID = 0
 var savedID = 0
@@ -44,6 +44,8 @@ var paintCheck = 0
 
 var rUsername = prompt("What is your name?");
 document.addEventListener('DOMContentLoaded',permMap);
+
+
 
 
 const targetDiv = document.getElementById("editor");
@@ -387,22 +389,62 @@ function drawGreenGrid() {
   gridBtmCTX.stroke();
 }
 
+//Showing and Hiding different Z Levels
+document.getElementById("testZ").onchange = function(){
+
+console.log('Layer Selection Changed')
+
+//scale ='Select * WHERE F = ' + document.getElementById("testZ").value
+
+//carto = []
+rz = document.getElementById('testZ').value  
+carto = []
+permMap()
+
+console.log(scale)
+
+}
+
+
+
+
+
 function fillMap(){
 
 //console.log('running FillMap()')
+gridMidCTX.globalAlpha = 1
 
   for (let i = 0; i < carto.length; i++) {
 
         let fill = carto[i].fill
         let x = carto[i].x
         let y = carto[i].y
+        let z = carto[i].z
+
+
+if (rz == 1 ){
+
+  if(z == 0){
+
+    gridMidCTX.globalAlpha = 0.5
+
+  }else{
+
+    gridMidCTX.globalAlpha = 1
+
+  }
+
+}
+
+
+       
                 
         gridMidCTX.fillStyle = fill;
         gridMidCTX.fillRect(x * tileSize, y * tileSize, tileSize, tileSize)
          
           if(x == rx && y == ry){
 
-            rz = carto[i].z
+            //rz = carto[i].z
           
           }  }  }
 
@@ -411,6 +453,7 @@ function fillMap(){
   var paintColour = document.getElementById("paintFill").value
              
   gridTopCTX.fillStyle = paintColour;
+
            //mapCTX.fillStyle = paintColour;
            //gridCTX.fillStyle = paintColour;
                  
@@ -478,7 +521,7 @@ function fillMap(){
         
     //AUTOMATICALLY FILL EDITOR AS PAINTING
             
-    console.log('Saving row ' + i + '/' + paintArray.length + ': ' + '' +  paintArray[i].x +  paintArray[i].y +  paintArray[i].z + ' ' + paintArray[i].fill + ' at ' + paintArray[i].x + ',' + paintArray[i].y)
+    console.log('Saving row ' + (i + 1) + '/' + paintArray.length + ': ' + '' +  paintArray[i].x +  paintArray[i].y +  paintArray[i].z + ' ' + paintArray[i].fill + ' at ' + paintArray[i].x + ',' + paintArray[i].y)
 
             document.getElementById('testLocation').value =  ''
             document.getElementById('testCategory').value = ''
@@ -487,7 +530,7 @@ function fillMap(){
             document.getElementById('testY').value = paintArray[i].y
             document.getElementById('testZ').value = paintArray[i].z
 
-            document.getElementById('uniqueID').value = '' +  paintArray[i].x +  paintArray[i].y +  paintArray[i].z
+            document.getElementById('uniqueID').value = parentID +'-'+  paintArray[i].x +'-'+ paintArray[i].y +'-'+  paintArray[i].zparentID 
             document.getElementById('parentID').value = parentID
 
             document.getElementById('testFill').value = paintArray[i].fill
@@ -497,7 +540,7 @@ function fillMap(){
             document.getElementById('TextD').value = ''
             document.getElementById('TextE').value = ''
 
-             sleep(3000)
+             sleep(5000)
                   
             //AUTOMAGICALLY SUBMIT FORM DATA
             document.forms['mapData'].dispatchEvent(new Event('submit'));
@@ -509,6 +552,8 @@ function fillMap(){
 console.log('+++++++++ PAINT DATA SAVED SUCCESS ++++++++++')
 
 paintArray = []
+
+alert("+++++++++ PAINT DATA SAVED SUCCESS ++++++++++")
 
 }catch{
 
@@ -671,13 +716,13 @@ function Move(){
 LoadUsers();  
 
 //Update the uniqueID
-uniqueID = '' + rx + ry + rz;
+uniqueID = parentID +'-'+ rx +'-'+ ry +'-'+ rz;
 
 rLocation = ""
 rCategory = ""
 document.getElementById('testX').value = rx
 document.getElementById('testY').value = ry
-document.getElementById('testZ').value = rz
+
 document.getElementById('uniqueID').value = uniqueID
 document.getElementById('parentID').value = parentID
 
@@ -713,7 +758,7 @@ gridTop.addEventListener('mousedown', e => {
 
   rx = Math.floor( x / tileSize) 
   ry = Math.floor( y / tileSize) 
-  rz = 0        
+  rz = document.getElementById('testZ').value  
 
   Move()
 
@@ -731,7 +776,7 @@ gridTop.addEventListener('mouseup', e => {
   console.log('')
   console.log('+++++++++DEVELOPER VARIABLES++++++++++')
   console.log('(x: ' + x+','+' y: ' + y+')')
-  console.log('(rx: ' + rx+','+' ry: ' + ry+')')
+  console.log('(rx: ' + rx+','+' ry: ' + ry+','+' rz: ' + rz+')')
   console.log('FPS: ' + fps);
   console.log('Active Element: ' + activeElement);
   console.log('paintCheck: ' + paintCheck)
@@ -896,7 +941,7 @@ function zoomIn(){
   if(sheetName === "Global"){
    
           sheetName = "Local"
-              scale = "Select * WHERE C = " + parentID
+              scale = "Select * WHERE C = " + parentID 
               
      
   

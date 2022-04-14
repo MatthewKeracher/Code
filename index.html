@@ -56,6 +56,18 @@
 
 <div id= "control" name = 'control'>
   <br>
+  <label for="paintFill"> Focus:</label> 
+
+  <br><br>
+
+  <select id="testZ" name="Z" form = "mapData" style="background-color: rgb(0, 0, 0); color: orange">
+    
+    <option value = 0 > Gaia </option>
+    <option value = 1 > Oikos </option>
+     
+  </select> 
+  <br> <br>
+
   <input type="checkbox" id="chkPainter"/> 
   <label for="chkPainter"> Show Painter?</label> <br><br>
 
@@ -72,10 +84,13 @@
 
 <div id= "painter" name = "painter">
 
-  <br>
+
+
+  <br><br>
+
   <label for="paintFill"> Painting:</label> 
 
-  <br>
+  <br><br>
 
   <select id="paintFill" name="paintFill" style="background-color: rgb(0, 0, 0); color: orange">
     
@@ -105,6 +120,8 @@
    
     <option value="brown">brown</option>
     <option value="peru">peru brown</option>
+
+    <option value="delete">delete</option>
     
     
   </select> 
@@ -122,7 +139,7 @@
 <div id = 'editor' name = 'editor' style = "width: 500px;" >
   <div id="editorheader">CELL EDITOR CLICK & DRAG HERE TO MOVE</div> <br>
 
-  <form id = "mapData" onsubmit = "google.script.run.processData(this.form);" action = "https://script.google.com/macros/s/AKfycby3dtjPZa5QQ-wPj1DxbxXkPo55WEXmjqNSQOsmAsf_lv6E4kxHPPgwX9qqH79318hp/exec" style = "z-index: 5" >    
+  <form id = "mapData" onsubmit = "google.script.run.processData(this.form);" action = "https://script.google.com/macros/s/AKfycbzS0v-JOQ85ypOvGRiCLxQJ15lmva7VraX-tywLzP14EC7ONUEWgOYp3_8drth-_VJF/exec" style = "z-index: 5" >    
     Location:
     <input id= "testLocation" required  name="Location" type="text" style="background-color: rgb(0, 0, 0); color: orange; width: 400px;"> <br><br>
     Category:   
@@ -131,9 +148,7 @@
         <input id= "testX" name="X" type="text" style="background-color: rgb(0, 0, 0); color: orange; width:25px;" > 
           Y:
         <input id= "testY" name="Y" type="text" style="background-color: rgb(0, 0, 0); color: orange; width:25px;"> 
-          Z:
-        <input id= "testZ" name="Z" type="text" style="background-color: rgb(0, 0, 0); color: orange; width:20px;" > 
-        Fill:
+          Fill:
         <select id="testFill" name="fill" style="background-color: rgb(0, 0, 0); color: orange">
           
           <option value="green">green</option>
