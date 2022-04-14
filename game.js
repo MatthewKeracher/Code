@@ -17,12 +17,12 @@ var savedID = 0
 var xList = []
 var yList = []
 var fps = []
-var x 
-var y 
+var x = 0
+var y = 0 
 
-var rx //nearest square
-var ry
-var rz 
+var rx = 0
+var ry = 0
+var rz = 0
 var rLocation
 var rCategory
 var textAcontents
@@ -521,7 +521,14 @@ if (rz == 1 ){
         
     //AUTOMATICALLY FILL EDITOR AS PAINTING
             
-    console.log('Saving row ' + (i + 1) + '/' + paintArray.length + ': ' + '' +  paintArray[i].x +  paintArray[i].y +  paintArray[i].z + ' ' + paintArray[i].fill + ' at ' + paintArray[i].x + ',' + paintArray[i].y)
+    uniqueID =  parentID +'-'+  paintArray[i].x +'-'+ paintArray[i].y +'-'+  paintArray[i].z 
+
+    let saveMessage = 'Saving row ' + (i + 1) + '/' + paintArray.length + ': ' + '' +  uniqueID + ' at ' + paintArray[i].x + ',' + paintArray[i].y
+    
+    //document.getElementById('paintLabel').innerHTML = saveMessage
+    
+    console.log(saveMessage)
+
 
             document.getElementById('testLocation').value =  ''
             document.getElementById('testCategory').value = ''
@@ -530,7 +537,7 @@ if (rz == 1 ){
             document.getElementById('testY').value = paintArray[i].y
             document.getElementById('testZ').value = paintArray[i].z
 
-            document.getElementById('uniqueID').value = parentID +'-'+  paintArray[i].x +'-'+ paintArray[i].y +'-'+  paintArray[i].zparentID 
+            document.getElementById('uniqueID').value = uniqueID
             document.getElementById('parentID').value = parentID
 
             document.getElementById('testFill').value = paintArray[i].fill
@@ -722,6 +729,7 @@ rLocation = ""
 rCategory = ""
 document.getElementById('testX').value = rx
 document.getElementById('testY').value = ry
+document.getElementById('testZ').value = rz
 
 document.getElementById('uniqueID').value = uniqueID
 document.getElementById('parentID').value = parentID
