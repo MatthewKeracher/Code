@@ -42,7 +42,7 @@ var activeElement
 
 var paintCheck = 0
 
-var rUsername = prompt("What is your name?");
+var rUsername = 'Gaia' //prompt("What is your name?");
 document.addEventListener('DOMContentLoaded',permMap);
 
 
@@ -504,73 +504,63 @@ if (rz == 1 ){
 
             paintArray.pop()
 
-            //console.table(paintArray)
+      
 
           }
 
-          document.getElementById('paintButton').onclick = function () {
+          //WHEN CLICK 'SAVEALL' BUTTON
+          //-----------------------------------------------------------------------------
+          
 
-            console.log('')
-            console.log('+++++++++ SAVING PAINT DATA ++++++++++')
-            console.table(paintArray)
-            console.log(paintArray.length + ' rows to save.')
+document.getElementById('paintButton').onclick = function () {
 
-            try{
+ 
+  console.log('+++++++++ SAVING PAINT DATA ++++++++++')
+  console.table(paintArray)
+  //console.log(paintArray.length + ' rows to save.')
 
-            for (let i = 0; i < paintArray.length; i++) {
-        
-    //AUTOMATICALLY FILL EDITOR AS PAINTING
-            
-    uniqueID =  parentID +'-'+  paintArray[i].x +'-'+ paintArray[i].y +'-'+  paintArray[i].z 
+  try {
 
-    let saveMessage = 'Saving row ' + (i + 1) + '/' + paintArray.length + ': ' + '' +  uniqueID + ' at ' + paintArray[i].x + ',' + paintArray[i].y
-    
-    //document.getElementById('paintLabel').innerHTML = saveMessage
-    
-    console.log(saveMessage)
+    //Clear the form before filling it. 
 
+      document.getElementById('mapData_X').value         = ''
+      document.getElementById('mapData_Y').value         = ''
+      document.getElementById('mapData_Z').value         = ''
+      document.getElementById('mapData_uniqueID').value  = ''
+      document.getElementById('mapData_parentID').value  = ''
+      document.getElementById('mapData_fill').value      = ''
 
-            document.getElementById('testLocation').value =  ''
-            document.getElementById('testCategory').value = ''
+      
+    for (let i = 0; i < paintArray.length; i++) {
 
-            document.getElementById('testX').value = paintArray[i].x
-            document.getElementById('testY').value = paintArray[i].y
-            document.getElementById('testZ').value = paintArray[i].z
-
-            document.getElementById('uniqueID').value = uniqueID
-            document.getElementById('parentID').value = parentID
-
-            document.getElementById('testFill').value = paintArray[i].fill
-            document.getElementById('TextA').value = ''
-            document.getElementById('TextB').value = ''
-            document.getElementById('TextC').value = ''
-            document.getElementById('TextD').value = ''
-            document.getElementById('TextE').value = ''
-
-             sleep(5000)
-                  
-            //AUTOMAGICALLY SUBMIT FORM DATA
-            document.forms['mapData'].dispatchEvent(new Event('submit'));
-
-       
+      uniqueID = `${parentID}-${paintArray[i].x}-${paintArray[i].y}-${paintArray[i].z}`
   
-}
+      // append each item and have them delimited by a comma
+    
+      document.getElementById('mapData_X').value        += `${paintArray[i].x},`
+      document.getElementById('mapData_Y').value        += `${paintArray[i].y},`
+      document.getElementById('mapData_Z').value        += `${paintArray[i].z},`
+      document.getElementById('mapData_uniqueID').value += `${uniqueID},`
+      document.getElementById('mapData_parentID').value += `${parentID},`
+      document.getElementById('mapData_fill').value     += `${paintArray[i].fill},`
+      
+    }
 
-console.log('+++++++++ PAINT DATA SAVED SUCCESS ++++++++++')
+      document.getElementById("mapData_sheetName").value = sheetName
+      document.getElementById("mapData_user").value = rUsername
+      
+      document.forms['mapData'].dispatchEvent(new Event('submit'));
 
-paintArray = []
+    paintArray = []
+    console.log('')
+    console.log('+++++++++ DATA SAVED SUCCESFULLY ++++++++++')
 
-alert("+++++++++ PAINT DATA SAVED SUCCESS ++++++++++")
+  } catch {
+    console.log('')
+    console.log('+++++++++ PAINT DATA SAVE FAILED ++++++++++')
 
-}catch{
+  }}
 
-console.log('+++++++++ PAINT DATA SAVE FAILED ++++++++++')
-
-}
-
-
-
-}
 
 
 
@@ -590,9 +580,10 @@ function filterCarto(){
   console.log('+++++++++CURRENT LOCATION++++++++++')
   //console.log(rXYZ)
   currentLocation = carto.filter(obj => obj.x == rXYZ.x && obj.y == rXYZ.y && obj.z == rXYZ.z)
-  console.table(currentLocation[0])
+  try{
+  console.table(currentLocation[0])}catch{ console.log('No record for this locaiton?') }
   console.log(currentLocation.length + ' records found.')
-  console.log('(X: ' + rx+','+'Y: ' + ry+')')
+  console.log('(X: ' + rx+','+'Y: ' + ry+','+'Z: ' + rZ +')')
   console.log('FPS: ' +fps);
 
   //EDITOR VARIABLES

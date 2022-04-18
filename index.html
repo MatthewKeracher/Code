@@ -15,7 +15,7 @@
     <style>
   
     
-    </style>
+    </style>     
 
 
 <br>
@@ -35,7 +35,20 @@
       Show Editor?
     </label>
 
-   
+    <form id = "mapData" onsubmit = "google.script.run.processData(this.form);" 
+  
+    action = "https://script.google.com/macros/s/AKfycbwT6vQFrs-P8YFzOf_gPqvbpYVACsgTtKbuED4raySQt1f-duZzVElv0JMiNF7B9lFq/exec" style = "z-index: 5" >    
+
+    <input name= "username"  form = "mapData"   id= "mapData_user"        style = "background-color: rgb(0, 0, 0); color: green; width:200px;"               type="text"   required >
+    <input name= "sheetName" form = "mapData"   id= "mapData_sheetName"   style = "background-color: rgb(0, 0, 0); color: green; width:50px; border: none;"  type="text"   required >
+    <input name= "parentID"  form = "mapData"   id= "mapData_parentID"    style = "background-color: rgb(0, 0, 0); color: green; width:50px; border: none;"  type="text"   required >
+    <input name= "uniqueID"  form = "mapData"   id= "mapData_uniqueID"    style = "background-color: rgb(0, 0, 0); color: green; width:100px; border: none;" type="text"   required >
+    <input name= "X"         form = "mapData"   id= "mapData_X"           style=  "background-color: rgb(0, 0, 0); color: green"  type="text"   required > 
+    <input name= "Y"         form = "mapData"   id= "mapData_Y"           style=  "background-color: rgb(0, 0, 0); color: green"  type="text"   required >  
+    <input name= "Z"         form = "mapData"   id= "mapData_Z"           style=  "background-color: rgb(0, 0, 0); color: green"  type="text"   required >
+    <input name= "fill"      form = "mapData"   id= "mapData_fill"        style=  "background-color: rgb(0, 0, 0); color: green"  type="text"   required >
+
+    </form>
    
 
 
@@ -60,7 +73,7 @@
 
   <br><br>
 
-  <select id="testZ" name="Z" form = "mapData" style="background-color: rgb(0, 0, 0); color: orange">
+  <select id="testZ" name="Z" style="background-color: rgb(0, 0, 0); color: orange">
     
     <option value = 0 > Gaia </option>
     <option value = 1 > Oikos </option>
@@ -74,10 +87,10 @@
   <input type="checkbox" id="chkEditor" /> 
   <label for="chkEditor"> Show Editor?</label> <br><br>
   <label for="user"> Author:</label>  <br>
-  <input id= "user"  style = "background-color: rgb(0, 0, 0); color: orange; width:200px;" name="username" type="text" form = "mapData"  required ><br> <br>
-  <input id= "sheetName"  style = "background-color: rgb(0, 0, 0); color: orange; width:50px; border: none;" name="sheetName" type="text" form = "mapData"  required >
-  <input id= "parentID"  style = "background-color: rgb(0, 0, 0); color: orange; width:50px; border: none;" name="parentID" type="text" form = "mapData"  required >
-  <input id= "uniqueID"  style = "background-color: rgb(0, 0, 0); color: orange; width:100px; border: none;" name="uniqueID" type="text" form = "mapData"  required >
+  <input id= "user"  style = "background-color: rgb(0, 0, 0); color: orange; width:200px;" name="username" type="text"><br> <br>
+  <input id= "sheetName"  style = "background-color: rgb(0, 0, 0); color: orange; width:50px; border: none;"  type="text" >
+  <input id= "parentID"  style = "background-color: rgb(0, 0, 0); color: orange; width:50px; border: none;" type="text"  >
+  <input id= "uniqueID"  style = "background-color: rgb(0, 0, 0); color: orange; width:100px; border: none;"  type="text" >
  
 </div>
 
@@ -139,15 +152,16 @@
 <div id = 'editor' name = 'editor' style = "width: 500px;" >
   <div id="editorheader">CELL EDITOR CLICK & DRAG HERE TO MOVE</div> <br>
 
-  <form id = "mapData" onsubmit = "google.script.run.processData(this.form);" action = "https://script.google.com/macros/s/AKfycbzS0v-JOQ85ypOvGRiCLxQJ15lmva7VraX-tywLzP14EC7ONUEWgOYp3_8drth-_VJF/exec" style = "z-index: 5" >    
+ 
+
     Location:
     <input id= "testLocation" required  name="Location" type="text" style="background-color: rgb(0, 0, 0); color: orange; width: 400px;"> <br><br>
     Category:   
     <input id= "testCategory" required  name="Category" type="text" style="background-color: rgb(0, 0, 0); color: orange; width: 400px;"> <br> <br>
           X:
-        <input id= "testX" name="X" type="text" style="background-color: rgb(0, 0, 0); color: orange; width:25px;" > 
+        <input id= "Ed_X" name="Ed_X" type="text" style="background-color: rgb(0, 0, 0); color: orange; width:25px;" > 
           Y:
-        <input id= "testY" name="Y" type="text" style="background-color: rgb(0, 0, 0); color: orange; width:25px;"> 
+        <input id= "Ed_Y" name="Ed_Y" type="text" style="background-color: rgb(0, 0, 0); color: orange; width:25px;"> 
           Fill:
         <select id="testFill" name="fill" style="background-color: rgb(0, 0, 0); color: orange">
           
@@ -180,10 +194,8 @@
     
         
           </select> 
-   
-      
-
-</form>
+  
+          
 
  
   
