@@ -434,6 +434,20 @@ if (rz == 1 ){
 
   }
 
+} else if (rz == 0){
+
+  if(z == 1){
+
+    gridMidCTX.globalAlpha = 0.5
+
+  }else{
+
+    gridMidCTX.globalAlpha = 1
+
+  }
+
+
+
 }
 
 
