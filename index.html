@@ -31,7 +31,7 @@
 
     <form id = "mapData" onsubmit = "google.script.run.processData(this.form);" 
   
-    action = "https://script.google.com/macros/s/AKfycbz7Zu8DRSqs-HlXL1jkNPnHSRIIsz0zk1aBedkiIpXOnZhFecfspnS8bmYUN05Dhzxj/exec" style = "z-index: 5" >    
+    action = "https://script.google.com/macros/s/AKfycbx7qNaSVw5-fL0LmyDC6FUhMef9vLfuL7qXgcST49K2F4HLWQCxoBApExhCLYxYvJ_G/exec" style = "z-index: 5" >    
 
     <input name= "username"  form = "mapData"   id= "mapData_user"        style = "background-color: rgb(0, 0, 0); color: green; width:200px;"               type="text"    >
     <input name= "sheetName" form = "mapData"   id= "mapData_sheetName"   style = "background-color: rgb(0, 0, 0); color: green; width:50px; border: none;"  type="text"    >
@@ -91,24 +91,16 @@
 
           <img id = 'logo'  src="images/BannerLogo.gif" alt="EXCEL_DM_LOGO" >  <br><br>
 
-          <select id="Activity" style="background-color: rgb(0, 0, 0); color: grey">
+          Author:
+          <input id= "user" name = "user" form = "mapData" type="text" > 
+
+          <select id="Activity" style="background-color: rgb(0, 0, 0); color: violet">
               
             <option value = 0 > Reading </option>
             <option value = 1 > Writing </option>
             <option value = 2 > Painting </option>
              
-          </select> 
-
-
-          <br> <br>
-
-          
-          Author:
-          <input id= "user" name = "user"     form = "mapData" type="text" > 
-          
-          
-          
-          
+          </select>
           
           <br> <br>
 
@@ -160,8 +152,9 @@
 
           <select id="zLayer" name="Z" style="background-color: rgb(0, 0, 0); color: orange">
               
-            <option value = 0 > Gaia </option>
+            
             <option value = 1 > Oikos </option>
+            <option value = 0 > Gaia </option>
              
           </select> 
           
@@ -170,24 +163,24 @@
           <div id = "Writing">
                    
           Location Name:
-          <input id= "Location" name = "Location" form = "mapData" type="text" style = "width: 100%;"> <br><br>
+          <input id= "Location" name = "Location" form = "mapData" type="text" autocomplete="off" style = "width: 100%;"> <br><br>
           Category:   
-          <input id= "Category" name = "Category" form = "mapData" type="text" style = "width: 100%;"> <br> <br>
+          <input id= "Category" name = "Category" form = "mapData" type="text" autocomplete="off" style = "width: 100%;"> <br> <br>
           
   Question 1:   
-  <input id= "QA" name="Q" type="text" > <br> <br>
+  <input id= "QA" name="QA" type="text" > <br> <br>
   <textarea id = "TextA" name = "Desc1" form = "mapData"></textarea> <br><br>
   Question 2:
-  <input id= "QB" name="Q" type="text" > <br> <br>
+  <input id= "QB" name="QB" type="text" > <br> <br>
   <textarea id = "TextB" name = "Desc2" form = "mapData"></textarea> <br><br>
   Question 3:
-  <input id= "QC" name="Q" type="text" > <br> <br>
+  <input id= "QC" name="QC" type="text" > <br> <br>
   <textarea id = "TextC" name = "Desc3" form = "mapData"></textarea> <br><br>
   Question 4:
-  <input id= "QD" name="Q" type="text" > <br> <br>
+  <input id= "QD" name="QD" type="text" > <br> <br>
   <textarea id = "TextD" name = "Desc4" form = "mapData"></textarea> <br><br>
   Question 5:
-  <input id= "QE" name="Q" type="text" > <br> <br>
+  <input id= "QE" name="QE" type="text" > <br> <br>
   <textarea id = "TextE" name = "Desc5" form = "mapData"></textarea> <br><br>
 
         
@@ -201,7 +194,53 @@
 </div>
 
 <div id = "Reading">
+          
+  Season:
 
+  <select id="Season" style="background-color: rgb(0, 0, 0); color: grey">
+      
+    <option value = "Winter" > Winter </option>
+    <option value = "Spring" > Spring </option>
+    <option value = "Summer" > Summer </option>
+    <option value = "Autumn" > Autumn </option>
+     
+  </select> 
+
+  Time:
+
+  <select id="Time" style="background-color: rgb(0, 0, 0); color: grey">
+      
+    <option value = "Dawn" > Dawn </option>
+    <option value = "Morning" > Morning </option>
+    <option value = "Noon" > Noon </option>
+    <option value = "Night" > Night </option>
+     
+  </select> 
+
+  <br> <br>
+
+  <p id = "storyTeller">  </p>
+
+  <br>
+
+  <p style = "color: orange;" id = "Reading_QA"></p> <button id="AskQA" style = "display: none">Ask</button>
+  
+ 
+
+  <p style = "color: orange;" id = "Reading_QB"></p> <button id="AskQB" style = "display: none">Ask </button>
+
+
+
+  <p style = "color: orange;" id = "Reading_QC"></p> <button id="AskQC" style = "display: none">Ask </button>
+
+
+
+  <p style = "color: orange;" id = "Reading_QD"></p> <button id="AskQD" style = "display: none">Ask </button>
+
+
+
+  <p style = "color: orange;" id = "Reading_QE"></p> <button id="AskQE" style = "display: none">Ask </button>
+  
 
 </div>
 </div>
@@ -241,7 +280,7 @@
 
     <script src="game.js" type="module"></script>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    
    
   </body>
 </html>

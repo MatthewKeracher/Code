@@ -4,6 +4,7 @@
 var carto = []
 var users = []
 var questions = []
+var weather = []
 var currentLocation = []
 var paintArray = []
 
@@ -25,6 +26,7 @@ var ry = 0
 var rz = 0
 var rLocation
 var rCategory
+var currentWeather
 var textAcontents
 var textBcontents
 var textCcontents
@@ -72,9 +74,8 @@ function gridLoop() {
 //ONCE
 document.getElementById('user').value = rUsername
 document.getElementById('wrapper').scrollLeft += screen.width/10*6;
-
-
 document.getElementById('sheetName').value = sheetName
+
 setInterval(gridLoop, 1000 / 60);
 
 
@@ -269,23 +270,238 @@ function LoadQuestions(){
  console.table(questions)
 
  document.getElementById('QA').value  = questions[0].text
- document.getElementById('QB').value  = questions[1].text
+ document.getElementById('QB').value = questions[1].text
  document.getElementById('QC').value  = questions[2].text
  document.getElementById('QD').value  = questions[3].text
  document.getElementById('QE').value  = questions[4].text
 
+ document.getElementById('Reading_QA').innerHTML  = questions[0].text
+ document.getElementById('Reading_QB').innerHTML  = questions[1].text
+ document.getElementById('Reading_QC').innerHTML  = questions[2].text
+ document.getElementById('Reading_QD').innerHTML  = questions[3].text
+ document.getElementById('Reading_QE').innerHTML  = questions[4].text
+
  questions = []
+
+if( document.getElementById('Reading_QA').value != "" ){
+
+  document.getElementById("Reading_QA").style.display = "block";
+  document.getElementById("AskQA").style.display = "block";
  
- }
+}
+
+if( document.getElementById('Reading_QB').value != "" ){
+
+  document.getElementById("Reading_QB").style.display = "block";
+  document.getElementById("AskQB").style.display = "block";
+  
+}
+  
+if( document.getElementById('Reading_QC').value != "" ){
+
+  document.getElementById("Reading_QC").style.display = "block";
+  document.getElementById("AskQC").style.display = "block";
+    
+}
+
+if( document.getElementById('Reading_QD').value != "" ){
+
+  document.getElementById("Reading_QD").style.display = "block";
+  document.getElementById("AskQD").style.display = "block";
+      
+}
+
+if( document.getElementById('Reading_QE').value != "" ){
+
+  document.getElementById("Reading_QE").style.display = "block";
+  document.getElementById("AskQE").style.display = "block";
+        
+}
 
 
+
+
+}
+
+//-----------------------------------------------------------------------------
+//FUNCTION TO IMPORT WEATHER DATA FROM SPREADSHEET
+function LoadWeather(){
+
+  //Connection to Google Sheet
+ //Sheet URL between /d/ and /edit/
+ const sheetID = '1lGlBfPSeCIjMOCyAUvtOiaUDU0f1J_l5FV_N0sRUY48';
+ const base = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?`
+
+ //SPECIFICS THAT CHANGE
+ const sheet = 'Weather'
+ const query = 'Select *';
+
+ //AGGREGATE
+ const url = `${base}&sheet=${sheet}&tq=${query}`;
+ //const output = document.querySelector('.output');
+
+ console.log('Connection to ' + sheet + ' has been made.');
+  
+ fetch(url)
+ .then(res => res.text())
+ .then(rep => {
+   //console.log(rep);
+     //clean the return so it is usable
+   const jsData = JSON.parse(rep.substr(47).slice(0,-2));
+   //console.log(jsData);
+   const colz = [];
+      
+   jsData.table.cols.forEach((heading)=>{
+ 
+     if(heading.label){
+          colz.push(heading.label.toLowerCase().replace(/\s/g,''));
+     } 
+ 
+   })
+ 
+    jsData.table.rows.forEach((main)=>{
+      //console.log(main);
+      const row = {};
+      colz.forEach((ele,ind) =>{
+      //console.log(ele,ind);
+       //iferror syntax here;
+       row[ele] = (main.c[ind] != null) ? main.c[ind].v : '';
+     })
+     weather.push(row)
+    }) 
+  
+ })
+
+
+ const Season = document.getElementById("Season").value  
+ const Time = document.getElementById("Time").value 
+ console.log('')
+ console.log('+++++++++ GET WEATHER ++++++++++')
+ console.log('Rows returned from Weather ' + weather.length)
+ console.log('Currently a ' + Season + 's ' + Time)
+ //console.table(weather)
+
+ currentWeather = weather.filter(obj => obj.season == Season && obj.day == Time)
+  onsole.table(currentWeather)
+
+ weather = []
+
+}
+
+ //-----------------------------------------------------------------------------
+          // STORYTELLER
+
+          
+
+          function fillStoryteller(){
+
+            const storyTeller = document.getElementById("storyTeller") 
+            
+            var newLine = " <br> "; //carriage return and newline.
+
+            var  Location = document.getElementById("Location").value
+            var  Category = document.getElementById("Category").value
+
+            console.log('')
+            console.log('+++++++++ FILL STORYTELLER ++++++++++')
+            
+            var weatherDesc = currentWeather[0].description
+            var weatherMod = currentWeather[0].modifier
+            var weatherReact = currentWeather[0].reaction
+
+            var Message = "You are at the "  + Category +  " of " + Location + "." 
+            + newLine + newLine 
+            + weatherDesc 
+            + newLine + newLine 
+            + weatherMod
+            + newLine + newLine 
+            + weatherReact;
+            + newLine + newLine
+
+            if( Location.length > 0 ){
+            
+              storyTeller.innerHTML = Message
+
+
+          }}
+
+
+          document.getElementById('AskQA').onclick = function () {
+
+            const storyTeller = document.getElementById("storyTeller") 
+              var newLine = " <br> "; //carriage return and newline.
+              var  newText = document.getElementById("TextA").value
+
+              storyTeller.innerHTML += newText + newLine + newLine
+
+              document.getElementById("Reading_QA").style.display = "none";
+              document.getElementById("AskQA").style.display = "none";
+
+          }
+
+          document.getElementById('AskQB').onclick = function () {
+
+            const storyTeller = document.getElementById("storyTeller") 
+            var newLine = " <br> "; //carriage return and newline.
+            var  newText = document.getElementById("TextB").value
+
+            storyTeller.innerHTML += newText + newLine + newLine
+
+            document.getElementById("Reading_QB").style.display = "none";
+            document.getElementById("AskQB").style.display = "none";
+
+          }
+
+          document.getElementById('AskQC').onclick = function () {
+
+            const storyTeller = document.getElementById("storyTeller") 
+            var newLine = " <br> "; //carriage return and newline.
+            var  newText = document.getElementById("TextC").value
+
+            storyTeller.innerHTML += newText + newLine + newLine
+
+            document.getElementById("Reading_QC").style.display = "none";
+            document.getElementById("AskQC").style.display = "none";
+
+          }
+
+          document.getElementById('AskQD').onclick = function () {
+
+            const storyTeller = document.getElementById("storyTeller") 
+            var newLine = " <br> "; //carriage return and newline.
+            var  newText = document.getElementById("TextD").value
+
+            storyTeller.innerHTML += newText + newLine + newLine
+
+            document.getElementById("Reading_QD").style.display = "none";
+            document.getElementById("AskQD").style.display = "none";
+
+          }
+
+          document.getElementById('AskQE').onclick = function () {
+
+            const storyTeller = document.getElementById("storyTeller") 
+              var newLine = " <br> "; //carriage return and newline.
+              var  newText = document.getElementById("TextE").value
+
+              storyTeller.innerHTML += newText + newLine + newLine
+
+              document.getElementById("Reading_QE").style.display = "none";
+              document.getElementById("AskQE").style.display = "none";
+
+          }
+
+           
+          
+
+          
 
 //-----------------------------------------------------------------------------
 // DRAW MAP!
 const mapwidth = 3800
 const mapheight = 1600
 const p = 0;
-var tileSize = 18;
+var tileSize = 16;
 
 const EndX = Math.floor(mapheight/tileSize)
 const EndY = Math.floor(mapwidth/tileSize)
@@ -393,9 +609,6 @@ console.log(scale)
 }
 
 
-
-
-
 function fillMap(){
 
 //console.log('running FillMap()')
@@ -432,14 +645,8 @@ if (rz == 1 ){
     gridMidCTX.globalAlpha = 1
 
   }
-
-
-
 }
-
-
-       
-                
+      
         gridMidCTX.fillStyle = fill;
         gridMidCTX.fillRect(x * tileSize, y * tileSize, tileSize, tileSize)
          
@@ -508,6 +715,8 @@ if (rz == 1 ){
       
 
           }
+
+         
 
           //WHEN CLICK 'SAVEALL' BUTTON
           //-----------------------------------------------------------------------------
@@ -599,8 +808,9 @@ function filterCarto(){
     document.getElementById('TextE').value = currentLocation[0].desc5
     
 //Queries sheet and returns user positions. 
-
+fillStoryteller();
 LoadQuestions();
+
 
   
   }
@@ -608,8 +818,8 @@ LoadQuestions();
  
 function drawLabels(){
 
-  console.log('')
-  console.log('+++++++++DRAWING  LABELS++++++++++')
+  //console.log('')
+  //console.log('+++++++++DRAWING  LABELS++++++++++')
   
 
   gridMidCTX.globalAlpha = 1
@@ -618,7 +828,7 @@ for (let i = 0; i < carto.length; i++) {
         
       let location = carto[i].location   
 
-      console.log(location)
+      //console.log(location)
       
                  if(location.length>0){
                    
@@ -641,16 +851,7 @@ for (let i = 0; i < carto.length; i++) {
                   gridTopCTX.fillText(location,ix+ 0.15 * tileSize, iy + 0.75 * tileSize);
                   //} 
 
-                  if(Math.floor(x/tileSize) == carto[i].x && Math.floor(y/tileSize) == carto[i].y){           
-                    //Behind Name
-                    gridTopCTX.fillStyle = 'black'
-                    gridTopCTX.fillRect(ix,iy,iwidth,iheight);
-                    //Write name
-                    gridTopCTX.font = "italic calibri";
-                    gridTopCTX.fillStyle = 'wheat';
-                        //PAINTS LOCATION NAMES
-                    gridTopCTX.fillText(location,ix+ 0.35 * tileSize, iy + 0.75 * tileSize);
-              } 
+                
         
                 }
               
@@ -723,10 +924,19 @@ function Move(){
 //Everything that happens when we move either by mouse or wasd
 //Load Users and Current Locations
 LoadUsers();  
+LoadWeather();
+
 
 //Update the uniqueID
 uniqueID = parentID +'-'+ rx +'-'+ ry +'-'+ rz;
 
+
+//Clear Reader
+document.getElementById('storyTeller').innerHTML = ''
+
+
+
+//Clear Writer
 rLocation = ""
 rCategory = ""
 document.getElementById('mapData_X').value = rx
@@ -1078,8 +1288,9 @@ const mapData = e.target.action
   //carto = [] 
   //console.log('carto length: '+ carto.length)
 
+sleep(3000)
 
-//LoadMap()
+LoadMap()
 
 })
 
