@@ -22,31 +22,26 @@
 
   </head>
 
-  
-
   <div id = 'header'>
 
-    <img id = 'logo'  src="images/BannerLogo.gif" alt="EXCEL_DM_LOGO" >  
-  
-    
-    
-  
+   
     <label for="chkEditor">
       Show Editor?
     </label>
 
     <form id = "mapData" onsubmit = "google.script.run.processData(this.form);" 
   
-    action = "https://script.google.com/macros/s/AKfycbwT6vQFrs-P8YFzOf_gPqvbpYVACsgTtKbuED4raySQt1f-duZzVElv0JMiNF7B9lFq/exec" style = "z-index: 5" >    
+    action = "https://script.google.com/macros/s/AKfycbz7Zu8DRSqs-HlXL1jkNPnHSRIIsz0zk1aBedkiIpXOnZhFecfspnS8bmYUN05Dhzxj/exec" style = "z-index: 5" >    
 
-    <input name= "username"  form = "mapData"   id= "mapData_user"        style = "background-color: rgb(0, 0, 0); color: green; width:200px;"               type="text"   required >
-    <input name= "sheetName" form = "mapData"   id= "mapData_sheetName"   style = "background-color: rgb(0, 0, 0); color: green; width:50px; border: none;"  type="text"   required >
-    <input name= "parentID"  form = "mapData"   id= "mapData_parentID"    style = "background-color: rgb(0, 0, 0); color: green; width:50px; border: none;"  type="text"   required >
-    <input name= "uniqueID"  form = "mapData"   id= "mapData_uniqueID"    style = "background-color: rgb(0, 0, 0); color: green; width:100px; border: none;" type="text"   required >
-    <input name= "X"         form = "mapData"   id= "mapData_X"           style=  "background-color: rgb(0, 0, 0); color: green"  type="text"   required > 
-    <input name= "Y"         form = "mapData"   id= "mapData_Y"           style=  "background-color: rgb(0, 0, 0); color: green"  type="text"   required >  
-    <input name= "Z"         form = "mapData"   id= "mapData_Z"           style=  "background-color: rgb(0, 0, 0); color: green"  type="text"   required >
-    <input name= "fill"      form = "mapData"   id= "mapData_fill"        style=  "background-color: rgb(0, 0, 0); color: green"  type="text"   required >
+    <input name= "username"  form = "mapData"   id= "mapData_user"        style = "background-color: rgb(0, 0, 0); color: green; width:200px;"               type="text"    >
+    <input name= "sheetName" form = "mapData"   id= "mapData_sheetName"   style = "background-color: rgb(0, 0, 0); color: green; width:50px; border: none;"  type="text"    >
+    <input name= "parentID"  form = "mapData"   id= "mapData_parentID"    style = "background-color: rgb(0, 0, 0); color: green; width:50px; border: none;"  type="text"    >
+    <input name= "uniqueID"  form = "mapData"   id= "mapData_uniqueID"    style = "background-color: rgb(0, 0, 0); color: green; width:100px; border: none;" type="text"    >
+    <input name= "X"         form = "mapData"   id= "mapData_X"           style=  "background-color: rgb(0, 0, 0); color: green"  type="text"    > 
+    <input name= "Y"         form = "mapData"   id= "mapData_Y"           style=  "background-color: rgb(0, 0, 0); color: green"  type="text"    >  
+    <input name= "Z"         form = "mapData"   id= "mapData_Z"           style=  "background-color: rgb(0, 0, 0); color: green"  type="text"    >
+    <input name= "fill"      form = "mapData"   id= "mapData_fill"        style=  "background-color: rgb(0, 0, 0); color: green"  type="text"    >
+    <input name= "Activity"  form = "mapData"   id= "mapData_Activity"    style=  "background-color: rgb(0, 0, 0); color: green"  type="text"    >
 
     </form>
    
@@ -55,11 +50,167 @@
   </div>
 
   <body id = 'body' >
-
    
-    <div id='blackground'  style = "z-index: 0"> </div>
+    <div id='wrapper'> 
 
-   
+      <div id = "grids"  >
+        
+        
+        <canvas
+        class = "center"
+        id="gridBtm"
+        width= "3800"      
+        height="1600"></canvas>
+        
+
+        <canvas
+        class = "center"
+        id="gridMid"
+        width="3800"
+        height="1600"
+        ></canvas>
+
+        <canvas
+        class = "center"
+        id="gridTop"
+        width="3800"
+        height="1600"
+        ></canvas>
+
+    
+  </div>
+
+    </div>
+
+ 
+    <div id="sidebarwrapper">
+
+      <div id="sidebar">
+
+        <div id="sidebaritem" class="mousescroll">
+
+          <img id = 'logo'  src="images/BannerLogo.gif" alt="EXCEL_DM_LOGO" >  <br><br>
+
+          <select id="Activity" style="background-color: rgb(0, 0, 0); color: grey">
+              
+            <option value = 0 > Reading </option>
+            <option value = 1 > Writing </option>
+            <option value = 2 > Painting </option>
+             
+          </select> 
+
+
+          <br> <br>
+
+          
+          Author:
+          <input id= "user" name = "user"     form = "mapData" type="text" > 
+          
+          
+          
+          
+          
+          <br> <br>
+
+          <div id = "Painting">
+          Painting:
+                  
+          <select id="paintFill" name="paintFill" style="width: 80px; background-color: rgb(0, 0, 0); color: orange">
+            
+            <option value="green">green</option>
+            <option value="darkgreen">dark green</option>
+            <option value="teal">teal</option>
+            <option value="cyan">cyan</option>
+            <option value="darkcyan">dark cyan</option>
+            <option value="skyblue">skyblue</option>
+            <option value="blue">blue</option>
+            <option value="midnightblue">midnight blue</option>
+            <option value="gray">gray</option>
+            <option value="darkgray">dark gray</option>
+        
+            <option value="red">red</option>
+            <option value="darkred">dark red</option>
+            <option value="orange">orange</option>
+            <option value="darkorange">dark orange</option>
+            <option value="gold">gold</option>
+            <option value="wheat">wheat</option>
+            <option value="white">white</option>
+            <option value="whitesmoke">whitesmoke</option>
+            
+            <option value="indigo">indigo</option>
+            <option value="violet">violet</option>
+            <option value="purple">purple</option>
+           
+            <option value="brown">brown</option>
+            <option value="peru">peru brown</option>
+        
+            <option value="delete">delete</option>
+            
+            
+          </select> 
+          <input id="paintButton" type="button" value="Save All"  />
+          <input id="clearButton" type="button" value="Discard All"  /> 
+          <input id="undoButton" type="button" value="Undo"  /> <br> <br>
+
+          <p id = "paintArrayText"></p>
+
+        </div>
+
+          Focus:
+
+          <select id="zLayer" name="Z" style="background-color: rgb(0, 0, 0); color: orange">
+              
+            <option value = 0 > Gaia </option>
+            <option value = 1 > Oikos </option>
+             
+          </select> 
+          
+          <br><br><br>
+
+          <div id = "Writing">
+                   
+          Location Name:
+          <input id= "Location" name = "Location" form = "mapData" type="text" style = "width: 100%;"> <br><br>
+          Category:   
+          <input id= "Category" name = "Category" form = "mapData" type="text" style = "width: 100%;"> <br> <br>
+          
+  Question 1:   
+  <input id= "QA" name="Q" type="text" > <br> <br>
+  <textarea id = "TextA" name = "Desc1" form = "mapData"></textarea> <br><br>
+  Question 2:
+  <input id= "QB" name="Q" type="text" > <br> <br>
+  <textarea id = "TextB" name = "Desc2" form = "mapData"></textarea> <br><br>
+  Question 3:
+  <input id= "QC" name="Q" type="text" > <br> <br>
+  <textarea id = "TextC" name = "Desc3" form = "mapData"></textarea> <br><br>
+  Question 4:
+  <input id= "QD" name="Q" type="text" > <br> <br>
+  <textarea id = "TextD" name = "Desc4" form = "mapData"></textarea> <br><br>
+  Question 5:
+  <input id= "QE" name="Q" type="text" > <br> <br>
+  <textarea id = "TextE" name = "Desc5" form = "mapData"></textarea> <br><br>
+
+        
+
+  <button type="submit" form = "mapData" style="float: left;"> Commit Changes </button> &nbsp;
+
+  <input id= "sheetName"  type="text"  >
+  <input id= "parentID"   type="text"  >
+  <input id= "uniqueID"   type="text"  > 
+
+</div>
+
+<div id = "Reading">
+
+
+</div>
+</div>
+
+          
+
+
+
+    </div>  </div>  </div>
 
     <div id='header' style = "z-index: 3">
     
@@ -67,195 +218,31 @@
     
 </div>
 
-<div id= "control" name = 'control'>
-  <br>
-  <label for="paintFill"> Focus:</label> 
 
-  <br><br>
-
-  <select id="testZ" name="Z" style="background-color: rgb(0, 0, 0); color: orange">
-    
-    <option value = 0 > Gaia </option>
-    <option value = 1 > Oikos </option>
-     
-  </select> 
-  <br> <br>
-
-  <input type="checkbox" id="chkPainter"/> 
-  <label for="chkPainter"> Show Painter?</label> <br><br>
-
-  <input type="checkbox" id="chkEditor" /> 
-  <label for="chkEditor"> Show Editor?</label> <br><br>
-  <label for="user"> Author:</label>  <br>
-  <input id= "user"  style = "background-color: rgb(0, 0, 0); color: orange; width:200px;" name="username" type="text"><br> <br>
-  <input id= "sheetName"  style = "background-color: rgb(0, 0, 0); color: orange; width:50px; border: none;"  type="text" >
-  <input id= "parentID"  style = "background-color: rgb(0, 0, 0); color: orange; width:50px; border: none;" type="text"  >
-  <input id= "uniqueID"  style = "background-color: rgb(0, 0, 0); color: orange; width:100px; border: none;"  type="text" >
- 
-</div>
 
 
 <div id= "painter" name = "painter">
 
-
-
   <br><br>
 
-  <label id = "paintlabel" for="paintFill"> Painting:</label> 
-
-  <br><br>
-
-  <select id="paintFill" name="paintFill" style="background-color: rgb(0, 0, 0); color: orange">
-    
-    <option value="green">green</option>
-    <option value="darkgreen">dark green</option>
-    <option value="teal">teal</option>
-    <option value="cyan">cyan</option>
-    <option value="darkcyan">dark cyan</option>
-    <option value="skyblue">skyblue</option>
-    <option value="blue">blue</option>
-    <option value="midnightblue">midnight blue</option>
-    <option value="gray">gray</option>
-    <option value="darkgray">dark gray</option>
-
-    <option value="red">red</option>
-    <option value="darkred">dark red</option>
-    <option value="orange">orange</option>
-    <option value="darkorange">dark orange</option>
-    <option value="gold">gold</option>
-    <option value="wheat">wheat</option>
-    <option value="white">white</option>
-    <option value="whitesmoke">whitesmoke</option>
-    
-    <option value="indigo">indigo</option>
-    <option value="violet">violet</option>
-    <option value="purple">purple</option>
-   
-    <option value="brown">brown</option>
-    <option value="peru">peru brown</option>
-
-    <option value="delete">delete</option>
-    
-    
-  </select> 
+ 
   
   
   
   <br> <br>
   
-  <input id="paintButton" type="button" value="Save All"  />
-  <input id="clearButton" type="button" value="Discard All"  /> <br> <br>
-  <input id="undoButton" type="button" value="Undo"  />
 
 </div>
 
-<div id = 'editor' name = 'editor' style = "width: 500px;" >
-  <div id="editorheader">CELL EDITOR CLICK & DRAG HERE TO MOVE</div> <br>
 
- 
-
-    Location:
-    <input id= "testLocation" required  name="Location" type="text" style="background-color: rgb(0, 0, 0); color: orange; width: 400px;"> <br><br>
-    Category:   
-    <input id= "testCategory" required  name="Category" type="text" style="background-color: rgb(0, 0, 0); color: orange; width: 400px;"> <br> <br>
-          X:
-        <input id= "Ed_X" name="Ed_X" type="text" style="background-color: rgb(0, 0, 0); color: orange; width:25px;" > 
-          Y:
-        <input id= "Ed_Y" name="Ed_Y" type="text" style="background-color: rgb(0, 0, 0); color: orange; width:25px;"> 
-          Fill:
-        <select id="testFill" name="fill" style="background-color: rgb(0, 0, 0); color: orange">
-          
-          <option value="green">green</option>
-          <option value="darkgreen">dark green</option>
-          <option value="teal">teal</option>
-          <option value="cyan">cyan</option>
-          <option value="darkcyan">dark cyan</option>
-          <option value="skyblue">skyblue</option>
-          <option value="blue">blue</option>
-          <option value="midnightblue">midnight blue</option>
-          <option value="gray">gray</option>
-          <option value="darkgray">dark gray</option>
-
-          <option value="red">red</option>
-          <option value="darkred">dark red</option>
-          <option value="orange">orange</option>
-          <option value="darkorange">dark orange</option>
-          <option value="gold">gold</option>
-          <option value="wheat">wheat</option>
-          <option value="white">white</option>
-          <option value="whitesmoke">whitesmoke</option>
-          
-          <option value="indigo">indigo</option>
-          <option value="violet">violet</option>
-          <option value="purple">purple</option>
-        
-          <option value="brown">brown</option>
-          <option value="peru">peru brown</option>
-    
-        
-          </select> 
-  
-          
-
- 
-  
-  <br>
-
-
-  <input id= "QA" name="Q" type="text" style="background-color: rgb(24, 23, 23); outline: 0 ; color: rgb(255, 165, 0); width: 500px;"> <br> <br>
-  <textarea id = "TextA" name = "Desc1" form = "mapData"></textarea> <br><br>
-
-  <input id= "QB" name="Q" type="text" style="background-color: rgb(24, 23, 23); color: rgb(255, 165, 0); width: 500px;"> <br> <br>
-  <textarea id = "TextB" name = "Desc2" form = "mapData"></textarea> <br><br>
-
-  <input id= "QC" name="Q" type="text" style="background-color: rgb(24, 23, 23); color: rgb(255, 165, 0); width: 500px;"> <br> <br>
-  <textarea id = "TextC" name = "Desc3" form = "mapData"></textarea> <br><br>
-
-  <input id= "QD" name="Q" type="text" style="background-color: rgb(24, 23, 23); color: rgb(255, 165, 0); width: 500px;"> <br> <br>
-  <textarea id = "TextD" name = "Desc4" form = "mapData"></textarea> <br><br>
-
-  <input id= "QE" name="Q" type="text" style="background-color: rgb(24, 23, 23); color: rgb(255, 165, 0); width: 500px;"> <br> <br>
-  <textarea id = "TextE" name = "Desc5" form = "mapData"></textarea> <br><br>
-
-  <button type="submit" form = "mapData" style="float: right;"> Commit Changes </button>
-
-</div>
-
-<div id='body'>  
-
-
-
-  <div id = "grids" style="position: relative; color: orange;" >
-        
-        
-          <canvas
-          class = "center"
-          id="gridBtm"
-          width= "3800"      
-          height="1600"></canvas>
-          
-
-          <canvas
-          class = "center"
-          id="gridMid"
-          width="3800"
-          height="1600"
-          ></canvas>
-
-          <canvas
-          class = "center"
-          id="gridTop"
-          width="3800"
-          height="1600"
-          ></canvas>
-
-      
-    </div>
 
     <div class="output"></div>
 
 
     <script src="game.js" type="module"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+   
   </body>
 </html>
 

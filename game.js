@@ -39,53 +39,18 @@ var visible = window.toolbar.visible;
 var isTyping 
 
 var activeElement
-
 var paintCheck = 0
+
+
 
 var rUsername = 'Gaia' //prompt("What is your name?");
 document.addEventListener('DOMContentLoaded',permMap);
 
 
 
-
-const targetDiv = document.getElementById("editor");
-const btn = document.getElementById("chkEditor");
-
-btn.onclick = function () {
-  if (targetDiv.style.display !== "block") {
-    targetDiv.style.display = "block";
-  } else {
-    targetDiv.style.display = "none";
-  }
-};
-
-const targetDiv2 = document.getElementById("painter");
-const btn2 = document.getElementById("chkPainter");
-
-btn2.onclick = function () {
-  if (targetDiv2.style.display !== "block") {
-    targetDiv2.style.display = "block";
-    paintCheck = 1
-  } else {
-    targetDiv2.style.display = "none";
-    paintCheck = 0
-    
-  }
-};
-
-
 //-----------------------------------------------------------------------------
 
-//const tx = document.getElementsByTagName("textarea");
-//for (let i = 0; i < tx.length; i++) {
-  //tx[i].setAttribute("style", "height:" + (tx[i].scrollHeight) + "px;overflow-y:hidden;");
-  //tx[i].addEventListener("input", OnInput, false);
-//}
 
-function OnInput() {
-  this.style.height = "auto";
-  this.style.height = (this.scrollHeight) + "px";
-}
 
 //-----------------------------------------------------------------------------
 //gridLOOP
@@ -97,19 +62,17 @@ function gridLoop() {
   fps = Math.floor(1000 / (thisLoop - lastLoop));
   lastLoop = thisLoop;
 
-  
-  
   //Draw The Map  
   loopMap()
   
-
-
 }
 
 //Something to do with how long each loop is...
 
-//USERNAME
+//ONCE
 document.getElementById('user').value = rUsername
+document.getElementById('wrapper').scrollLeft += screen.width/10*6;
+
 
 document.getElementById('sheetName').value = sheetName
 setInterval(gridLoop, 1000 / 60);
@@ -255,7 +218,7 @@ function LoadQuestions(){
  const base = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?`
  //SPECIFICS THAT CHANGE
  const sheet = 'Questions'
- const category = document.getElementById('testCategory').value
+ const category = document.getElementById('Category').value
  console.log('')
  console.log('+++++++++LOAD QUESTIONS++++++++++')
  console.log('Category is ' + category + '.');
@@ -319,8 +282,6 @@ function LoadQuestions(){
 
 //-----------------------------------------------------------------------------
 // DRAW MAP!
-
-
 const mapwidth = 3800
 const mapheight = 1600
 const p = 0;
@@ -340,6 +301,31 @@ const gridTop = document.getElementById("gridTop");
 const gridTopCTX = gridTop.getContext("2d");
 
 
+function checkSidebar(){
+
+var Painting = document.getElementById("Painting"); //2
+var Writing =  document.getElementById("Writing"); //1
+var Reading =  document.getElementById("Reading"); //0
+var Activity = document.getElementById("Activity").value;
+
+if (Activity == 2) {
+  Painting.style.display = "block";
+  Writing.style.display = "none";
+  Reading.style.display = "none";
+  paintCheck = 1;
+} else { if (Activity == 1) {
+  Painting.style.display = "none";
+  Writing.style.display = "block";
+  Reading.style.display = "none";
+  paintCheck = 0;
+} else { if (Activity == 0) {
+  Painting.style.display = "none";
+  Writing.style.display = "none";
+  Reading.style.display = "block";
+  paintCheck = 0;
+}}}}
+
+
 function loopMap(){
 //Contains all map elements included in the Gameloop, permMap() contains those left out.
 gridMidCTX.clearRect(0, 0, mapwidth, mapheight);
@@ -347,6 +333,7 @@ gridMidCTX.clearRect(0, 0, mapwidth, mapheight);
 fillMap(); 
 drawUser();
 drawLabels();
+checkSidebar();
 }
 
 function permMap(){
@@ -390,14 +377,14 @@ function drawGreenGrid() {
 }
 
 //Showing and Hiding different Z Levels
-document.getElementById("testZ").onchange = function(){
+document.getElementById("zLayer").onchange = function(){
 
 console.log('Layer Selection Changed')
 
 //scale ='Select * WHERE F = ' + document.getElementById("testZ").value
 
 //carto = []
-rz = document.getElementById('testZ').value  
+rz = document.getElementById('zLayer').value  
 carto = []
 permMap()
 
@@ -595,16 +582,16 @@ function filterCarto(){
   //console.log(rXYZ)
   currentLocation = carto.filter(obj => obj.x == rXYZ.x && obj.y == rXYZ.y && obj.z == rXYZ.z)
   try{
-  console.table(currentLocation[0])}catch{ console.log('No record for this locaiton?') }
+  console.table(currentLocation[0])}catch{ console.log('No record for this location?') }
   console.log(currentLocation.length + ' records found.')
-  console.log('(X: ' + rx+','+'Y: ' + ry+','+'Z: ' + rZ +')')
+  console.log('(X: ' + rx+','+'Y: ' + ry+','+'Z: ' + rz +')')
   console.log('FPS: ' +fps);
 
   //EDITOR VARIABLES
    
-    document.getElementById('testLocation').value =  currentLocation[0].location
-    document.getElementById('testCategory').value = currentLocation[0].category
-    document.getElementById('testFill').value = currentLocation[0].fill
+    document.getElementById('Location').value =  currentLocation[0].location
+    document.getElementById('Category').value = currentLocation[0].category
+    //document.getElementById('paintFill').value = currentLocation[0].fill
     document.getElementById('TextA').value = currentLocation[0].desc1
     document.getElementById('TextB').value = currentLocation[0].desc2
     document.getElementById('TextC').value = currentLocation[0].desc3
@@ -621,9 +608,17 @@ LoadQuestions();
  
 function drawLabels(){
 
+  console.log('')
+  console.log('+++++++++DRAWING  LABELS++++++++++')
+  
+
+  gridMidCTX.globalAlpha = 1
+
 for (let i = 0; i < carto.length; i++) {
         
       let location = carto[i].location   
+
+      console.log(location)
       
                  if(location.length>0){
                    
@@ -633,18 +628,18 @@ for (let i = 0; i < carto.length; i++) {
                   let iheight =  tileSize
                   
                   
-                  if(rx == carto[i].x && ry == carto[i].y){
+                  //if(rx == carto[i].x && ry == carto[i].y){
 
                   //Behind Name
                   gridTopCTX.fillStyle = 'black'
                   gridTopCTX.fillRect(ix,iy,iwidth,iheight);
                   //Write name
-                  gridTopCTX.font = "Courier Prime";
+                  gridTopCTX.font = "14px Arial";;
                   gridTopCTX.fillStyle = 'wheat';
                   
                   //PAINTS LOCATION NAMES
-                  gridTopCTX.fillText(location,ix+ 0.35 * tileSize, iy + 0.75 * tileSize);
-                  } 
+                  gridTopCTX.fillText(location,ix+ 0.15 * tileSize, iy + 0.75 * tileSize);
+                  //} 
 
                   if(Math.floor(x/tileSize) == carto[i].x && Math.floor(y/tileSize) == carto[i].y){           
                     //Behind Name
@@ -668,6 +663,8 @@ for (let i = 0; i < carto.length; i++) {
             }
 
                 function drawUser(){
+
+                  gridMidCTX.globalAlpha = 1
 
                   rUser = document.getElementById("user").value
 
@@ -732,9 +729,9 @@ uniqueID = parentID +'-'+ rx +'-'+ ry +'-'+ rz;
 
 rLocation = ""
 rCategory = ""
-document.getElementById('testX').value = rx
-document.getElementById('testY').value = ry
-document.getElementById('testZ').value = rz
+document.getElementById('mapData_X').value = rx
+document.getElementById('mapData_Y').value = ry
+document.getElementById('mapData_Z').value = rz
 
 document.getElementById('uniqueID').value = uniqueID
 document.getElementById('parentID').value = parentID
@@ -771,7 +768,7 @@ gridTop.addEventListener('mousedown', e => {
 
   rx = Math.floor( x / tileSize) 
   ry = Math.floor( y / tileSize) 
-  rz = document.getElementById('testZ').value  
+  rz = document.getElementById('zLayer').value  
 
   Move()
 
@@ -780,9 +777,12 @@ gridTop.addEventListener('mousedown', e => {
 
 gridTop.addEventListener('mouseup', e => {
   
+
+
   if(paintCheck === 1){
-   
+          
         paint()
+
  
   }
   
@@ -819,7 +819,7 @@ var Reload
 
 document.onkeyup = function(e) {
 
-  var ignoreElement = document.getElementById('editor');
+  var ignoreElement = document.getElementById('sidebarwrapper');
   var isNOTEditor = ignoreElement.contains(event.target);
 
   if (!isNOTEditor) {
@@ -1025,15 +1025,31 @@ function topnav() {
 window.addEventListener("load", function() {
   const form = document.getElementById('mapData');
 
-  
-
   form.addEventListener("submit", function(e) {
       
     e.preventDefault();
-   
+  
+    document.getElementById('mapData_Activity').value = paintCheck   
+    
+    if( paintCheck == 0){
+
+      document.getElementById('mapData_X').value        =  rx
+      document.getElementById('mapData_Y').value        =  ry
+      document.getElementById('mapData_Z').value        =  rz
+      document.getElementById('mapData_uniqueID').value = uniqueID
+      document.getElementById('mapData_parentID').value = parentID
+      document.getElementById("mapData_sheetName").value = sheetName
+      document.getElementById("mapData_user").value = rUsername
+      
+      
+    }
+
 
 const newData = new FormData(form);
 const mapData = e.target.action
+    
+      
+
 //console.log('')
 //console.log('+++++++++INTERCEPTING++++++++++')
 
@@ -1045,10 +1061,14 @@ const mapData = e.target.action
     
   })
 
-  
+  document.getElementById('mapData_X').value         = ''
+  document.getElementById('mapData_Y').value         = ''
+  document.getElementById('mapData_Z').value         = ''
+  document.getElementById('mapData_uniqueID').value  = ''
+  document.getElementById('mapData_parentID').value  = ''
+  document.getElementById('mapData_fill').value      = ''
+  paintArray = [] 
 
- 
-  
   //console.log('sending... ' + newData.length)
 
   //We have taken everything we need from carto, and it can be erased.
@@ -1071,7 +1091,7 @@ const mapData = e.target.action
 //-----------------------------------------------------------------------------
   //FILL CATEGORY DROP DOWN
 
-var textCategory = document.getElementById("testCategory");
+var textCategory = document.getElementById("Category");
 
 
 for(var i = 0; i < carto.length; i++) {
@@ -1106,49 +1126,3 @@ textCategory.onblur=function() {
           }
           }
     
-  //-----------------------------------------------------------------------------
-  //DRAGGABLE EDITOR
-
-  // Make the DIV element draggable:
-dragElement(document.getElementById("editor"));
-
-function dragElement(elmnt) {
-  var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-  if (document.getElementById(elmnt.id + "header")) {
-    // if present, the header is where you move the DIV from:
-    document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
-  } else {
-    // otherwise, move the DIV from anywhere inside the DIV:
-    elmnt.onmousedown = dragMouseDown;
-  }
-
-  function dragMouseDown(e) {
-    e = e || window.event;
-    e.preventDefault();
-    // get the mouse cursor position at startup:
-    pos3 = e.clientX;
-    pos4 = e.clientY;
-    document.onmouseup = closeDragElement;
-    // call a function whenever the cursor moves:
-    document.onmousemove = elementDrag;
-  }
-
-  function elementDrag(e) {
-    e = e || window.event;
-    e.preventDefault();
-    // calculate the new cursor position:
-    pos1 = pos3 - e.clientX;
-    pos2 = pos4 - e.clientY;
-    pos3 = e.clientX;
-    pos4 = e.clientY;
-    // set the element's new position:
-    elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
-    elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
-  }
-
-  function closeDragElement() {
-    // stop moving when mouse button is released:
-    document.onmouseup = null;
-    document.onmousemove = null;
-  }
-}
