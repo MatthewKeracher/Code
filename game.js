@@ -382,7 +382,7 @@ function LoadWeather(){
  //console.table(weather)
 
  currentWeather = weather.filter(obj => obj.season == Season && obj.day == Time)
-  onsole.table(currentWeather)
+ console.table(currentWeather)
 
  weather = []
 
@@ -408,6 +408,7 @@ function LoadWeather(){
             var weatherDesc = currentWeather[0].description
             var weatherMod = currentWeather[0].modifier
             var weatherReact = currentWeather[0].reaction
+         
 
             var Message = "You are at the "  + Category +  " of " + Location + "." 
             + newLine + newLine 
@@ -424,6 +425,8 @@ function LoadWeather(){
 
 
           }}
+
+          
 
 
           document.getElementById('AskQA').onclick = function () {
@@ -808,9 +811,9 @@ function filterCarto(){
     document.getElementById('TextE').value = currentLocation[0].desc5
     
 //Queries sheet and returns user positions. 
-fillStoryteller();
-LoadQuestions();
 
+LoadQuestions();
+fillStoryteller();
 
   
   }
@@ -924,16 +927,13 @@ function Move(){
 //Everything that happens when we move either by mouse or wasd
 //Load Users and Current Locations
 LoadUsers();  
+
+
 LoadWeather();
 
 
 //Update the uniqueID
 uniqueID = parentID +'-'+ rx +'-'+ ry +'-'+ rz;
-
-
-//Clear Reader
-document.getElementById('storyTeller').innerHTML = ''
-
 
 
 //Clear Writer
