@@ -926,9 +926,20 @@ function Move(){
 
 //Everything that happens when we move either by mouse or wasd
 //Load Users and Current Locations
+document.getElementById('storyTeller').innerHTML = 'You travel the wilderness.'
+
+document.getElementById("Reading_QA").style.display = "none";
+document.getElementById("AskQA").style.display = "none";
+document.getElementById("Reading_QB").style.display = "none";
+document.getElementById("AskQB").style.display = "none";
+document.getElementById("Reading_QC").style.display = "none";
+document.getElementById("AskQC").style.display = "none";
+document.getElementById("Reading_QD").style.display = "none";
+document.getElementById("AskQD").style.display = "none";
+document.getElementById("Reading_QE").style.display = "none";
+document.getElementById("AskQE").style.display = "none";
+
 LoadUsers();  
-
-
 LoadWeather();
 
 
