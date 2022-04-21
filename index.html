@@ -96,7 +96,7 @@
 
           <select id="Activity" style="background-color: rgb(0, 0, 0); color: violet">
               
-            <option value = 0 > Reading </option>
+            <option value = 0 > Reading </option> 
             <option value = 1 > Writing </option>
             <option value = 2 > Painting </option>
              
@@ -146,7 +146,7 @@
 
           <p id = "paintArrayText"></p>
 
-        </div>
+          </div>
 
           Focus:
 
@@ -191,59 +191,78 @@
   <input id= "parentID"   type="text"  >
   <input id= "uniqueID"   type="text"  > 
 
-</div>
+          </div>
 
-<div id = "Reading">
+         
+
+          <div id = "Reading">
+                    
+            Season:
+
+            <select id="Season" style="width: 90px; background-color: rgb(0, 0, 0); color: grey">  </select> 
+         
+
+            <select id="Time" style="width: 90px; background-color: rgb(0, 0, 0); color: grey">   </select>          
+             
+            <button id="EditWeather" >Edit</button>
+
+            <br> <br>
+
+
+                <div id = "Weather" style = "display: none">
+
+                  Select:
+      
+                  <select id="weatherEntries" style="width: 190px; background-color: rgb(0, 0, 0); color: grey"> </select> <button id="HideEditWeather" >Hide</button>
+      
+
+                  <br><br>
+                  Initial Description:   
+                  <br> <br>
+                  <textarea id = "WeatherDesc" name = "Description" form = "mapData" style = "height: 50px; width: 100%; background-color: black; color: orange;"> </textarea> <br><br>
+                  Threaded Description:
+                  <br> <br>
+                  <textarea id = "WeatherMod" name = "Modifier"     form = "mapData" style = "height: 50px; width: 100%; background-color: black; color: orange;"> </textarea> <br><br>
+                  NPC Weather Reaction:
+                  <br> <br>
+                  <textarea id = "WeatherReact" name = "Reaction"   form = "mapData" style = "height: 50px; width: 100%; background-color: black; color: orange;"> </textarea> 
+                  
+                   <br><br>
+
+                   <button id="SubmitWeather" >Save</button>
+      
+      
+                </div>
+
+
+
+
+
+            <p id = "storyTeller">  </p>
+
+            <br>
+
+            <p style = "color: orange;" id = "Reading_QA"></p> <button id="AskQA" style = "display: none">Ask</button>
+            
           
-  Season:
 
-  <select id="Season" style="background-color: rgb(0, 0, 0); color: grey">
-      
-    <option value = "Winter" > Winter </option>
-    <option value = "Spring" > Spring </option>
-    <option value = "Summer" > Summer </option>
-    <option value = "Autumn" > Autumn </option>
-     
-  </select> 
-
-  Time:
-
-  <select id="Time" style="background-color: rgb(0, 0, 0); color: grey">
-      
-    <option value = "Dawn" > Dawn </option>
-    <option value = "Morning" > Morning </option>
-    <option value = "Noon" > Noon </option>
-    <option value = "Night" > Night </option>
-     
-  </select> 
-
-  <br> <br>
-
-  <p id = "storyTeller">  </p>
-
-  <br>
-
-  <p style = "color: orange;" id = "Reading_QA"></p> <button id="AskQA" style = "display: none">Ask</button>
-  
- 
-
-  <p style = "color: orange;" id = "Reading_QB"></p> <button id="AskQB" style = "display: none">Ask </button>
+            <p style = "color: orange;" id = "Reading_QB"></p> <button id="AskQB" style = "display: none">Ask </button>
 
 
 
-  <p style = "color: orange;" id = "Reading_QC"></p> <button id="AskQC" style = "display: none">Ask </button>
+            <p style = "color: orange;" id = "Reading_QC"></p> <button id="AskQC" style = "display: none">Ask </button>
 
 
 
-  <p style = "color: orange;" id = "Reading_QD"></p> <button id="AskQD" style = "display: none">Ask </button>
+            <p style = "color: orange;" id = "Reading_QD"></p> <button id="AskQD" style = "display: none">Ask </button>
 
 
 
-  <p style = "color: orange;" id = "Reading_QE"></p> <button id="AskQE" style = "display: none">Ask </button>
-  
+            <p style = "color: orange;" id = "Reading_QE"></p> <button id="AskQE" style = "display: none">Ask </button>
+            
 
-</div>
-</div>
+          </div>
+          </div>
 
           
 

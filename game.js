@@ -47,7 +47,8 @@ var activeElement
 var paintCheck = 0
 var flashing = 0
 
-
+const Season = document.getElementById("Season")
+const Time = document.getElementById("Time") 
 
 
 var rUsername = 'Gaia' //prompt("What is your name?");
@@ -58,7 +59,7 @@ document.addEventListener('DOMContentLoaded',permMap);
 //-----------------------------------------------------------------------------
 function setFlashing(){
 
-  console.log('Flashing is currently ' + flashing)
+  //console.log('Flashing is currently ' + flashing)
 
   flashing ++
   
@@ -395,49 +396,178 @@ function LoadWeather(){
   
  })
 
+ console.log(weather.length + ' rows have returned.');
 
- const Season = document.getElementById("Season").value  
- const Time = document.getElementById("Time").value 
+ Season.innerHTML = "";
+
+ for(var i = 0; i < weather.length; i++) {
+  
+  Season[Season.length] = new Option(weather[i].season,weather[i].season)
+ 
+ 
+ }
+
+ Time.innerHTML = "";
+
+ const Times = weather.filter(obj => obj.season == Season.value )
+ console.table(Times)
+
+ for(var i = 0; i < Times.length; i++) {
+  
+  Time[Time.length] = new Option(Times[i].day,Times[i].day)
+
+}
+
+
+fillWeatherEntrySelection()
+fillWeatherDescriptions()
+getWeather() 
+weather = []
+
+}
+
+
+
+function getWeather(){
+
  console.log('')
  console.log('+++++++++ GET WEATHER ++++++++++')
  console.log('Rows returned from Weather ' + weather.length)
- console.log('Currently a ' + Season + 's ' + Time)
+ console.log('Currently a ' + Season.value + "'s " + Time.value)
  //console.table(weather)
 
- currentWeather = weather.filter(obj => obj.season == Season && obj.day == Time)
+ currentWeather = weather.filter(obj => obj.season == Season.value && obj.day == Time.value)
  console.table(currentWeather)
-
- //weather = []
 
 }
 
 document.getElementById('Season').onchange = function () {
 
-  currentWeather = weather.filter(obj => obj.season == Season && obj.day == Time)
+  
+
+  Time.innerHTML = "";
+
+  const Times = weather.filter(obj => obj.season == Season.value )
+  console.table(Times)
+ 
+  for(var i = 0; i < Times.length; i++) {
+   
+   Time[Time.length] = new Option(Times[i].day,Times[i].day)
+
+  }
+
+
+  
+  fillWeatherEntrySelection()
+  fillWeatherDescriptions()
+}
+
+function setcurrentWeather() {
+
+  var weatherEntry = document.getElementById('weatherEntries').value;
+  currentWeather = weather.filter(obj => obj.name == weatherEntry)
   console.table(currentWeather)
   console.log('currentWeather updated.')
 
-}
 
-document.getElementById('Time').onchange = function () {
-
-  currentWeather = weather.filter(obj => obj.season == Season && obj.day == Time)
-  console.table(currentWeather)
-  console.log('currentWeather updated.')
 
 }
+
+
+
+function fillWeatherEntrySelection(){
+
+
+  var weatherEntries = document.getElementById('weatherEntries')
+
+  weatherEntries.innerHTML = "";
+  
+
+  const weatherNames = weather.filter(obj => obj.season == Season.value && obj.day == Time.value)
+ 
+  for(var i = 0; i < weatherNames.length; i++) {
+  
+  weatherEntries[weatherEntries.length] = new Option(weatherNames[i].name,weatherNames[i].name)
+
+}
+
+ weatherEntries[weatherEntries.length] = new Option("New Entry","New Entry")
+
+
+
+}
+
+document.getElementById('weatherEntries').onchange = function () {
+
+  fillWeatherDescriptions()
+  
+  
+  }
+
+
+  function fillWeatherDescriptions(){
+
+    setcurrentWeather()
+
+    const Description = document.getElementById('WeatherDesc');
+    const Modifier =    document.getElementById('WeatherMod');
+    const Reaction =    document.getElementById('WeatherReact');
+    const Name =        document.getElementById('weatherEntries');
+    
+    
+    if( Name.value == "New Entry"){
+
+      Description.value = ""
+      Modifier.value =   "" 
+      Reaction.value = ""
+
+    }else{
+    
+    Description.value = currentWeather[0].description
+    
+    Modifier.value = currentWeather[0].modifier
+  
+    Reaction.value = currentWeather[0].reaction
+
+    }
+
+  }
+
+  document.getElementById('Time').onchange = function () {
+
+    
+    fillWeatherEntrySelection()
+    
+    getWeather()
+    
+    }
+ 
+
+  document.getElementById('EditWeather').onclick = function () {
+
+    document.getElementById('Weather').style.display = "block";
+
+  }
+
+  document.getElementById('HideEditWeather').onclick = function () {
+
+    document.getElementById('Weather').style.display = "none";
+
+  }
 
 
  //-----------------------------------------------------------------------------
           // STORYTELLER
-
+          const newLine = " <br> <br> "; //carriage return and newline.
           
 
           function fillStoryteller(){
 
+            
+
             const storyTeller = document.getElementById("storyTeller") 
             
-            var newLine = " <br> "; //carriage return and newline.
+            
 
             var  Location = currentLocation[0].location
             var  Category = currentLocation[0].category
@@ -445,7 +575,7 @@ document.getElementById('Time').onchange = function () {
             console.log('')
             console.log('+++++++++ FILL STORYTELLER ++++++++++')
             
-            var Message = "You are at the "  + Category +  " of " + Location + "." + newLine + newLine 
+            var Message = "You are at the "  + Category +  " of " + Location + "." + newLine 
             
             if( Location.length > 0 ){
             
@@ -453,16 +583,18 @@ document.getElementById('Time').onchange = function () {
           
           }}
 
-          
-
+        
 
           document.getElementById('AskQA').onclick = function () {
 
           try{   
 
-            var weatherDesc = currentWeather[0].description
-            var weatherMod = currentWeather[0].modifier
-            var weatherReact = currentWeather[0].reaction
+            var weatherDesc = document.getElementById('WeatherDesc').value;
+            var weatherMod = document.getElementById('WeatherMod').value;
+            var weatherReact =  document.getElementById('WeatherReact').value;
+
+            console.log('+++++++++ FOUND WEATHER ++++++++++')
+            console.log(weatherDesc)
 
           }catch{
 
@@ -473,10 +605,12 @@ document.getElementById('Time').onchange = function () {
           }
 
             const storyTeller = document.getElementById("storyTeller") 
-              var newLine = " <br> "; //carriage return and newline.
+            
               var  newText = document.getElementById("TextA").value
 
-              storyTeller.innerHTML += weatherDesc + newLine + newLine + newText + newLine + newLine
+              storyTeller.innerHTML += weatherDesc + newLine + newText + newLine + weatherMod
+
+              storyTeller.innerHTML += " There are [NPCs] around. "  + weatherReact
 
               document.getElementById("Reading_QA").style.display = "none";
               document.getElementById("AskQA").style.display = "none";
@@ -486,10 +620,10 @@ document.getElementById('Time').onchange = function () {
           document.getElementById('AskQB').onclick = function () {
 
             const storyTeller = document.getElementById("storyTeller") 
-            var newLine = " <br> "; //carriage return and newline.
+           
             var  newText = document.getElementById("TextB").value
 
-            storyTeller.innerHTML += newText + newLine + newLine
+            storyTeller.innerHTML += newLine + newText 
 
             document.getElementById("Reading_QB").style.display = "none";
             document.getElementById("AskQB").style.display = "none";
@@ -499,10 +633,10 @@ document.getElementById('Time').onchange = function () {
           document.getElementById('AskQC').onclick = function () {
 
             const storyTeller = document.getElementById("storyTeller") 
-            var newLine = " <br> "; //carriage return and newline.
+           
             var  newText = document.getElementById("TextC").value
 
-            storyTeller.innerHTML += newText + newLine + newLine
+            storyTeller.innerHTML += newLine + newText 
 
             document.getElementById("Reading_QC").style.display = "none";
             document.getElementById("AskQC").style.display = "none";
@@ -512,10 +646,10 @@ document.getElementById('Time').onchange = function () {
           document.getElementById('AskQD').onclick = function () {
 
             const storyTeller = document.getElementById("storyTeller") 
-            var newLine = " <br> "; //carriage return and newline.
+            
             var  newText = document.getElementById("TextD").value
 
-            storyTeller.innerHTML += newText + newLine + newLine
+            storyTeller.innerHTML += newLine + newText 
 
             document.getElementById("Reading_QD").style.display = "none";
             document.getElementById("AskQD").style.display = "none";
@@ -525,10 +659,10 @@ document.getElementById('Time').onchange = function () {
           document.getElementById('AskQE').onclick = function () {
 
             const storyTeller = document.getElementById("storyTeller") 
-              var newLine = " <br> "; //carriage return and newline.
+             
               var  newText = document.getElementById("TextE").value
 
-              storyTeller.innerHTML += newText + newLine + newLine
+              storyTeller.innerHTML += newLine + newText 
 
               document.getElementById("Reading_QE").style.display = "none";
               document.getElementById("AskQE").style.display = "none";
@@ -607,6 +741,7 @@ gridTopCTX.clearRect(0, 0, mapwidth, mapheight);
 //Draws out Blank Map
 //drawBlackground();
 drawGreenGrid();
+
 //Queries sheet and returns map positions.
 carto = []
 LoadMap();
@@ -1018,9 +1153,10 @@ document.getElementById("Reading_QE").style.display = "none";
 document.getElementById("AskQE").style.display = "none";
 
 LoadUsers();  
+
 LoadWeather();
 
-
+weather = []
 
 //Update the uniqueID
 uniqueID = parentID +'-'+ rx +'-'+ ry +'-'+ rz;
