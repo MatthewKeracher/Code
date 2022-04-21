@@ -15,6 +15,8 @@ var parentID = 0
 var uniqueID = 0
 var savedID = 0
 
+var mousex
+var mousey
 var xList = []
 var yList = []
 var fps = []
@@ -24,6 +26,7 @@ var y = 0
 var rx = 0
 var ry = 0
 var rz = 0
+
 var rLocation
 var rCategory
 var currentWeather
@@ -42,6 +45,8 @@ var isTyping
 
 var activeElement
 var paintCheck = 0
+var flashing = 0
+
 
 
 
@@ -51,7 +56,21 @@ document.addEventListener('DOMContentLoaded',permMap);
 
 
 //-----------------------------------------------------------------------------
+function setFlashing(){
 
+  console.log('Flashing is currently ' + flashing)
+
+  flashing ++
+  
+  if (flashing == 3){
+  
+  flashing = 0
+  
+  }
+
+
+
+}
 
 
 //-----------------------------------------------------------------------------
@@ -76,7 +95,11 @@ document.getElementById('user').value = rUsername
 document.getElementById('wrapper').scrollLeft += screen.width/10*6;
 document.getElementById('sheetName').value = sheetName
 
+
 setInterval(gridLoop, 1000 / 60);
+setInterval(setFlashing, 1500);
+
+
 
 
 //-----------------------------------------------------------------------------
@@ -384,9 +407,26 @@ function LoadWeather(){
  currentWeather = weather.filter(obj => obj.season == Season && obj.day == Time)
  console.table(currentWeather)
 
- weather = []
+ //weather = []
 
 }
+
+document.getElementById('Season').onchange = function () {
+
+  currentWeather = weather.filter(obj => obj.season == Season && obj.day == Time)
+  console.table(currentWeather)
+  console.log('currentWeather updated.')
+
+}
+
+document.getElementById('Time').onchange = function () {
+
+  currentWeather = weather.filter(obj => obj.season == Season && obj.day == Time)
+  console.table(currentWeather)
+  console.log('currentWeather updated.')
+
+}
+
 
  //-----------------------------------------------------------------------------
           // STORYTELLER
@@ -399,31 +439,18 @@ function LoadWeather(){
             
             var newLine = " <br> "; //carriage return and newline.
 
-            var  Location = document.getElementById("Location").value
-            var  Category = document.getElementById("Category").value
-
+            var  Location = currentLocation[0].location
+            var  Category = currentLocation[0].category
+            
             console.log('')
             console.log('+++++++++ FILL STORYTELLER ++++++++++')
             
-            var weatherDesc = currentWeather[0].description
-            var weatherMod = currentWeather[0].modifier
-            var weatherReact = currentWeather[0].reaction
-         
-
-            var Message = "You are at the "  + Category +  " of " + Location + "." 
-            + newLine + newLine 
-            + weatherDesc 
-            + newLine + newLine 
-            + weatherMod
-            + newLine + newLine 
-            + weatherReact;
-            + newLine + newLine
-
+            var Message = "You are at the "  + Category +  " of " + Location + "." + newLine + newLine 
+            
             if( Location.length > 0 ){
             
-              storyTeller.innerHTML = Message
-
-
+            storyTeller.innerHTML = Message
+          
           }}
 
           
@@ -431,11 +458,25 @@ function LoadWeather(){
 
           document.getElementById('AskQA').onclick = function () {
 
+          try{   
+
+            var weatherDesc = currentWeather[0].description
+            var weatherMod = currentWeather[0].modifier
+            var weatherReact = currentWeather[0].reaction
+
+          }catch{
+
+            var weatherDesc = 'It is a grey day.'
+            var weatherMod = ''
+            var weatherReact = ''
+
+          }
+
             const storyTeller = document.getElementById("storyTeller") 
               var newLine = " <br> "; //carriage return and newline.
               var  newText = document.getElementById("TextA").value
 
-              storyTeller.innerHTML += newText + newLine + newLine
+              storyTeller.innerHTML += weatherDesc + newLine + newLine + newText + newLine + newLine
 
               document.getElementById("Reading_QA").style.display = "none";
               document.getElementById("AskQA").style.display = "none";
@@ -549,10 +590,14 @@ function loopMap(){
 //Contains all map elements included in the Gameloop, permMap() contains those left out.
 gridMidCTX.clearRect(0, 0, mapwidth, mapheight);
 //The carto array is used to paint the map.
+
 fillMap(); 
 drawUser();
-drawLabels();
 checkSidebar();
+drawLabels();
+
+
+
 }
 
 function permMap(){
@@ -563,6 +608,7 @@ gridTopCTX.clearRect(0, 0, mapwidth, mapheight);
 //drawBlackground();
 drawGreenGrid();
 //Queries sheet and returns map positions.
+carto = []
 LoadMap();
 }
 
@@ -614,8 +660,11 @@ console.log(scale)
 
 function fillMap(){
 
+let CTX = gridMidCTX
+
+
 //console.log('running FillMap()')
-gridMidCTX.globalAlpha = 1
+CTX.globalAlpha = 1
 
   for (let i = 0; i < carto.length; i++) {
 
@@ -627,13 +676,15 @@ gridMidCTX.globalAlpha = 1
 
 if (rz == 1 ){
 
+  //Oikos Focus
+
   if(z == 0){
 
-    gridMidCTX.globalAlpha = 0.5
+    CTX.globalAlpha = 0.5
 
   }else{
 
-    gridMidCTX.globalAlpha = 1
+    CTX.globalAlpha = 1
 
   }
 
@@ -641,17 +692,17 @@ if (rz == 1 ){
 
   if(z == 1){
 
-    gridMidCTX.globalAlpha = 0.5
+    CTX.globalAlpha = 0.5
 
   }else{
 
-    gridMidCTX.globalAlpha = 1
+    CTX.globalAlpha = 1
 
   }
 }
       
-        gridMidCTX.fillStyle = fill;
-        gridMidCTX.fillRect(x * tileSize, y * tileSize, tileSize, tileSize)
+CTX.fillStyle = fill;
+CTX.fillRect(x * tileSize, y * tileSize, tileSize, tileSize)
          
           if(x == rx && y == ry){
 
@@ -823,13 +874,32 @@ function drawLabels(){
 
   //console.log('')
   //console.log('+++++++++DRAWING  LABELS++++++++++')
-  
 
-  gridMidCTX.globalAlpha = 1
+  var currentLabel 
+  var CTX = gridMidCTX
+   
+  CTX.globalAlpha = 1
+  
 
 for (let i = 0; i < carto.length; i++) {
         
-      let location = carto[i].location   
+      let location = carto[i].location 
+      let category = carto[i].category  
+
+      if(carto[i].z == 1){
+      
+      if( flashing == 0){
+
+        currentLabel = location
+    
+      }else if(flashing == 1){
+
+        currentLabel = category
+
+      }else{ currentLabel = ""}
+
+    }else{ currentLabel = location}
+
 
       //console.log(location)
       
@@ -837,33 +907,29 @@ for (let i = 0; i < carto.length; i++) {
                    
                   let ix = carto[i].x * tileSize + (tileSize * 1.2)
                   let iy = carto[i].y * tileSize
-                  let iwidth = location.length * 8
+                  let iwidth = currentLabel.length * 9
                   let iheight =  tileSize
                   
                   
                   //if(rx == carto[i].x && ry == carto[i].y){
 
                   //Behind Name
-                  gridTopCTX.fillStyle = 'black'
-                  gridTopCTX.fillRect(ix,iy,iwidth,iheight);
+                  CTX.fillStyle = 'black'
+                  CTX.fillRect(ix,iy,iwidth,iheight);
                   //Write name
-                  gridTopCTX.font = "14px Arial";;
-                  gridTopCTX.fillStyle = 'wheat';
+                  CTX.font = "14px Courier";;
+                  CTX.fillStyle = 'wheat';
                   
+                    
+
                   //PAINTS LOCATION NAMES
-                  gridTopCTX.fillText(location,ix+ 0.15 * tileSize, iy + 0.75 * tileSize);
+                  CTX.fillText(currentLabel,ix+ 0.15 * tileSize, iy + 0.75 * tileSize);
                   //} 
 
-                
-        
-                }
-              
-              
-              
+                }             
+                            
               }
-            
-             
-            
+                 
             }
 
                 function drawUser(){
@@ -876,9 +942,9 @@ for (let i = 0; i < carto.length; i++) {
                   gridMidCTX.strokeRect(rx * tileSize, ry * tileSize,tileSize,tileSize);
                   //Behind Name
                   gridMidCTX.fillStyle = 'black'
-                  gridMidCTX.fillRect(rx * tileSize + (tileSize * 1.2), ry * tileSize + tileSize, rUser.length * 8, tileSize);
+                  gridMidCTX.fillRect(rx * tileSize + (tileSize * 1.2), ry * tileSize + tileSize, rUser.length * 11, tileSize);
                   //Write name
-                  gridMidCTX.font = "12px Helvetica";
+                  gridMidCTX.font = "14px Courier";
                   gridMidCTX.fillStyle = 'orange';
                   gridMidCTX.fillText(rUser, rx * tileSize + (tileSize * 1.2) + 6, ry * tileSize + (tileSize) * 1.75 );
 
@@ -891,7 +957,7 @@ for (let i = 0; i < carto.length; i++) {
                   let user = users[i].username
                   let x = (users[i].x * tileSize)
                   let y = (users[i].y * tileSize) 
-                  let xward = user.length * 8
+                  let xward = user.length * 10
                   let yward = tileSize
 
                   if(user == rUser){
@@ -909,13 +975,25 @@ for (let i = 0; i < carto.length; i++) {
                   gridMidCTX.fillStyle = 'black'
                   gridMidCTX.fillRect(x + (tileSize * 1.2), y+ tileSize, xward, yward);
                   //Write name
-                  gridMidCTX.font = "12px Helvetica";
+                  gridMidCTX.font = "14px Courier";
                   gridMidCTX.fillStyle = 'orange';
                   gridMidCTX.fillText(user, x + (tileSize * 1.2) + 6, y + (tileSize) * 1.75 );
 
+                  
 
+                  }}
+                
+                //Mouse Location    
+                gridMidCTX.strokeStyle = "white";
+                gridMidCTX.strokeRect(mousex * tileSize, mousey * tileSize,tileSize,tileSize);
+                
+                gridMidCTX.globalAlpha = 0.3
+                gridMidCTX.fillStyle = 'white';
+                gridMidCTX.fillRect(mousex * tileSize, mousey * tileSize,tileSize,tileSize);
 
-                  }}}
+                gridMidCTX.globalAlpha = 1
+
+                }
 
                 
      
@@ -941,6 +1019,7 @@ document.getElementById("AskQE").style.display = "none";
 
 LoadUsers();  
 LoadWeather();
+
 
 
 //Update the uniqueID
@@ -969,7 +1048,13 @@ document.getElementById('QE').value = ""
 textEcontents = ""
 rFill = ""
 
+
+
+
+
 currentLocation = []
+
+
 
 
 filterCarto()
@@ -1023,13 +1108,18 @@ gridTop.addEventListener('mouseup', e => {
     
 );
 
-gridBtm.addEventListener('mousemove', e => {
+gridTop.addEventListener('mousemove', e => {
   
   x = e.offsetX;
   y = e.offsetY;
 
-  console.log('(x: ' + x+','+' y: ' + y+')')
+  mousex = Math.floor( x / tileSize) 
+  mousey = Math.floor( y / tileSize) 
 
+  //console.log('(x: ' + x+','+' y: ' + y+')')
+
+  
+   
 
 });
 
@@ -1299,9 +1389,9 @@ const mapData = e.target.action
   //carto = [] 
   //console.log('carto length: '+ carto.length)
 
-sleep(3000)
+//sleep(3000)
 
-LoadMap()
+
 
 })
 
