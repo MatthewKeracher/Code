@@ -96,6 +96,11 @@ document.getElementById('user').value = rUsername
 document.getElementById('wrapper').scrollLeft += screen.width/10*6;
 document.getElementById('sheetName').value = sheetName
 
+LoadWeather();
+
+weather = []
+
+
 
 setInterval(gridLoop, 1000 / 60);
 setInterval(setFlashing, 1500);
@@ -113,10 +118,10 @@ function LoadMap(){
 //Sheet URL between /d/ and /edit/
 const sheetID = '1lGlBfPSeCIjMOCyAUvtOiaUDU0f1J_l5FV_N0sRUY48';
 const base = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?`
+
 //SPECIFICS THAT CHANGE
-
-
 const query = scale
+
 //AGGREGATE
 const url = `${base}&sheet=${sheetName}&tq=${query}`;
 //const output = document.querySelector('.output');
@@ -817,7 +822,11 @@ if (rz == 1 ){
 
     CTX.globalAlpha = 0.5
 
-  }else{
+  }else if( z == 1 && fill == "peru"){
+
+    CTX.globalAlpha = 0.6
+
+  } else {
 
     CTX.globalAlpha = 1
 
@@ -1395,34 +1404,30 @@ document.onkeyup = function(e) {
 function zoomIn(){
 
   savedID = parentID 
-  parentID = uniqueID;
-  
+  parentID = "" + rx + ry + rz
+
+  scale = "Select * WHERE C = " + parentID 
+
+  document.getElementById("Location").value = ""
+  document.getElementById("Category").value = ""
+
 
   if(sheetName === "Global"){
    
           sheetName = "Local"
-              scale = "Select * WHERE C = " + parentID 
-              
-     
-  
+        
         } else if (sheetName === "Local") {
   
             sheetName = "Dungeon"
             console.log('savedID '+savedID)
-            scale = "Select * WHERE C = " + parentID
-                   
           
           }
-            
-            
+                        
             document.getElementById('sheetName').value = sheetName
 
           }
   
   function zoomOut(){
-
-    parentID = '' + rx + ry + rz
-    
 
     if(sheetName == "Dungeon"){
               
