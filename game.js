@@ -46,6 +46,12 @@ var isTyping
 var activeElement
 var paintCheck = 0
 var flashing = 0
+var gridColour = "rgb(0, 90, 0, 1)"
+var backImageMod = 1
+var backImageYMod = 0
+var backImageXMod = 0
+var backImageRotate
+
 
 const Season = document.getElementById("Season")
 const Time = document.getElementById("Time") 
@@ -681,8 +687,8 @@ document.getElementById('weatherEntries').onchange = function () {
 
 //-----------------------------------------------------------------------------
 // DRAW MAP!
-const mapwidth = 3800
-const mapheight = 1600
+var mapwidth = 3800
+var mapheight = 1600
 const p = 0;
 var tileSize = 16;
 
@@ -690,6 +696,10 @@ const EndX = Math.floor(mapheight/tileSize)
 const EndY = Math.floor(mapwidth/tileSize)
 
 //SHORTHANDS FOR DIVS IN HTML
+
+const gridImg = document.getElementById("gridImg");
+const gridImgCTX = gridImg.getContext("2d");
+
 const gridBtm = document.getElementById("gridBtm");
 const gridBtmCTX = gridBtm.getContext("2d");
 
@@ -727,8 +737,10 @@ if (Activity == 2) {
 
 function loopMap(){
 //Contains all map elements included in the Gameloop, permMap() contains those left out.
+gridBtmCTX.clearRect(0, 0, mapwidth, mapheight);
 gridMidCTX.clearRect(0, 0, mapwidth, mapheight);
 //The carto array is used to paint the map.
+drawGridlines();
 
 fillMap(); 
 drawUser();
@@ -745,7 +757,7 @@ gridBtmCTX.clearRect(0, 0, mapwidth, mapheight);
 gridTopCTX.clearRect(0, 0, mapwidth, mapheight);
 //Draws out Blank Map
 //drawBlackground();
-drawGreenGrid();
+
 
 //Queries sheet and returns map positions.
 carto = []
@@ -762,7 +774,33 @@ function drawBlackground() {
   }
 }
 
-function drawGreenGrid() {
+function drawBackImage(){
+
+  var backImage = new Image()
+  let backImageURl = document.getElementById("backgroundImage").value 
+  
+  backImage.src = backImageURl
+
+  try{
+
+  let backHeight = backImage.naturalHeight * backImageMod
+  let backWidth = backImage.naturalWidth * backImageMod
+
+  gridImgCTX.clearRect(0, 0, mapwidth, mapheight);
+  gridImgCTX.drawImage(backImage,backImageXMod,backImageYMod,backWidth,backHeight)
+
+  
+
+  document.getElementById("imageHeight").value = backHeight
+  document.getElementById("imageWidth").value = backWidth
+
+  }catch{}
+
+}
+
+function drawGridlines() {
+
+  drawBackImage()
   
   gridBtmCTX.beginPath()
 
@@ -777,30 +815,77 @@ function drawGreenGrid() {
     gridBtmCTX.moveTo(p, 0.5 + x2 + p);
     gridBtmCTX.lineTo(mapwidth + p, 0.5 + x2 + p);
   }
-  gridBtmCTX.strokeStyle = "rgb(0, 90, 0, 1)";
+  gridBtmCTX.strokeStyle = gridColour;
   gridBtmCTX.stroke();
 }
 
-//Showing and Hiding different Z Levels
-document.getElementById("zLayer").onchange = function(){
+//-----------------------------------------------------------------------------
+// CHANGE BACKGROUND IMAGE, COLOUR AND GRIDLINES!
 
-console.log('Layer Selection Changed')
+document.getElementById('mapFormSubmit').onclick = function () {
+  
+  
+  //permMap()
+  }
 
-//scale ='Select * WHERE F = ' + document.getElementById("testZ").value
-
-//carto = []
-rz = document.getElementById('zLayer').value  
-carto = []
-permMap()
-
-console.log(scale)
-
+document.getElementById('enlargeImage').onclick = function () {
+backImageMod = backImageMod * 1.1
 }
+
+document.getElementById('reduceImage').onclick = function () {
+backImageMod = backImageMod * 0.9      
+}
+
+document.getElementById('imageLeft').onclick = function () {
+backImageXMod = backImageXMod - tileSize              
+}
+  
+document.getElementById('imageRight').onclick = function () {
+backImageXMod = backImageXMod + tileSize
+}
+      
+document.getElementById('imageUp').onclick = function () {
+backImageYMod = backImageYMod - tileSize
+}
+          
+document.getElementById('imageDown').onclick = function () {
+backImageYMod = backImageYMod + tileSize
+}
+                                 
+document.getElementById('rotateLeft').onclick = function () {
+  gridImgCTX.clearRect(0, 0, mapwidth, mapheight);
+gridImgCTX.rotate(-5 * Math.PI / 180)
+}
+
+document.getElementById('rotateRight').onclick = function () {
+  gridImgCTX.clearRect(0, 0, mapwidth, mapheight);
+  gridImgCTX.rotate(5 * Math.PI / 180)
+}
+
+//Change background colour
+document.getElementById("backFill").onchange = function(){
+
+  var background = document.getElementById("wrapper")
+  var backFill = document.getElementById("backFill").value
+  
+ background.style.backgroundColor = backFill;
+  
+  }
+
+  //Change grid colour
+document.getElementById("gridColour").onchange = function(){
+
+  
+  gridColour = document.getElementById("gridColour").value
+  permMap()
+  
+  }
 
 
 function fillMap(){
 
 let CTX = gridMidCTX
+
 
 
 //console.log('running FillMap()')
@@ -1150,6 +1235,7 @@ function Move(){
 //Load Users and Current Locations
 document.getElementById('storyTeller').innerHTML = 'You travel the wilderness.'
 
+
 document.getElementById("Reading_QA").style.display = "none";
 document.getElementById("AskQA").style.display = "none";
 document.getElementById("Reading_QB").style.display = "none";
@@ -1410,6 +1496,11 @@ function zoomIn(){
 
   document.getElementById("Location").value = ""
   document.getElementById("Category").value = ""
+  document.getElementById("TextA").value = ""
+  document.getElementById("TextB").value = ""
+  document.getElementById("TextC").value = ""
+  document.getElementById("TextD").value = ""
+  document.getElementById("TextE").value = ""
 
 
   if(sheetName === "Global"){

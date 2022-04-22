@@ -53,9 +53,14 @@
    
     <div id='wrapper'> 
 
-      <div id = "grids"  >
+      <div id = "grids" >
         
-        
+        <canvas
+        class = "center"
+        id="gridImg"
+        width= "3800"      
+        height="1600"></canvas>
+       
         <canvas
         class = "center"
         id="gridBtm"
@@ -103,11 +108,32 @@
           </select>
           
           <br> <br>
+         
 
           <div id = "Painting">
+           
+
+            URL:  <input id= "backgroundImage"  type="text" style="width: 75%; background-color: rgb(0, 0, 0); color: violet" >  <br> <br> 
+
+            <input id="enlargeImage" type="button" value="Enlarge"  /> <input id="reduceImage" type="button" value="Reduce"  /> 
+            
+            <input id="imageLeft" type="button" value="Move Left"  /> 
+            <input id="imageRight" type="button" value="Move Right"  /> 
+            
+            <input id="imageUp" type="button" value="Move Up"  /> 
+            <input id="imageDown" type="button" value="Move Down"  /> 
+
+            <br> <br> 
+
+            <input id="rotateLeft" type="button" value="Rotate Left"  /> 
+            <input id="rotateRight" type="button" value="Rotate Right"  /> 
+
+
+            <br><br>
+
           Painting:
                   
-          <select id="paintFill" name="paintFill" style="width: 80px; background-color: rgb(0, 0, 0); color: orange">
+          <select id="paintFill" name="paintFill" style="width: 150px; background-color: rgb(0, 0, 0); color: orange">
             
             <option value="green">green</option>
             <option value="darkgreen">dark green</option>
@@ -139,10 +165,90 @@
             <option value="delete">delete</option>
             
             
-          </select> 
+          </select> <br><br>
           <input id="paintButton" type="button" value="Save All"  />
           <input id="clearButton" type="button" value="Discard All"  /> 
           <input id="undoButton" type="button" value="Undo"  /> <br> <br>
+
+          Background Colour:
+                              
+            <select id="backFill" name="backFill" style="width: 150px; background-color: rgb(0, 0, 0); color: orange">
+
+              <option value="black">black</option>
+              <option value="green">green</option>
+              <option value="darkgreen">dark green</option>
+              <option value="teal">teal</option>
+              <option value="cyan">cyan</option>
+              <option value="darkcyan">dark cyan</option>
+              <option value="skyblue">skyblue</option>
+              <option value="blue">blue</option>
+              <option value="midnightblue">midnight blue</option>
+              <option value="gray">gray</option>
+              <option value="darkgray">dark gray</option>
+          
+              <option value="red">red</option>
+              <option value="darkred">dark red</option>
+              <option value="orange">orange</option>
+              <option value="darkorange">dark orange</option>
+              <option value="gold">gold</option>
+              <option value="wheat">wheat</option>
+              <option value="white">white</option>
+              <option value="whitesmoke">whitesmoke</option>
+              
+              <option value="indigo">indigo</option>
+              <option value="violet">violet</option>
+              <option value="purple">purple</option>
+             
+              <option value="brown">brown</option>
+              <option value="peru">peru brown</option>
+          
+              <option value="delete">delete</option>
+              
+              
+            </select> 
+
+            <br><br>
+
+            Grid Colour:
+
+            <select id="gridColour" name="gridColour" style="width: 150px; background-color: rgb(0, 0, 0); color: orange">
+
+              
+              <option value="green">green</option>
+              <option value="black">black</option>
+              <option value="darkgreen">dark green</option>
+              <option value="teal">teal</option>
+              <option value="cyan">cyan</option>
+              <option value="darkcyan">dark cyan</option>
+              <option value="skyblue">skyblue</option>
+              <option value="blue">blue</option>
+              <option value="midnightblue">midnight blue</option>
+              <option value="gray">gray</option>
+              <option value="darkgray">dark gray</option>
+          
+              <option value="red">red</option>
+              <option value="darkred">dark red</option>
+              <option value="orange">orange</option>
+              <option value="darkorange">dark orange</option>
+              <option value="gold">gold</option>
+              <option value="wheat">wheat</option>
+              <option value="white">white</option>
+              <option value="whitesmoke">whitesmoke</option>
+              
+              <option value="indigo">indigo</option>
+              <option value="violet">violet</option>
+              <option value="purple">purple</option>
+             
+              <option value="brown">brown</option>
+              <option value="peru">peru brown</option>
+          
+              <option value="delete">delete</option>
+              
+              
+            </select> 
+
+           
+           
 
           <p id = "paintArrayText"></p>
 
@@ -159,6 +265,8 @@
           </select> 
           
           <br><br><br>
+
+          
 
           <div id = "Writing">
                    
@@ -185,7 +293,7 @@
 
         
 
-  <button type="submit" form = "mapData" style="float: left;"> Commit Changes </button> &nbsp;
+  <button id = "mapFormSubmit" type="submit" form = "mapData" style="float: left;"> Commit Changes </button> &nbsp;
 
   <input id= "sheetName"  type="text"  >
   <input id= "parentID"   type="text"  >
