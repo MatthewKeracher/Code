@@ -7,6 +7,7 @@ var questions = []
 var weather = []
 var currentLocation = []
 var paintArray = []
+var PaletteArray = []
 
 //Google Sheet Queries
 var sheetName = 'Global'
@@ -27,6 +28,9 @@ var rx = 0
 var ry = 0
 var rz = 0
 
+var Px = 0
+var Py = 0
+
 var rLocation
 var rCategory
 var currentWeather
@@ -35,6 +39,8 @@ var textBcontents
 var textCcontents
 var textDcontents
 var textEcontents
+
+var paintColour
 
 var rFill
 var rUser
@@ -304,6 +310,8 @@ function LoadQuestions(){
  console.log('Rows returned from '+ sheet + ' ' + questions.length)
  console.table(questions)
 
+
+
  document.getElementById('QA').value  = questions[0].text
  document.getElementById('QB').value = questions[1].text
  document.getElementById('QC').value  = questions[2].text
@@ -315,6 +323,8 @@ function LoadQuestions(){
  document.getElementById('Reading_QC').innerHTML  = questions[2].text
  document.getElementById('Reading_QD').innerHTML  = questions[3].text
  document.getElementById('Reading_QE').innerHTML  = questions[4].text
+
+
 
  questions = []
 
@@ -695,6 +705,7 @@ var tileSize = 16;
 const EndX = Math.floor(mapheight/tileSize)
 const EndY = Math.floor(mapwidth/tileSize)
 
+//-----------------------------------------------------------------------------
 //SHORTHANDS FOR DIVS IN HTML
 
 const gridImg = document.getElementById("gridImg");
@@ -709,6 +720,19 @@ const gridMidCTX = gridMid.getContext("2d");
 const gridTop = document.getElementById("gridTop");
 const gridTopCTX = gridTop.getContext("2d");
 
+//-----------------------------------------------------------------------------
+
+const Palette = document.getElementById("Palette");
+const PaletteCTX = Palette.getContext("2d");
+
+let colourSize = 36
+let widthPalette = Palette.style.width
+let heightPalette = Palette.style.height
+
+const Sidebar = document.getElementById("sidebarwrapper");
+
+//-----------------------------------------------------------------------------
+
 
 function checkSidebar(){
 
@@ -721,7 +745,7 @@ if (Activity == 2) {
   Painting.style.display = "block";
   Writing.style.display = "none";
   Reading.style.display = "none";
-  paintCheck = 1;
+  
 } else { if (Activity == 1) {
   Painting.style.display = "none";
   Writing.style.display = "block";
@@ -735,17 +759,22 @@ if (Activity == 2) {
 }}}}
 
 
+
+
 function loopMap(){
 //Contains all map elements included in the Gameloop, permMap() contains those left out.
+PaletteCTX.clearRect(0, 0, mapwidth, mapheight);
 gridBtmCTX.clearRect(0, 0, mapwidth, mapheight);
 gridMidCTX.clearRect(0, 0, mapwidth, mapheight);
 //The carto array is used to paint the map.
 drawGridlines();
 
 fillMap(); 
-drawUser();
+
 checkSidebar();
+drawPalette()
 drawLabels();
+drawUser();
 
 
 
@@ -757,7 +786,7 @@ gridBtmCTX.clearRect(0, 0, mapwidth, mapheight);
 gridTopCTX.clearRect(0, 0, mapwidth, mapheight);
 //Draws out Blank Map
 //drawBlackground();
-
+LoadColours()
 
 //Queries sheet and returns map positions.
 carto = []
@@ -797,6 +826,8 @@ function drawBackImage(){
   }catch{}
 
 }
+
+
 
 function drawGridlines() {
 
@@ -941,7 +972,7 @@ CTX.fillRect(x * tileSize, y * tileSize, tileSize, tileSize)
 
   function paint() {
 
-  var paintColour = document.getElementById("paintFill").value
+ 
              
   gridTopCTX.fillStyle = paintColour;
 
@@ -998,6 +1029,8 @@ CTX.fillRect(x * tileSize, y * tileSize, tileSize, tileSize)
       
 
           }
+
+        
 
          
 
@@ -1079,6 +1112,8 @@ function filterCarto(){
   console.log('(X: ' + rx+','+'Y: ' + ry+','+'Z: ' + rz +')')
   console.log('FPS: ' +fps);
 
+  try{
+
   //EDITOR VARIABLES
    
     document.getElementById('Location').value =  currentLocation[0].location
@@ -1089,6 +1124,11 @@ function filterCarto(){
     document.getElementById('TextC').value = currentLocation[0].desc3
     document.getElementById('TextD').value = currentLocation[0].desc4
     document.getElementById('TextE').value = currentLocation[0].desc5
+
+  }catch{
+
+ 
+  }
     
 //Queries sheet and returns user positions. 
 
@@ -1222,13 +1262,26 @@ for (let i = 0; i < carto.length; i++) {
 
                 gridMidCTX.globalAlpha = 1
 
+                //Palette Mouse Location    
+                PaletteCTX.strokeStyle = "white";
+                PaletteCTX.strokeRect(mousex * colourSize, mousey * colourSize,colourSize,colourSize);
+                
+                PaletteCTX.globalAlpha = 0.3
+                PaletteCTX.fillStyle = 'white';
+                PaletteCTX.fillRect(mousex * colourSize, mousey * colourSize,colourSize,colourSize);
+
+                PaletteCTX.globalAlpha = 1
+
+
+                
+
                 }
 
                 
      
 //-----------------------------------------------------------------------------
 
-// MOUSE TRACKING
+// EVERYTHING THAT HAPPENS WHEN YOU MOVE
 function Move(){
 
 //Everything that happens when we move either by mouse or wasd
@@ -1295,7 +1348,9 @@ filterCarto()
 }
 
 
-//MOUSE BUTTON LEFT RIGHT CLICK CONTROLS 
+//-----------------------------------------------------------------------------
+
+// MOUSE TRACKING IN GRID
 
 gridTop.addEventListener('mousedown', e => {
   
@@ -1311,6 +1366,8 @@ gridTop.addEventListener('mousedown', e => {
 
     
 });
+
+
 
 gridTop.addEventListener('mouseup', e => {
   
@@ -1353,6 +1410,189 @@ gridTop.addEventListener('mousemove', e => {
    
 
 });
+
+
+//-----------------------------------------------------------------------------
+
+// PALETTE SECTION
+
+Palette.addEventListener('mousedown', e => {
+  
+  x = e.offsetX;
+  y = e.offsetY;
+ 
+
+  Px = Math.floor( x / colourSize) 
+  Py = Math.floor( y / colourSize) 
+ 
+   
+});
+
+
+
+Palette.addEventListener('mouseup', e => {
+ 
+  const colourSelection = PaletteArray.filter(obj => obj.x == Px && obj.y == Py )
+  paintColour = colourSelection[0].fill
+  paintCheck = 1;
+  
+  console.log('')
+  console.log('+++++++++PALETTE CLICKED++++++++++')
+  console.log('(x: ' + x+','+' y: ' + y+')')
+  console.log('(Px: ' + Px+','+' Py: ' + Py+')')
+  console.log('(Px: ' + Px+','+' Py: ' + Py+')')
+  console.log(paintColour + ' selected.')
+  
+
+    }
+    
+);
+
+Palette.addEventListener('mousemove', e => {
+  
+  x = e.offsetX;
+  y = e.offsetY;
+
+  mousex = Math.floor( x / colourSize) 
+  mousey = Math.floor( y / colourSize) 
+
+  
+  //console.log('(x: ' + x+','+' y: ' + y+')')
+
+ 
+   
+
+});
+
+
+function drawPalette() {
+ 
+
+  widthPalette = colourSize * 10
+  heightPalette = colourSize * 20
+   
+  fillPalette()
+
+  PaletteCTX.beginPath()
+
+  for (var x1 = 0; x1 <= widthPalette; x1 += colourSize) {
+    
+    PaletteCTX.moveTo(0.5 + x1 + p, p);
+    PaletteCTX.lineTo(0.5 + x1 + p, heightPalette + p);
+  }
+  
+  for (var x2 = 0; x2 <= heightPalette; x2 += colourSize) {
+    
+    PaletteCTX.moveTo(p, 0.5 + x2 + p);
+    PaletteCTX.lineTo(widthPalette + p, 0.5 + x2 + p);
+  }
+
+  PaletteCTX.strokeStyle = "wheat";
+  PaletteCTX.stroke();
+
+}
+
+function fillPalette(){
+
+  let PaletteEndX = (widthPalette / colourSize) 
+  let PaletteEndY = (heightPalette / colourSize) 
+
+
+ var i = 0
+  
+ try{
+
+      for (var y = 0; y <= 19; y += 1) {
+
+        for (var x = 0; x <= 9; x += 1) {
+    
+        let fill = PaletteArray[i].fill
+       
+        PaletteCTX.fillStyle = fill;
+
+    //console.log(fill)
+     
+    PaletteCTX.fillRect(x * colourSize, y * colourSize, colourSize, colourSize)
+
+    i++
+
+  }}}catch{
+
+    //console.log('')
+    //console.log('+++++++++PALETTE FAILED++++++++++')
+    //console.log('Crash X : ' + x)
+    //console.log('Crash Y : ' + y)
+    //console.log('Crash i : ' + i)
+
+
+  }
+
+
+
+
+}
+
+function LoadColours(){
+
+  //Connection to Google Sheet
+ //Sheet URL between /d/ and /edit/
+ const sheetID = '1lGlBfPSeCIjMOCyAUvtOiaUDU0f1J_l5FV_N0sRUY48';
+ const base = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?`
+ //SPECIFICS THAT CHANGE
+ const sheet = 'Palette'
+ const qu = 'Select *';
+ const query = qu
+ //AGGREGATE
+ const url = `${base}&sheet=${sheet}&tq=${query}`;
+ //const output = document.querySelector('.output');
+ console.log('')
+ console.log('++++++++LOAD COLOURS+++++++++++')
+ console.log('Connection to ' + sheet + ' has been made.');
+ console.log(qu + ' from ' + sheet)
+
+
+//const empty = users => users.length = 0;
+//empty(users)
+ 
+ fetch(url)
+ .then(res => res.text())
+ .then(rep => {
+   //console.log(rep);
+     //clean the return so it is usable
+   const jsData = JSON.parse(rep.substr(47).slice(0,-2));
+   //console.log(jsData);
+   const colz = [];
+   
+   
+   jsData.table.cols.forEach((heading)=>{
+ 
+     if(heading.label){
+          colz.push(heading.label.toLowerCase().replace(/\s/g,''));
+     } 
+ 
+   })
+ 
+    jsData.table.rows.forEach((main)=>{
+      //console.log(main);c
+      const row = {};
+      colz.forEach((ele,ind) =>{
+     // console.log(ele,ind);
+       //iferror syntax here;
+       row[ele] = (main.c[ind] != null) ? main.c[ind].v : '';
+     })
+     PaletteArray.push(row)
+    }) 
+      
+ 
+ })
+ 
+ console.log('Rows returned from Palette ' + PaletteArray.length)
+ 
+ console.table(PaletteArray)
+
+ PaletteArray = []
+ 
+ }
 
 //-----------------------------------------------------------------------------
 

@@ -109,6 +109,19 @@
           
           <br> <br>
          
+          Focus:
+
+          <select id="zLayer" name="Z" style="background-color: rgb(0, 0, 0); color: orange">
+              
+            
+            <option value = 1 > Oikos </option>
+            <option value = 0 > Gaia </option>
+             
+          </select> 
+
+        
+          
+          <br><br>
 
           <div id = "Painting">
            
@@ -131,41 +144,6 @@
 
             <br><br>
 
-          Painting:
-                  
-          <select id="paintFill" name="paintFill" style="width: 150px; background-color: rgb(0, 0, 0); color: orange">
-            
-            <option value="green">green</option>
-            <option value="darkgreen">dark green</option>
-            <option value="teal">teal</option>
-            <option value="cyan">cyan</option>
-            <option value="darkcyan">dark cyan</option>
-            <option value="skyblue">skyblue</option>
-            <option value="blue">blue</option>
-            <option value="midnightblue">midnight blue</option>
-            <option value="gray">gray</option>
-            <option value="darkgray">dark gray</option>
-        
-            <option value="red">red</option>
-            <option value="darkred">dark red</option>
-            <option value="orange">orange</option>
-            <option value="darkorange">dark orange</option>
-            <option value="gold">gold</option>
-            <option value="wheat">wheat</option>
-            <option value="white">white</option>
-            <option value="whitesmoke">whitesmoke</option>
-            
-            <option value="indigo">indigo</option>
-            <option value="violet">violet</option>
-            <option value="purple">purple</option>
-           
-            <option value="brown">brown</option>
-            <option value="peru">peru brown</option>
-        
-            <option value="delete">delete</option>
-            
-            
-          </select> <br><br>
           <input id="paintButton" type="button" value="Save All"  />
           <input id="clearButton" type="button" value="Discard All"  /> 
           <input id="undoButton" type="button" value="Undo"  /> <br> <br>
@@ -247,24 +225,16 @@
               
             </select> 
 
-           
-           
+          <p id = "paintArrayText"></p> <br>
 
-          <p id = "paintArrayText"></p>
-
+          <canvas id="Palette"
+            height="722"
+            width = "361">
+          </canvas>            
+          
           </div>
 
-          Focus:
-
-          <select id="zLayer" name="Z" style="background-color: rgb(0, 0, 0); color: orange">
-              
-            
-            <option value = 1 > Oikos </option>
-            <option value = 0 > Gaia </option>
-             
-          </select> 
-          
-          <br><br><br>
+        <br>
 
           
 
