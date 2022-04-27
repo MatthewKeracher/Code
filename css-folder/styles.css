@@ -96,7 +96,22 @@
   
 
     
-  }   
+  }  
+  
+  
+
+#weather{
+
+  color: rgb(219, 51, 224);
+
+}
+
+#effects{
+
+  color: rgb(63, 171, 204);
+
+}
+
   div#sidebaritem {
 
     width: auto;

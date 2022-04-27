@@ -5,9 +5,12 @@ var carto = []
 var users = []
 var questions = []
 var weather = []
+var Effects = []
 var currentLocation = []
 var paintArray = []
 var PaletteArray = []
+var currentQuestions = []
+var currentEffects = []
 
 //Google Sheet Queries
 var sheetName = 'Global'
@@ -18,6 +21,8 @@ var savedID = 0
 
 var mousex
 var mousey
+var Pmousex
+var Pmousey
 var xList = []
 var yList = []
 var fps = []
@@ -107,6 +112,9 @@ function gridLoop() {
 document.getElementById('user').value = rUsername
 document.getElementById('wrapper').scrollLeft += screen.width/10*6;
 document.getElementById('sheetName').value = sheetName
+document.getElementById('mapData_isWeather').value = "0";
+document.getElementById('mapData_isEffect').value = "0";
+document.getElementById('mapData_isNPC').value = "0";
 
 LoadWeather();
 
@@ -264,7 +272,7 @@ function LoadQuestions(){
  console.log('')
  console.log('+++++++++LOAD QUESTIONS++++++++++')
  console.log('Category is ' + category + '.');
- const qu = 'Select * WHERE E = "' + category +'"' ;
+ const qu = 'Select *' ;
  const query = qu
  //AGGREGATE
  const url = `${base}&sheet=${sheet}&tq=${query}`;
@@ -297,7 +305,7 @@ function LoadQuestions(){
       //console.log(main);
       const row = {};
       colz.forEach((ele,ind) =>{
-     // console.log(ele,ind);
+      //console.log(ele,ind);
        //iferror syntax here;
        row[ele] = (main.c[ind] != null) ? main.c[ind].v : '';
      })
@@ -305,28 +313,30 @@ function LoadQuestions(){
     }) 
       
  
- })
+ })}
+
+ function getQuestions(){
  
- console.log('Rows returned from '+ sheet + ' ' + questions.length)
- console.table(questions)
+ //console.log(questions.length + ' Rows returned from Questions')
+ //console.table(questions)
+ //console.table('Category is ' + currentLocation[0].category)
+ 
+ currentQuestions = questions.filter(obj => obj.category == currentLocation[0].category )
+ console.table(currentQuestions)
 
 
+ document.getElementById('QA').value  = currentQuestions[0].qa
+ document.getElementById('QB').value = currentQuestions[0].qb
+ document.getElementById('QC').value  = currentQuestions[0].qc
+ document.getElementById('QD').value  = currentQuestions[0].qd
+ document.getElementById('QE').value  = currentQuestions[0].qe
 
- document.getElementById('QA').value  = questions[0].text
- document.getElementById('QB').value = questions[1].text
- document.getElementById('QC').value  = questions[2].text
- document.getElementById('QD').value  = questions[3].text
- document.getElementById('QE').value  = questions[4].text
+ document.getElementById('Reading_QA').innerHTML  = currentQuestions[0].qa
+ document.getElementById('Reading_QB').innerHTML  = currentQuestions[0].qb
+ document.getElementById('Reading_QC').innerHTML  = currentQuestions[0].qc
+ document.getElementById('Reading_QD').innerHTML  = currentQuestions[0].qd
+ document.getElementById('Reading_QE').innerHTML  = currentQuestions[0].qe
 
- document.getElementById('Reading_QA').innerHTML  = questions[0].text
- document.getElementById('Reading_QB').innerHTML  = questions[1].text
- document.getElementById('Reading_QC').innerHTML  = questions[2].text
- document.getElementById('Reading_QD').innerHTML  = questions[3].text
- document.getElementById('Reading_QE').innerHTML  = questions[4].text
-
-
-
- questions = []
 
 if( document.getElementById('Reading_QA').value != "" ){
 
@@ -362,9 +372,6 @@ if( document.getElementById('Reading_QE').value != "" ){
   document.getElementById("AskQE").style.display = "block";
         
 }
-
-
-
 
 }
 
@@ -534,6 +541,7 @@ document.getElementById('weatherEntries').onchange = function () {
     const Modifier =    document.getElementById('WeatherMod');
     const Reaction =    document.getElementById('WeatherReact');
     const Name =        document.getElementById('weatherEntries');
+    const Title =       document.getElementById('WeatherName')
     
     
     if( Name.value == "New Entry"){
@@ -541,6 +549,7 @@ document.getElementById('weatherEntries').onchange = function () {
       Description.value = ""
       Modifier.value =   "" 
       Reaction.value = ""
+      Title.value = ""
 
     }else{
     
@@ -549,6 +558,8 @@ document.getElementById('weatherEntries').onchange = function () {
     Modifier.value = currentWeather[0].modifier
   
     Reaction.value = currentWeather[0].reaction
+
+    Title.value = currentWeather[0].name
 
     }
 
@@ -567,36 +578,252 @@ document.getElementById('weatherEntries').onchange = function () {
   document.getElementById('EditWeather').onclick = function () {
 
     document.getElementById('Weather').style.display = "block";
+    
+    document.getElementById('EditWeather').style.display = "none";
+    document.getElementById('HideEditWeather').style.display = "block";
 
   }
 
   document.getElementById('HideEditWeather').onclick = function () {
 
     document.getElementById('Weather').style.display = "none";
+  
+    document.getElementById('HideEditWeather').style.display = "none";
+    document.getElementById('EditWeather').style.display = "block";
+  }
+
+  //-----------------------------------------------------------------------------
+//FUNCTION TO IMPORT EFFECTS DATA FROM SPREADSHEET
+function LoadEffects(){
+
+  //Connection to Google Sheet
+ //Sheet URL between /d/ and /edit/
+ const sheetID = '1lGlBfPSeCIjMOCyAUvtOiaUDU0f1J_l5FV_N0sRUY48';
+ const base = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?`
+
+ //SPECIFICS THAT CHANGE
+ const sheet = 'Effects'
+ const query = 'Select *';
+
+ //AGGREGATE
+ const url = `${base}&sheet=${sheet}&tq=${query}`;
+ //const output = document.querySelector('.output');
+ console.log('')
+ console.log('+++++++++LOAD EFFECTS++++++++++')
+
+ fetch(url)
+ .then(res => res.text())
+ .then(rep => {
+   //console.log(rep);
+     //clean the return so it is usable
+   const jsData = JSON.parse(rep.substr(47).slice(0,-2));
+   //console.log(jsData);
+   const colz = [];
+      
+   jsData.table.cols.forEach((heading)=>{
+ 
+     if(heading.label){
+          colz.push(heading.label.toLowerCase().replace(/\s/g,''));
+     } 
+ 
+   })
+ 
+    jsData.table.rows.forEach((main)=>{
+      //console.log(main);
+      const row = {};
+      colz.forEach((ele,ind) =>{
+      //console.log(ele,ind);
+       //iferror syntax here;
+       row[ele] = (main.c[ind] != null) ? main.c[ind].v : '';
+     })
+     Effects.push(row)
+    }) 
+  
+ })
+
+ 
+ 
+ }
+
+
+ function getEffects(){
+
+  let currentCategory = document.getElementById("Category").value
+
+  console.log('')
+  console.log('+++++++++ GET EFFECTS ++++++++++')
+  console.log('Rows returned from Effects ' + Effects.length)
+  console.log('Category is ' + sheetName + ' ' + currentCategory)
+ 
+  currentEffects = Effects.filter(obj => obj.category == currentCategory && obj.scale == sheetName)
+  console.log('Rows returned from Filter ' + currentEffects.length)
+  console.table(currentEffects)
+ 
+ 
+
+ }
+
+ document.getElementById('editEffects').onclick = function () {
+
+  document.getElementById('Effects').style.display = "block";
+  document.getElementById('mapData_isEffect').value = "1";
+  document.getElementById('editEffects').style.display = "none";
+  document.getElementById('hideEditEffects').style.display = "block";
+
+  fillEffectDescriptions()
+
+}
+
+document.getElementById('hideEditEffects').onclick = function () {
+
+  document.getElementById('Effects').style.display = "none";
+  document.getElementById('mapData_isEffect').value = "0";
+  document.getElementById('editEffects').style.display = "block";
+  document.getElementById('hideEditEffects').style.display = "none";
+
+}
+
+ function fillEffectsDropdowns(){
+
+
+  var effectsEntries = document.getElementById('effectEntries')
+
+  var effectOne = document.getElementById('effectOne')
+  var effectTwo = document.getElementById('effectTwo')
+  var effectThree = document.getElementById('effectThree')
+
+  effectOne.innerHTML = "";
+  effectTwo.innerHTML = "";
+  effectThree.innerHTML = "";
+
+  effectsEntries.innerHTML = "";
+
+  for(var i = 0; i < currentEffects.length; i++) {
+  
+    effectsEntries[effectsEntries.length] = new Option(currentEffects[i].name,currentEffects[i].name)
+  
+    effectOne[effectOne.length]     = new Option(currentEffects[i].name,currentEffects[i].name)
+    effectTwo[effectTwo.length]     = new Option(currentEffects[i].name,currentEffects[i].name)
+    effectThree[effectThree.length] = new Option(currentEffects[i].name,currentEffects[i].name)
+
+    
+  }
+  
+  effectsEntries[effectsEntries.length] = new Option("New Entry","New Entry")
+
+  const random1 = Math.floor(Math.random() * currentEffects.length)
+  const random2 = Math.floor(Math.random() * currentEffects.length)
+  const random3 = Math.floor(Math.random() * currentEffects.length)
+
+  var effectOneChildren   = effectOne.children;
+  var effectTwoChildren   = effectTwo.children;
+  var effectThreeChildren = effectThree.children;
+
+   // set the value of the dropdown to a random option
+   effectOne.value = effectOneChildren[random1].value; 
+   effectTwo.value = effectTwoChildren[random2].value; 
+   effectThree.value = effectThreeChildren[random3].value; 
+
+}
+
+function fillEffectDescriptions(){
+
+  //setcurrentWeather()
+
+  const Description = document.getElementById('effectDesc');
+  const Modifier =    document.getElementById('effectMod');
+  const Reaction =    document.getElementById('effectReact');
+  const Name =        document.getElementById('effectEntries');
+  const Title =       document.getElementById('effectName');
+  
+  
+  if( Name.value == "New Entry"){
+
+    Description.value = ""
+    Modifier.value =   "" 
+    Reaction.value = ""
+    Title.value = ""
+
+  }else{
+
+  let currentCategory = document.getElementById("Category").value
+  let selection    = document.getElementById('effectEntries').value;
+  let chosenEffect = Effects.filter(obj => obj.category == currentCategory && obj.scale == sheetName && obj.name == selection)
+  
+  Description.value = chosenEffect[0].description
+  
+  Modifier.value = chosenEffect[0].modifier
+
+  Reaction.value = chosenEffect[0].reaction
+
+  Title.value = chosenEffect[0].name
 
   }
 
+}
+
+document.getElementById('effectEntries').onchange = function () {
+
+  fillEffectDescriptions()
+
+}
 
  //-----------------------------------------------------------------------------
           // STORYTELLER
           const newLine = " <br> <br> "; //carriage return and newline.
           
+          function copyQuestions(){
+
+          document.getElementById('Reading_QA').innerHTML  =  document.getElementById('QA').value
+          document.getElementById('Reading_QB').innerHTML  =  document.getElementById('QB').value
+          document.getElementById('Reading_QC').innerHTML  =  document.getElementById('QC').value 
+          document.getElementById('Reading_QD').innerHTML  =  document.getElementById('QD').value 
+          document.getElementById('Reading_QE').innerHTML  =  document.getElementById('QE').value
+                  
+          }
+
+          function noQuestions(){
+
+            document.getElementById('Reading_QA').innerHTML  =  ''
+            document.getElementById('Reading_QB').innerHTML  =  ''
+            document.getElementById('Reading_QC').innerHTML  =  ''
+            document.getElementById('Reading_QD').innerHTML  =  '' 
+            document.getElementById('Reading_QE').innerHTML  =  ''
+
+            document.getElementById("AskQA").style.display = "none";
+            document.getElementById("AskQB").style.display = "none";
+            document.getElementById("AskQC").style.display = "none";
+            document.getElementById("AskQD").style.display = "none";
+            document.getElementById("AskQE").style.display = "none";
+
+                    
+            }
 
           function fillStoryteller(){
 
-            
-
+           
             const storyTeller = document.getElementById("storyTeller") 
             
             
 
             var  Location = currentLocation[0].location
             var  Category = currentLocation[0].category
+            var Message
             
             console.log('')
             console.log('+++++++++ FILL STORYTELLER ++++++++++')
+
+            if( sheetName == 'Global'){
+
+             Message = "You are at the "  + Category +  " of " + Location + "." + newLine    
+
+            }else{
+
+              Message = "You are at " + Location + "'s "  + Category +  "."
             
-            var Message = "You are at the "  + Category +  " of " + Location + "." + newLine 
+            }
+            
+          
             
             if( Location.length > 0 ){
             
@@ -786,11 +1013,35 @@ gridBtmCTX.clearRect(0, 0, mapwidth, mapheight);
 gridTopCTX.clearRect(0, 0, mapwidth, mapheight);
 //Draws out Blank Map
 //drawBlackground();
-LoadColours()
 
-//Queries sheet and returns map positions.
+try{
+questions = []  
+LoadQuestions();
+}catch{
+  console.log('!!!!! Could not complete LoadQuestions() !!!!!')
+}
+
+try{
+Effects = []  
+LoadEffects();
+  }catch{
+  console.log('!!!!! Could not complete LoadEffects() !!!!!')
+  }
+
+try{
+//colours = []
+LoadColours();
+}catch{
+  console.log('!!!!! Could not complete LoadColours() !!!!!')
+}
+
+try{
 carto = []
 LoadMap();
+}catch{
+  console.log('!!!!! Could not complete LoadMap() !!!!!')
+}
+
 }
 
 function drawBlackground() {
@@ -853,10 +1104,21 @@ function drawGridlines() {
 //-----------------------------------------------------------------------------
 // CHANGE BACKGROUND IMAGE, COLOUR AND GRIDLINES!
 
+document.getElementById('SubmitWeather').onclick = function () {
+  document.getElementById('mapData_isWeather').value = "1";
+  document.forms['mapData'].dispatchEvent(new Event('submit'));
+  document.getElementById('mapData_isWeather').value = "0";
+}
+
+document.getElementById('submitEffect').onclick = function () {
+  document.getElementById('mapData_isEffect').value = "1";
+  document.forms['mapData'].dispatchEvent(new Event('submit'));
+  document.getElementById('mapData_isEffect').value = "0";
+}
+
+
 document.getElementById('mapFormSubmit').onclick = function () {
-  
-  
-  //permMap()
+ 
   }
 
 document.getElementById('enlargeImage').onclick = function () {
@@ -936,7 +1198,7 @@ if (rz == 1 ){
 
   if(z == 0){
 
-    CTX.globalAlpha = 0.5
+    CTX.globalAlpha = 0.8
 
   }else if( z == 1 && fill == "peru"){
 
@@ -1105,8 +1367,9 @@ function filterCarto(){
   console.log('')
   console.log('+++++++++CURRENT LOCATION++++++++++')
   //console.log(rXYZ)
-  currentLocation = carto.filter(obj => obj.x == rXYZ.x && obj.y == rXYZ.y && obj.z == rXYZ.z)
   try{
+  currentLocation = carto.filter(obj => obj.x == rXYZ.x && obj.y == rXYZ.y && obj.z == rXYZ.z)
+ 
   console.table(currentLocation[0])}catch{ console.log('No record for this location?') }
   console.log(currentLocation.length + ' records found.')
   console.log('(X: ' + rx+','+'Y: ' + ry+','+'Z: ' + rz +')')
@@ -1132,7 +1395,7 @@ function filterCarto(){
     
 //Queries sheet and returns user positions. 
 
-LoadQuestions();
+
 fillStoryteller();
 
   
@@ -1264,11 +1527,11 @@ for (let i = 0; i < carto.length; i++) {
 
                 //Palette Mouse Location    
                 PaletteCTX.strokeStyle = "white";
-                PaletteCTX.strokeRect(mousex * colourSize, mousey * colourSize,colourSize,colourSize);
+                PaletteCTX.strokeRect(Pmousex * colourSize, Pmousey * colourSize,colourSize,colourSize);
                 
                 PaletteCTX.globalAlpha = 0.3
                 PaletteCTX.fillStyle = 'white';
-                PaletteCTX.fillRect(mousex * colourSize, mousey * colourSize,colourSize,colourSize);
+                PaletteCTX.fillRect(Pmousex * colourSize, Pmousey * colourSize,colourSize,colourSize);
 
                 PaletteCTX.globalAlpha = 1
 
@@ -1286,26 +1549,34 @@ function Move(){
 
 //Everything that happens when we move either by mouse or wasd
 //Load Users and Current Locations
-document.getElementById('storyTeller').innerHTML = 'You travel the wilderness.'
 
 
-document.getElementById("Reading_QA").style.display = "none";
-document.getElementById("AskQA").style.display = "none";
-document.getElementById("Reading_QB").style.display = "none";
-document.getElementById("AskQB").style.display = "none";
-document.getElementById("Reading_QC").style.display = "none";
-document.getElementById("AskQC").style.display = "none";
-document.getElementById("Reading_QD").style.display = "none";
-document.getElementById("AskQD").style.display = "none";
-document.getElementById("Reading_QE").style.display = "none";
-document.getElementById("AskQE").style.display = "none";
+
+//document.getElementById("Reading_QA").style.display = "none";
+//document.getElementById("AskQA").style.display = "none";
+//document.getElementById("Reading_QB").style.display = "none";
+//document.getElementById("AskQB").style.display = "none";
+//document.getElementById("Reading_QC").style.display = "none";
+//document.getElementById("AskQC").style.display = "none";
+//document.getElementById("Reading_QD").style.display = "none";
+//document.getElementById("AskQD").style.display = "none";
+//document.getElementById("Reading_QE").style.display = "none";
+//document.getElementById("AskQE").style.display = "none";
 
 LoadUsers();  
 
-LoadWeather();
 
-weather = []
 
+  try{
+    LoadWeather();
+    weather = []
+    }catch{
+      console.log('!!!!! Could not complete LoadWeather()) !!!!!')
+    }
+
+
+
+    
 //Update the uniqueID
 uniqueID = parentID +'-'+ rx +'-'+ ry +'-'+ rz;
 
@@ -1333,15 +1604,37 @@ textEcontents = ""
 rFill = ""
 
 
+try{
+  currentLocation = []
+  filterCarto()
+  console.log('!!!!!  filterCarto() Completed Succesfully !!!!!')
+  }catch{
+    noQuestions()
+    console.log('!!!!! Could not complete filterCarto() !!!!!')
+    document.getElementById('storyTeller').innerHTML = 'You travel the wilderness.'
+  }
 
 
 
-currentLocation = []
+
+try{
+  getQuestions()
+  copyQuestions()
+  console.log('!!!!!  getQuestions() Completed Succesfully !!!!!')
+  }catch{
+    noQuestions()
+    console.log('!!!!! Could not complete  getQuestions() !!!!!')
+  }
 
 
+try{
+  getEffects()
+  fillEffectsDropdowns()
+  console.log('!!!!! getEffects() Completed Succesfully !!!!!')
+  }catch{
+    console.log('!!!!! Could not complete getEffects()) !!!!!')
+  }
 
-
-filterCarto()
 
 
 
@@ -1406,9 +1699,6 @@ gridTop.addEventListener('mousemove', e => {
 
   //console.log('(x: ' + x+','+' y: ' + y+')')
 
-  
-   
-
 });
 
 
@@ -1453,14 +1743,11 @@ Palette.addEventListener('mousemove', e => {
   x = e.offsetX;
   y = e.offsetY;
 
-  mousex = Math.floor( x / colourSize) 
-  mousey = Math.floor( y / colourSize) 
+  Pmousex = Math.floor( x / colourSize) 
+  Pmousey = Math.floor( y / colourSize) 
 
   
   //console.log('(x: ' + x+','+' y: ' + y+')')
-
- 
-   
 
 });
 
@@ -1525,12 +1812,7 @@ function fillPalette(){
     //console.log('Crash i : ' + i)
 
 
-  }
-
-
-
-
-}
+  }}
 
 function LoadColours(){
 
@@ -1588,7 +1870,7 @@ function LoadColours(){
  
  console.log('Rows returned from Palette ' + PaletteArray.length)
  
- console.table(PaletteArray)
+ //console.table(PaletteArray)
 
  PaletteArray = []
  
@@ -1603,6 +1885,7 @@ document.onkeyup = function(e) {
 
   var ignoreElement = document.getElementById('sidebarwrapper');
   var isNOTEditor = ignoreElement.contains(event.target);
+ 
 
   if (!isNOTEditor) {
 
@@ -1722,7 +2005,7 @@ document.onkeyup = function(e) {
 }
     Move()
     //mapData()
-    permMap()
+    //permMap()
    
   }};
 
