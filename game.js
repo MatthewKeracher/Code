@@ -11,6 +11,7 @@ var paintArray = []
 var PaletteArray = []
 var currentQuestions = []
 var currentEffects = []
+var players = []
 
 //Google Sheet Queries
 var sheetName = 'Global'
@@ -66,6 +67,7 @@ var backImageRotate
 
 const Season = document.getElementById("Season")
 const Time = document.getElementById("Time") 
+const Player = document.getElementById('Player')
 
 
 var rUsername = 'Gaia' //prompt("What is your name?");
@@ -116,10 +118,16 @@ document.getElementById('mapData_isWeather').value = "0";
 document.getElementById('mapData_isEffect').value = "0";
 document.getElementById('mapData_isNPC').value = "0";
 
-LoadWeather();
 
-weather = []
 
+try{
+  LoadWeather();
+  weather = []
+  }catch{
+    console.log('!!!!! Could not complete LoadWeather()) !!!!!')
+  }
+
+  
 
 
 setInterval(gridLoop, 1000 / 60);
@@ -392,6 +400,9 @@ function LoadWeather(){
  const url = `${base}&sheet=${sheet}&tq=${query}`;
  //const output = document.querySelector('.output');
 
+console.log('')
+console.log('++++++++LOAD WEATHER+++++++++++')
+
  console.log('Connection to ' + sheet + ' has been made.');
   
  fetch(url)
@@ -454,8 +465,6 @@ weather = []
 
 }
 
-
-
 function getWeather(){
 
  console.log('')
@@ -470,8 +479,7 @@ function getWeather(){
 }
 
 document.getElementById('Season').onchange = function () {
-
-  
+ 
 
   Time.innerHTML = "";
 
@@ -483,8 +491,6 @@ document.getElementById('Season').onchange = function () {
    Time[Time.length] = new Option(Times[i].day,Times[i].day)
 
   }
-
-
   
   fillWeatherEntrySelection()
   fillWeatherDescriptions()
@@ -500,8 +506,6 @@ function setcurrentWeather() {
 
 
 }
-
-
 
 function fillWeatherEntrySelection(){
 
@@ -531,7 +535,6 @@ document.getElementById('weatherEntries').onchange = function () {
   
   
   }
-
 
   function fillWeatherDescriptions(){
 
@@ -574,11 +577,11 @@ document.getElementById('weatherEntries').onchange = function () {
     
     }
  
-
   document.getElementById('EditWeather').onclick = function () {
 
     document.getElementById('Weather').style.display = "block";
-    
+    document.getElementById('editEffects').style.display = "none";
+    document.getElementById('editNPCs').style.display = "none";
     document.getElementById('EditWeather').style.display = "none";
     document.getElementById('HideEditWeather').style.display = "block";
 
@@ -590,6 +593,8 @@ document.getElementById('weatherEntries').onchange = function () {
   
     document.getElementById('HideEditWeather').style.display = "none";
     document.getElementById('EditWeather').style.display = "block";
+    document.getElementById('editEffects').style.display = "block";
+    document.getElementById('editNPCs').style.display = "block";
   }
 
   //-----------------------------------------------------------------------------
@@ -668,6 +673,8 @@ function LoadEffects(){
   document.getElementById('Effects').style.display = "block";
   document.getElementById('mapData_isEffect').value = "1";
   document.getElementById('editEffects').style.display = "none";
+  document.getElementById('EditWeather').style.display = "none";
+  document.getElementById('editNPCs').style.display = "none";
   document.getElementById('hideEditEffects').style.display = "block";
 
   fillEffectDescriptions()
@@ -679,6 +686,8 @@ document.getElementById('hideEditEffects').onclick = function () {
   document.getElementById('Effects').style.display = "none";
   document.getElementById('mapData_isEffect').value = "0";
   document.getElementById('editEffects').style.display = "block";
+  document.getElementById('EditWeather').style.display = "block";
+  document.getElementById('editNPCs').style.display = "block";
   document.getElementById('hideEditEffects').style.display = "none";
 
 }
@@ -966,24 +975,34 @@ function checkSidebar(){
 var Painting = document.getElementById("Painting"); //2
 var Writing =  document.getElementById("Writing"); //1
 var Reading =  document.getElementById("Reading"); //0
+var Playing =  document.getElementById("Playing"); //0
 var Activity = document.getElementById("Activity").value;
 
 if (Activity == 2) {
   Painting.style.display = "block";
   Writing.style.display = "none";
   Reading.style.display = "none";
+  Playing.style.display = "none";
   
 } else { if (Activity == 1) {
   Painting.style.display = "none";
   Writing.style.display = "block";
   Reading.style.display = "none";
+  Playing.style.display = "none";
   paintCheck = 0;
 } else { if (Activity == 0) {
   Painting.style.display = "none";
   Writing.style.display = "none";
   Reading.style.display = "block";
+  Playing.style.display = "none";
   paintCheck = 0;
-}}}}
+} else { if (Activity == 3) {
+  Painting.style.display = "none";
+  Writing.style.display = "none";
+  Reading.style.display = "none";
+  Playing.style.display = "block";
+  paintCheck = 0;
+}}}}}
 
 
 
@@ -1041,6 +1060,8 @@ LoadMap();
 }catch{
   console.log('!!!!! Could not complete LoadMap() !!!!!')
 }
+
+
 
 }
 
@@ -2193,3 +2214,145 @@ textCategory.onblur=function() {
           }
           }
     
+//-----------------------------------------------------------------------------
+//FUNCTION TO IMPORT PLAYER-CHARACTER DATA FROM SPREADSHEET
+
+
+const STR = document.getElementById('Strength');
+const DEX = document.getElementById('Dexterity');
+const INT = document.getElementById('Intelligence');
+const WIS = document.getElementById('Wisdom');
+const CON = document.getElementById('Constitution');
+const CHA = document.getElementById('Charisma');
+const PSY = document.getElementById('Psyche');
+const LUK = document.getElementById('Luck');
+const CBT = document.getElementById('Combat');
+
+document.getElementById('showInventory').onclick = function () {
+  document.getElementById("popUp").style.display = "block";
+  document.getElementById("hideInventory").style.display = "block";
+  document.getElementById("showInventory").style.display = "none";
+}
+
+document.getElementById('hideInventory').onclick = function () {
+  document.getElementById("popUp").style.display = "none";
+  document.getElementById("hideInventory").style.display = "none";
+  document.getElementById("showInventory").style.display = "block";
+}
+
+document.getElementById('loadPlayers').onclick = function () {
+
+try{
+  
+  LoadPlayers();
+  //players = []
+  
+  }catch{
+    console.log('!!!!! Could not complete LoadPlayers() !!!!!')
+  }
+
+}
+
+
+function LoadPlayers(){
+
+  //Connection to Google Sheet
+ //Sheet URL between /d/ and /edit/
+ const sheetID = '1lGlBfPSeCIjMOCyAUvtOiaUDU0f1J_l5FV_N0sRUY48';
+ const base = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?`
+
+ //SPECIFICS THAT CHANGE
+ const sheet = 'Players'
+ const query = 'Select *';
+
+ //AGGREGATE
+ const url = `${base}&sheet=${sheet}&tq=${query}`;
+ //const output = document.querySelector('.output');
+
+console.log('')
+console.log('++++++++LOAD_PLAYERS+++++++++++')
+console.log('Connection to ' + sheet + ' has been made.');
+  
+ fetch(url)
+ .then(res => res.text())
+ .then(rep => {
+   //console.log(rep);
+     //clean the return so it is usable
+   const jsData = JSON.parse(rep.substr(47).slice(0,-2));
+   //console.log(jsData);
+   const colz = [];
+      
+   jsData.table.cols.forEach((heading)=>{
+ 
+     if(heading.label){
+          colz.push(heading.label.toLowerCase().replace(/\s/g,''));
+     } 
+ 
+   })
+ 
+    jsData.table.rows.forEach((main)=>{
+      //console.log(main);
+      const row = {};
+      colz.forEach((ele,ind) =>{
+      //console.log(ele,ind);
+       //iferror syntax here;
+       row[ele] = (main.c[ind] != null) ? main.c[ind].v : '';
+     })
+     players.push(row)
+    }) 
+  
+ })
+
+ console.log(players.length + ' rows have returned.');
+ console.table(players)
+
+ Player.innerHTML = "";
+
+ for(var i = 0; i < players.length; i++) {
+  
+  Player[Player.length] = new Option(players[i].name,players[i].name)
+  
+ }
+
+getPlayer() 
+players = []
+
+}
+
+document.getElementById('Player').onchange = function () {
+
+  getPlayer() 
+
+}
+
+  function getPlayer() {
+
+  const currentPlayer = players.filter(obj => obj.name == Player.value )
+
+  console.table(currentPlayer)
+
+const STR_MOD = Math.floor(currentPlayer[0].str / 5);
+const DEX_MOD = Math.floor(currentPlayer[0].dex / 5);
+const INT_MOD = Math.floor(currentPlayer[0].int / 5);
+const WIS_MOD = Math.floor(currentPlayer[0].wis / 5);
+const CON_MOD = Math.floor(currentPlayer[0].con / 5);
+const CHA_MOD = Math.floor(currentPlayer[0].cha / 5);
+const PSY_MOD = Math.floor(currentPlayer[0].psy / 5);
+const LUK_MOD = Math.floor(currentPlayer[0].luk / 5);
+
+const ATT_BON = STR_MOD + DEX_MOD
+const MGC_BON = INT_MOD + WIS_MOD
+
+  
+  STR.innerHTML = "STR: " + currentPlayer[0].str + '  (' + STR_MOD + ')';
+  DEX.innerHTML = "DEX: " + currentPlayer[0].dex + '  (' + DEX_MOD + ')';
+  INT.innerHTML = "INT: " + currentPlayer[0].int + '  (' + INT_MOD + ')';
+  WIS.innerHTML = "WIS: " + currentPlayer[0].wis + '  (' + WIS_MOD + ')';
+  CON.innerHTML = "CON: " + currentPlayer[0].con + '  (' + CON_MOD + ')';
+  CHA.innerHTML = "CHA: " + currentPlayer[0].cha + '  (' + CHA_MOD + ')';
+  PSY.innerHTML = "PSY: " + currentPlayer[0].psy + '  (' + PSY_MOD + ')';
+  LUK.innerHTML = "LUK: " + currentPlayer[0].luk + '  (' + LUK_MOD + ')';
+
+  CBT.innerHTML = "Attack Bonus: " + ATT_BON + newLine + "Spell  Bonus: " + MGC_BON;
+
+}

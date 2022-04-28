@@ -85,6 +85,8 @@
         height="1600"
         ></canvas>
 
+        <div id = "popUp" style = "display:none;"> </div>
+
     
   </div>
 
@@ -107,6 +109,7 @@
             <option value = 0 > Reading </option> 
             <option value = 1 > Writing </option>
             <option value = 2 > Painting </option>
+            <option value = 3 > Playing </option>
              
           </select>
           
@@ -122,6 +125,42 @@
              
           </select> 
 
+
+          <div id = "Playing"> 
+
+            <br> <br>
+
+            <input id="loadPlayers" type="button" value="Load Players"  /> 
+
+            <br> <br>
+
+           Name: <select id="Player" style="width: 300px; background-color: rgb(0, 0, 0); color: violet; font-family: 'Courier Prime', monospace; ">
+                             
+            </select>
+
+            <br><br>
+            <p id = "Strength"></p>
+            
+            <p id = "Dexterity"></p>
+            
+            <p id = "Intelligence"></p>
+            
+            <p id = "Wisdom"></p>
+            
+            <p id = "Constitution"></p>
+            
+            <p id = "Charisma"></p>
+            
+            <p id = "Psyche"></p>
+           
+            <p id = "Luck"></p>
+
+            <p id = "Combat" style="color: violet ; "></p>
+
+            <input id="showInventory" type="button" value="Show Full Inventory"/>  <input id="hideInventory" type="button" value="Hide Inventory" style = "display: none"/> 
+               
+
+          </div>
         
           
           <br><br>
@@ -278,45 +317,20 @@
 
           <div id = "Reading">
                     
-            Season:
-
-            <select id="Season" name = "Season" form = "mapData" style="width: 90px; background-color: rgb(0, 0, 0); color: grey">  </select> 
-         
-
-            <select id="Time" name = "Day" form = "mapData" style="width: 90px; background-color: rgb(0, 0, 0); color: grey">   </select>      <br><br>       
+                 
              
-            <button id="EditWeather" >Edit Weather</button>
-
-            <br> <br>
-
-            NPC's: <br> <br>
-
-            <select id="oneNPC"   name = "oneNPC"    form = "mapData" style="width: 220px; background-color: rgb(0, 0, 0); color: grey">  </select> <br> <br>
-         
-            <select id="twoNPC"   name = "twoNPC"    form = "mapData" style="width: 220px; background-color: rgb(0, 0, 0); color: grey">   </select>  <br> <br>
-            
-            <select id="threeNPC" name = "threeNPC"  form = "mapData" style="width: 220px; background-color: rgb(0, 0, 0); color: grey">   </select>  <br> <br>
-             
-            <button id="editNPCs" >Edit NPCs</button>
-
-            <br> <br>
-
-            Effects: <br> <br>
-
-            <select id="effectOne"  name = "effectOne" form = "mapData" style="width: 220px; background-color: rgb(0, 0, 0); color: grey">  </select> <br> <br>
-         
-            <select id="effectTwo"   name = "effectTwo" form = "mapData" style="width: 220px; background-color: rgb(0, 0, 0); color: grey">   </select>  <br> <br>
-            
-            <select id="effectThree" name = "effectThree" form = "mapData" style="width: 220px; background-color: rgb(0, 0, 0); color: grey">   </select>  <br> <br>
-             
-            <button id="editEffects" >Edit Effects</button>
-
-            <br> <br>
-            
-
-
-
+            <button id="EditWeather" >Edit Weather</button> <br> <br> <button id="editEffects" >Edit Effects</button> <br> <br> <button id="editNPCs" >Edit NPCs</button> <br> <br>
+      
+           
                 <div id = "Weather" style = "display: none">
+
+                  Season:
+
+                  <select id="Season" name = "Season" form = "mapData" style="width: 90px; background-color: rgb(0, 0, 0); color: grey">  </select> 
+               
+      
+                  <select id="Time" name = "Day" form = "mapData" style="width: 90px; background-color: rgb(0, 0, 0); color: grey">   </select>      <br><br>  
+
 
                   Select:
       
@@ -348,6 +362,58 @@
 
 
                 <div id = "Effects" style = "display: none">
+
+                  Effects: <br> <br>
+
+                  <select id="effectOne"  name = "effectOne" form = "mapData" style="width: 220px; background-color: rgb(0, 0, 0); color: grey">  </select> <br> <br>
+               
+                  <select id="effectTwo"   name = "effectTwo" form = "mapData" style="width: 220px; background-color: rgb(0, 0, 0); color: grey">   </select>  <br> <br>
+                  
+                  <select id="effectThree" name = "effectThree" form = "mapData" style="width: 220px; background-color: rgb(0, 0, 0); color: grey">   </select>  <br> <br>
+                   
+                 
+      
+                  <br> <br>
+
+                  Select:
+      
+                  <select id="effectEntries" style="width: 190px; background-color: rgb(0, 0, 0); color: grey"> </select> <br> <br> <button id="hideEditEffects" >Hide Effects Editor</button>
+      
+
+                  <br><br>
+                  Effect Name:   
+                  <br> <br>
+                  <textarea id = "effectName" name = "effectName"  form = "mapData" style = "height: 25px; width: 100%; background-color: black; color: orange;"> </textarea> <br><br>
+                  Initial Description:   
+                  <br> <br>
+                  <textarea id = "effectDesc"  name = "effectDesc"  form = "mapData" style = "height: 50px; width: 100%; background-color: black; color: orange;"> </textarea> <br><br>
+                  Threaded Description:
+                  <br> <br>
+                  <textarea id = "effectMod"   name = "effectMod"   form = "mapData" style = "height: 50px; width: 100%; background-color: black; color: orange;"> </textarea> <br><br>
+                  NPC Effect Reaction:
+                  <br> <br>
+                  <textarea id = "effectReact" name = "effectReact" form = "mapData" style = "height: 50px; width: 100%; background-color: black; color: orange;"> </textarea> 
+                  
+                   <br><br>
+
+                   <button id="submitEffect" >Save</button>
+      
+      
+                </div>
+
+
+                <div id = "NPC's" style = "display: none">
+
+                  NPC's: <br> <br>
+
+                  <select id="oneNPC"   name = "oneNPC"    form = "mapData" style="width: 220px; background-color: rgb(0, 0, 0); color: grey">  </select> <br> <br>
+               
+                  <select id="twoNPC"   name = "twoNPC"    form = "mapData" style="width: 220px; background-color: rgb(0, 0, 0); color: grey">   </select>  <br> <br>
+                  
+                  <select id="threeNPC" name = "threeNPC"  form = "mapData" style="width: 220px; background-color: rgb(0, 0, 0); color: grey">   </select>  <br> <br>
+                   
+             
+                       
 
                   Select:
       
