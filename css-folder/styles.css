@@ -25,12 +25,23 @@ div#popUp{
   top:0; 
   left:0;
   background-color: rgb(24, 23, 23);
-  opacity: 0.8;
+  opacity: 0.9;
   color: rgb(3, 182, 3);
   font-family: 'Courier Prime', monospace;
   border: none;
   z-index : 5
 
+}
+
+#Inventory {
+  display: block;
+  margin-top: 20px;
+  
+}
+th, td {
+  border: 1px solid ivory;
+  color: violet;
+  padding: 2px;
 }
 
    

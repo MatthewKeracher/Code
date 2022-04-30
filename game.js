@@ -12,6 +12,8 @@ var PaletteArray = []
 var currentQuestions = []
 var currentEffects = []
 var players = []
+var npcArray = []
+var currentNPCs = []
 
 //Google Sheet Queries
 var sheetName = 'Global'
@@ -118,21 +120,11 @@ document.getElementById('mapData_isWeather').value = "0";
 document.getElementById('mapData_isEffect').value = "0";
 document.getElementById('mapData_isNPC').value = "0";
 
-
-
-try{
-  LoadWeather();
-  weather = []
-  }catch{
-    console.log('!!!!! Could not complete LoadWeather()) !!!!!')
-  }
-
-  
+checkSidebar()
 
 
 setInterval(gridLoop, 1000 / 60);
 setInterval(setFlashing, 1500);
-
 
 
 
@@ -385,6 +377,29 @@ if( document.getElementById('Reading_QE').value != "" ){
 
 //-----------------------------------------------------------------------------
 //FUNCTION TO IMPORT WEATHER DATA FROM SPREADSHEET
+
+Season.innerHTML = "";
+
+ 
+ Season[Season.length] = new Option("Spring","Spring")
+ Season[Season.length] = new Option("Summer","Summer")
+ Season[Season.length] = new Option("Autumn","Autumn")
+ Season[Season.length] = new Option("Winter","Winter")
+ Season[Season.length] = new Option("Misc.","Misc.")
+
+Time.innerHTML = "";
+
+
+ Time[Time.length] = new Option("Dawn","Dawn")
+ Time[Time.length] = new Option("Morning","Morning")
+ Time[Time.length] = new Option("Noon","Noon")
+ Time[Time.length] = new Option("Afternoon","Afternoon")
+ Time[Time.length] = new Option("Evening","Evening")
+ Time[Time.length] = new Option("Dusk","Dusk")
+ Time[Time.length] = new Option("Night","Night")
+ Time[Time.length] = new Option("Midnight","Midnight")
+ Time[Time.length] = new Option("Misc.","Misc.")
+ 
 function LoadWeather(){
 
   //Connection to Google Sheet
@@ -437,32 +452,49 @@ console.log('++++++++LOAD WEATHER+++++++++++')
 
  console.log(weather.length + ' rows have returned.');
 
- Season.innerHTML = "";
+ 
 
- for(var i = 0; i < weather.length; i++) {
+ //for(var i = 0; i < weather.length; i++) {
   
-  Season[Season.length] = new Option(weather[i].season,weather[i].season)
+  //Season[Season.length] = new Option(weather[i].season,weather[i].season)
  
  
- }
+ //}
 
- Time.innerHTML = "";
 
- const Times = weather.filter(obj => obj.season == Season.value )
- console.table(Times)
 
- for(var i = 0; i < Times.length; i++) {
+ //const Times = weather.filter(obj => obj.season == Season.value )
+ //console.table(Times)
+
+
+// for(var i = 0; i < Times.length; i++) {
   
-  Time[Time.length] = new Option(Times[i].day,Times[i].day)
+//  Time[Time.length] = new Option(Times[i].day,Times[i].day)
+
+//}
+
+//weather = []
 
 }
 
+function randomWeather(){
 
-fillWeatherEntrySelection()
-fillWeatherDescriptions()
-getWeather() 
-weather = []
+  console.log('')
+  console.log('+++++++++ randomWeather ++++++++++')
+  
 
+  var seed = document.getElementById('weatherEntries')
+  var options = currentWeather.length 
+  const choice = Math.floor(Math.random() * options)
+  
+  var seedChildren = seed.children;
+   
+   // set the value of the dropdown to a random option
+   seed.value = seedChildren[choice].value; 
+
+   fillWeatherDescriptions()
+   //fillWeatherEntrySelection()
+  
 }
 
 function getWeather(){
@@ -476,21 +508,23 @@ function getWeather(){
  currentWeather = weather.filter(obj => obj.season == Season.value && obj.day == Time.value)
  console.table(currentWeather)
 
+ randomWeather()
+
 }
 
 document.getElementById('Season').onchange = function () {
  
 
-  Time.innerHTML = "";
+  //Time.innerHTML = "";
 
-  const Times = weather.filter(obj => obj.season == Season.value )
-  console.table(Times)
+  //const Times = weather.filter(obj => obj.season == Season.value )
+  //console.table(Times)
  
-  for(var i = 0; i < Times.length; i++) {
+  //for(var i = 0; i < Times.length; i++) {
    
-   Time[Time.length] = new Option(Times[i].day,Times[i].day)
+   //Time[Time.length] = new Option(Times[i].day,Times[i].day)
 
-  }
+ // }
   
   fillWeatherEntrySelection()
   fillWeatherDescriptions()
@@ -514,7 +548,6 @@ function fillWeatherEntrySelection(){
 
   weatherEntries.innerHTML = "";
   
-
   const weatherNames = weather.filter(obj => obj.season == Season.value && obj.day == Time.value)
  
   for(var i = 0; i < weatherNames.length; i++) {
@@ -569,33 +602,285 @@ document.getElementById('weatherEntries').onchange = function () {
   }
 
   document.getElementById('Time').onchange = function () {
-
     
     fillWeatherEntrySelection()
     
     getWeather()
+
+    fillWeatherDescriptions()
     
     }
  
   document.getElementById('EditWeather').onclick = function () {
 
     document.getElementById('Weather').style.display = "block";
-    document.getElementById('editEffects').style.display = "none";
-    document.getElementById('editNPCs').style.display = "none";
-    document.getElementById('EditWeather').style.display = "none";
-    document.getElementById('HideEditWeather').style.display = "block";
+    document.getElementById('EditorButtons').style.display = "none";
+    fillWeatherEntrySelection()
+    fillWeatherDescriptions()
 
   }
 
   document.getElementById('HideEditWeather').onclick = function () {
 
     document.getElementById('Weather').style.display = "none";
-  
-    document.getElementById('HideEditWeather').style.display = "none";
-    document.getElementById('EditWeather').style.display = "block";
-    document.getElementById('editEffects').style.display = "block";
-    document.getElementById('editNPCs').style.display = "block";
+    document.getElementById('EditorButtons').style.display = "block";
   }
+
+     //-----------------------------------------------------------------------------
+//LOCATION STUFF
+
+document.getElementById('editLocation').onclick = function () {
+
+  document.getElementById('LocationEditor').style.display = "block";
+  document.getElementById('EditorButtons').style.display = "none";
+
+
+}
+
+document.getElementById('hideLocationEditor').onclick = function () {
+
+  document.getElementById('LocationEditor').style.display = "none";
+  document.getElementById('EditorButtons').style.display = "block";
+
+}
+
+   //-----------------------------------------------------------------------------
+//NPC STUFF
+
+document.getElementById('editNPCs').onclick = function () {
+
+  document.getElementById('NPCs').style.display = "block";
+  
+  document.getElementById('EditorButtons').style.display = "none";
+
+  fillNPCQuestions()
+  fillNPCDescriptions()
+
+
+}
+
+document.getElementById('hideEditNPCs').onclick = function () {
+
+  document.getElementById('NPCs').style.display = "none";
+
+  document.getElementById('EditorButtons').style.display = "block";
+}
+
+
+
+//FUNCTION TO IMPORT NPC DATA FROM SPREADSHEET
+function LoadNPCs(){
+
+  //Connection to Google Sheet
+ //Sheet URL between /d/ and /edit/
+ const sheetID = '1lGlBfPSeCIjMOCyAUvtOiaUDU0f1J_l5FV_N0sRUY48';
+ const base = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?`
+
+ //SPECIFICS THAT CHANGE
+ const sheet = 'NPCs'
+ const query = 'Select *';
+
+ //AGGREGATE
+ const url = `${base}&sheet=${sheet}&tq=${query}`;
+ //const output = document.querySelector('.output');
+ console.log('')
+ console.log('+++++++++LOAD NPCs++++++++++')
+
+ fetch(url)
+ .then(res => res.text())
+ .then(rep => {
+   //console.log(rep);
+     //clean the return so it is usable
+   const jsData = JSON.parse(rep.substr(47).slice(0,-2));
+   //console.log(jsData);
+   const colz = [];
+      
+   jsData.table.cols.forEach((heading)=>{
+ 
+     if(heading.label){
+          colz.push(heading.label.toLowerCase().replace(/\s/g,''));
+     } 
+ 
+   })
+ 
+    jsData.table.rows.forEach((main)=>{
+      //console.log(main);
+      const row = {};
+      colz.forEach((ele,ind) =>{
+      //console.log(ele,ind);
+       //iferror syntax here;
+       row[ele] = (main.c[ind] != null) ? main.c[ind].v : '';
+     })
+     npcArray.push(row)
+    }) 
+  
+ })
+
+ }
+
+ function getNPCs(){
+
+  let currentCategory = document.getElementById("Category").value
+
+  console.log('')
+  console.log('+++++++++ GET NPCS ++++++++++')
+  console.log('Rows returned from NPCs ' + npcArray.length)
+  console.log('Category is ' + sheetName + ' ' + currentCategory)
+
+  if( sheetName == "Global"){
+
+    currentNPCs = npcArray.filter(obj => obj.scale == sheetName)
+
+  }else if(sheetName == "Local"){
+
+    currentNPCs = npcArray.filter(obj => obj.category == currentCategory && obj.scale == sheetName)
+
+  }else if(sheetName == "Dungeon"){
+
+    currentNPCs = npcArray.filter(obj => obj.category == currentCategory && obj.scale == sheetName)
+
+  }
+ 
+ 
+  console.log('Rows returned from Filter ' + currentNPCs.length)
+  console.table(currentNPCs)
+ 
+ 
+
+ }
+
+ function fillNPCDropdowns(){
+
+
+  var NPCEntries = document.getElementById('npcEntries')
+
+  var oneNPC = document.getElementById('oneNPC')
+  var twoNPC = document.getElementById('twoNPC')
+  var threeNPC = document.getElementById('threeNPC')
+
+  oneNPC.innerHTML = "";
+  twoNPC.innerHTML = "";
+  threeNPC.innerHTML = "";
+
+  NPCEntries.innerHTML = "";
+
+  for(var i = 0; i < currentNPCs.length; i++) {
+
+    console.log(currentNPCs[i].npcname)
+  
+    NPCEntries[NPCEntries.length] = new Option(currentNPCs[i].npcname,currentNPCs[i].npcname)
+  
+    oneNPC[oneNPC.length]     = new Option(currentNPCs[i].npcname,currentNPCs[i].npcname)
+    twoNPC[twoNPC.length]     = new Option(currentNPCs[i].npcname,currentNPCs[i].npcname)
+    threeNPC[threeNPC.length] = new Option(currentNPCs[i].npcname,currentNPCs[i].npcname)
+    
+  }
+
+  
+  
+  NPCEntries[NPCEntries.length] = new Option("New Entry","New Entry")
+
+  const random1 = Math.floor(Math.random() * currentNPCs.length)
+  const random2 = Math.floor(Math.random() * currentNPCs.length)
+  const random3 = Math.floor(Math.random() * currentNPCs.length)
+
+  var oneNPCChildren   = oneNPC.children;
+  var twoNPCChildren   = twoNPC.children;
+  var threeNPCChildren = threeNPC.children;
+
+  
+
+   // set the value of the dropdown to a random option
+   oneNPC.value = oneNPCChildren[random1].value; 
+   twoNPC.value = twoNPCChildren[random2].value; 
+   threeNPC.value = threeNPCChildren[random3].value; 
+
+}
+
+function fillNPCDescriptions(){
+
+  //setcurrentWeather()
+
+  const Description = document.getElementById('npc1');
+  const Modifier =    document.getElementById('npc2');
+  const Reaction =    document.getElementById('npc3');
+  const Name =        document.getElementById('npcEntries');
+  const Title =       document.getElementById('npcName');
+  
+  
+  if( Name.value == "New Entry"){
+
+    Description.value = ""
+    Modifier.value =   "" 
+    Reaction.value = ""
+    Title.value = ""
+
+  }else{
+
+  let currentCategory = document.getElementById("Category").value
+  let selection    = document.getElementById('npcEntries').value;
+  var chosenNPC
+
+  if( sheetName == "Global"){
+
+     chosenNPC = npcArray.filter(obj => obj.scale == sheetName && obj.npcname == selection)
+
+  }else if(sheetName == "Local"){
+
+     chosenNPC = npcArray.filter(obj => obj.category == currentCategory && obj.scale == sheetName && obj.npcname == selection)
+
+  }else if(sheetName == "Dungeon"){
+
+     chosenNPC = npcArray.filter(obj => obj.category == currentCategory && obj.scale == sheetName && obj.npcname == selection)
+
+  }
+  
+  Title.value =  chosenNPC[0].npcname
+
+  Description.value = chosenNPC[0].npc1
+  
+  Modifier.value = chosenNPC[0].npc2
+
+  Reaction.value = chosenNPC[0].npc3
+
+  }
+
+
+ 
+
+}
+
+document.getElementById('npcEntries').onchange = function () {
+
+  fillNPCDescriptions()
+
+}
+
+function fillNPCQuestions(){
+//Depending on Scale, ask for different aspects. 
+let Location = document.getElementById("Location").value
+let Q1 = document.getElementById("npcTitleOne")
+let Q2 = document.getElementById("npcTitleTwo")
+let Q3 = document.getElementById("npcTitleThree")
+let Q4 = document.getElementById("npcTitleFour")
+let Q5 = document.getElementById("npcTitleFive")
+let Q6 = document.getElementById("npcTitleSix")
+
+if(sheetName == "Global"){
+
+Q1.innerHTML = 'Select Global Groups active in location: '
+Q2.innerHTML = 'Select Group to Edit:'
+Q3.innerHTML = 'Name of Organisation:'
+Q4.innerHTML = 'Briefly describe the Organisation:'
+Q5.innerHTML = 'Where is this organisation centred and who runs it?'
+Q6.innerHTML = 'What do all members of this organisation carry with them?'
+
+}
+
+console.log('')
+console.log('+++++++++fillNPCQuestions++++++++++')
+
+}
 
   //-----------------------------------------------------------------------------
 //FUNCTION TO IMPORT EFFECTS DATA FROM SPREADSHEET
@@ -663,6 +948,8 @@ function LoadEffects(){
   currentEffects = Effects.filter(obj => obj.category == currentCategory && obj.scale == sheetName)
   console.log('Rows returned from Filter ' + currentEffects.length)
   console.table(currentEffects)
+
+  
  
  
 
@@ -671,11 +958,7 @@ function LoadEffects(){
  document.getElementById('editEffects').onclick = function () {
 
   document.getElementById('Effects').style.display = "block";
-  document.getElementById('mapData_isEffect').value = "1";
-  document.getElementById('editEffects').style.display = "none";
-  document.getElementById('EditWeather').style.display = "none";
-  document.getElementById('editNPCs').style.display = "none";
-  document.getElementById('hideEditEffects').style.display = "block";
+  document.getElementById('EditorButtons').style.display = "none";
 
   fillEffectDescriptions()
 
@@ -684,11 +967,7 @@ function LoadEffects(){
 document.getElementById('hideEditEffects').onclick = function () {
 
   document.getElementById('Effects').style.display = "none";
-  document.getElementById('mapData_isEffect').value = "0";
-  document.getElementById('editEffects').style.display = "block";
-  document.getElementById('EditWeather').style.display = "block";
-  document.getElementById('editNPCs').style.display = "block";
-  document.getElementById('hideEditEffects').style.display = "none";
+  document.getElementById('EditorButtons').style.display = "block";
 
 }
 
@@ -715,6 +994,7 @@ document.getElementById('hideEditEffects').onclick = function () {
     effectTwo[effectTwo.length]     = new Option(currentEffects[i].name,currentEffects[i].name)
     effectThree[effectThree.length] = new Option(currentEffects[i].name,currentEffects[i].name)
 
+
     
   }
   
@@ -732,6 +1012,8 @@ document.getElementById('hideEditEffects').onclick = function () {
    effectOne.value = effectOneChildren[random1].value; 
    effectTwo.value = effectTwoChildren[random2].value; 
    effectThree.value = effectThreeChildren[random3].value; 
+
+   fillEffectDescriptions()
 
 }
 
@@ -969,40 +1251,94 @@ const Sidebar = document.getElementById("sidebarwrapper");
 
 //-----------------------------------------------------------------------------
 
+document.getElementById('showInventory').onclick = function () {
+  document.getElementById("popUp").style.display = "block";
+  document.getElementById("hideInventory").style.display = "block";
+  document.getElementById("showInventory").style.display = "none";
+}
+
+document.getElementById('hideInventory').onclick = function () {
+  document.getElementById("popUp").style.display = "none";
+  document.getElementById("hideInventory").style.display = "none";
+  document.getElementById("showInventory").style.display = "block";
+}
+
+
+document.getElementById('Usertype').onchange = function () {
+
+if(document.getElementById('Usertype').value == 0){
+  //PLAYER
+  document.getElementById('Activity').style= "display: none; float: right; background-color: rgb(0, 0, 0); color: violet"
+  document.getElementById('Playing').style = "display: block"
+
+  document.getElementById('Activity').value  = 3
+  
+checkSidebar();
+
+
+}else if(document.getElementById('Usertype').value == 1){
+
+  //DUNGEON MASTER
+  document.getElementById('Playing').style  = "display: none"
+
+  if(document.getElementById("popUp").style.display = "block"){
+    document.getElementById("popUp").style.display = "none";
+    document.getElementById("hideInventory").style.display = "none";
+    document.getElementById("showInventory").style.display = "block";
+  }else{
+    document.getElementById("popUp").style.display = "none";
+    document.getElementById("hideInventory").style.display = "none";
+    document.getElementById("showInventory").style.display = "block";
+  }
+ 
+  document.getElementById('popUp').style  = "display: none"
+
+
+
+  document.getElementById('Activity').style = "display: block; float: right; background-color: rgb(0, 0, 0); color: violet"
+
+  document.getElementById('Activity').value  = 0
+  
+checkSidebar();
+
+}}
+
+document.getElementById('Activity').onchange = function () {
+
+  checkSidebar();
+
+}
 
 function checkSidebar(){
 
 var Painting = document.getElementById("Painting"); //2
 var Writing =  document.getElementById("Writing"); //1
 var Reading =  document.getElementById("Reading"); //0
-var Playing =  document.getElementById("Playing"); //0
+var Playing =  document.getElementById("Playing"); //3
 var Activity = document.getElementById("Activity").value;
 
 if (Activity == 2) {
   Painting.style.display = "block";
   Writing.style.display = "none";
   Reading.style.display = "none";
-  Playing.style.display = "none";
-  
-} else { if (Activity == 1) {
+ 
+} else if (Activity == 1) {
   Painting.style.display = "none";
   Writing.style.display = "block";
   Reading.style.display = "none";
-  Playing.style.display = "none";
   paintCheck = 0;
-} else { if (Activity == 0) {
+} else if (Activity == 0) {
   Painting.style.display = "none";
   Writing.style.display = "none";
   Reading.style.display = "block";
-  Playing.style.display = "none";
   paintCheck = 0;
-} else { if (Activity == 3) {
+} else if (Activity == 3) {
   Painting.style.display = "none";
   Writing.style.display = "none";
   Reading.style.display = "none";
-  Playing.style.display = "block";
   paintCheck = 0;
-}}}}}
+
+}}
 
 
 
@@ -1017,7 +1353,7 @@ drawGridlines();
 
 fillMap(); 
 
-checkSidebar();
+
 drawPalette()
 drawLabels();
 drawUser();
@@ -1048,6 +1384,13 @@ LoadEffects();
   }
 
 try{
+  npcArray = []  
+  LoadNPCs();
+    }catch{
+    console.log('!!!!! Could not complete  LoadNPCs() !!!!!')
+    }
+
+try{
 //colours = []
 LoadColours();
 }catch{
@@ -1060,6 +1403,15 @@ LoadMap();
 }catch{
   console.log('!!!!! Could not complete LoadMap() !!!!!')
 }
+
+try{
+  weather = []
+  LoadWeather();
+ 
+  }catch{
+    console.log('!!!!! Could not complete LoadWeather()) !!!!!')
+  }
+
 
 
 
@@ -1135,6 +1487,12 @@ document.getElementById('submitEffect').onclick = function () {
   document.getElementById('mapData_isEffect').value = "1";
   document.forms['mapData'].dispatchEvent(new Event('submit'));
   document.getElementById('mapData_isEffect').value = "0";
+}
+
+document.getElementById('submitNPC').onclick = function () {
+  document.getElementById('mapData_isNPC').value = "1";
+  document.forms['mapData'].dispatchEvent(new Event('submit'));
+  document.getElementById('mapData_isNPC').value = "0";
 }
 
 
@@ -1570,32 +1928,21 @@ function Move(){
 
 //Everything that happens when we move either by mouse or wasd
 //Load Users and Current Locations
+try{
+  LoadUsers();  
+  users = []
+  }catch{
+    console.log('!!!!! Could not complete LoadUsers()) !!!!!')
+  }
 
-
-
-//document.getElementById("Reading_QA").style.display = "none";
-//document.getElementById("AskQA").style.display = "none";
-//document.getElementById("Reading_QB").style.display = "none";
-//document.getElementById("AskQB").style.display = "none";
-//document.getElementById("Reading_QC").style.display = "none";
-//document.getElementById("AskQC").style.display = "none";
-//document.getElementById("Reading_QD").style.display = "none";
-//document.getElementById("AskQD").style.display = "none";
-//document.getElementById("Reading_QE").style.display = "none";
-//document.getElementById("AskQE").style.display = "none";
-
-LoadUsers();  
-
-
-
-  try{
-    LoadWeather();
-    weather = []
-    }catch{
-      console.log('!!!!! Could not complete LoadWeather()) !!!!!')
-    }
-
-
+    try{
+      getWeather() 
+      
+      }catch{
+        console.log('!!!!! Could not complete getWeather()) !!!!!')
+      }
+  
+    
 
     
 //Update the uniqueID
@@ -1655,6 +2002,17 @@ try{
   }catch{
     console.log('!!!!! Could not complete getEffects()) !!!!!')
   }
+
+  try{
+    getNPCs()
+    fillNPCDropdowns()
+    fillNPCQuestions()
+    fillNPCDescriptions()
+    
+    console.log('!!!!!  getNPCs() Completed Succesfully !!!!!')
+    }catch{
+      console.log('!!!!! Could not complete  getNPCs()) !!!!!')
+    }
 
 
 
@@ -2228,17 +2586,6 @@ const PSY = document.getElementById('Psyche');
 const LUK = document.getElementById('Luck');
 const CBT = document.getElementById('Combat');
 
-document.getElementById('showInventory').onclick = function () {
-  document.getElementById("popUp").style.display = "block";
-  document.getElementById("hideInventory").style.display = "block";
-  document.getElementById("showInventory").style.display = "none";
-}
-
-document.getElementById('hideInventory').onclick = function () {
-  document.getElementById("popUp").style.display = "none";
-  document.getElementById("hideInventory").style.display = "none";
-  document.getElementById("showInventory").style.display = "block";
-}
 
 document.getElementById('loadPlayers').onclick = function () {
 
@@ -2315,13 +2662,16 @@ console.log('Connection to ' + sheet + ' has been made.');
  }
 
 getPlayer() 
+LoadInventory()
 players = []
+inventory = []
 
 }
 
 document.getElementById('Player').onchange = function () {
 
   getPlayer() 
+  
 
 }
 
@@ -2354,5 +2704,102 @@ const MGC_BON = INT_MOD + WIS_MOD
   LUK.innerHTML = "LUK: " + currentPlayer[0].luk + '  (' + LUK_MOD + ')';
 
   CBT.innerHTML = "Attack Bonus: " + ATT_BON + newLine + "Spell  Bonus: " + MGC_BON;
+
+}
+
+
+var inventory = []
+
+function LoadInventory(){
+
+  //Connection to Google Sheet
+ //Sheet URL between /d/ and /edit/
+ const sheetID = '1lGlBfPSeCIjMOCyAUvtOiaUDU0f1J_l5FV_N0sRUY48';
+ const base = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?`
+
+ //SPECIFICS THAT CHANGE
+ const sheet = 'Inventory'
+ const query = 'Select *';
+
+ //AGGREGATE
+ const url = `${base}&sheet=${sheet}&tq=${query}`;
+ //const output = document.querySelector('.output');
+
+console.log('')
+console.log('++++++++LOAD_INVENTORY+++++++++++')
+console.log('Connection to ' + sheet + ' has been made.');
+  
+ fetch(url)
+ .then(res => res.text())
+ .then(rep => {
+   //console.log(rep);
+     //clean the return so it is usable
+   const jsData = JSON.parse(rep.substr(47).slice(0,-2));
+   //console.log(jsData);
+   const colz = [];
+      
+   jsData.table.cols.forEach((heading)=>{
+ 
+     if(heading.label){
+          colz.push(heading.label.toLowerCase().replace(/\s/g,''));
+     } 
+ 
+   })
+ 
+    jsData.table.rows.forEach((main)=>{
+      //console.log(main);
+      const row = {};
+      colz.forEach((ele,ind) =>{
+      //console.log(ele,ind);
+       //iferror syntax here;
+       row[ele] = (main.c[ind] != null) ? main.c[ind].v : '';
+     })
+     inventory.push(row)
+    }) 
+  
+ })
+
+ console.log(inventory.length + ' rows have returned.');
+ console.table(inventory)
+
+
+makeInventory()
+inventory = []
+
+}
+
+function makeInventory(){ 
+
+  
+  let myTable = document.querySelector('#Inventory');
+  let employees = inventory
+  
+  let headers = []
+  
+      let table = document.createElement('table');
+      let headerRow = document.createElement('tr');
+      headers.forEach(headerText => {
+          let header = document.createElement('th');
+          let textNode = document.createTextNode(headerText);
+          header.appendChild(textNode);
+          headerRow.appendChild(header);
+      });
+      table.appendChild(headerRow);
+      employees.forEach(emp => {
+          let row = document.createElement('tr');
+          Object.values(emp).forEach(text => {
+              let cell = document.createElement('td');
+              let textNode = document.createTextNode(text);
+              cell.appendChild(textNode);
+              row.appendChild(cell);
+          })
+          table.appendChild(row);
+      });
+      myTable.appendChild(table);
+
+  ;
+
+  inventory = []
+
 
 }

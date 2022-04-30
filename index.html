@@ -31,7 +31,7 @@
 
     <form id = "mapData" onsubmit = "google.script.run.processData(this.form);" 
   
-    action = "https://script.google.com/macros/s/AKfycbyyWy1o4zPkPeBajBwWYxH6HmuoeUhqBM_c3hR1uH5Me4pYKoLbCLj9Xl7Qxh6KunNl/exec" style = "z-index: 5" >    
+    action = "https://script.google.com/macros/s/AKfycbyJ3hPn6-gH6rhihTDb5TvSSfgGKlNxkIrL-yqjPs9mKxXIkL5M_ywp5-auqUwq-kI/exec" style = "z-index: 5" >    
 
     <input name= "username"  form = "mapData"   id= "mapData_user"        style = "background-color: rgb(0, 0, 0); color: green; width:200px;"               type="text"    >
     <input name= "sheetName" form = "mapData"   id= "mapData_sheetName"   style = "background-color: rgb(0, 0, 0); color: green; width:50px; border: none;"  type="text"    >
@@ -85,56 +85,12 @@
         height="1600"
         ></canvas>
 
-        <div id = "popUp" style = "display:none;"> </div>
-
-    
-  </div>
-
-    </div>
-
- 
-    <div id="sidebarwrapper">
-
-      <div id="sidebar">
-
-        <div id="sidebaritem" class="mousescroll">
-
-          <img id = 'logo'  src="images/BannerLogo.gif" alt="EXCEL_DM_LOGO" >  <br><br>
-
-          Author:
-          <input id= "user" name = "user" form = "mapData" type="text" > 
-
-          <select id="Activity" style="background-color: rgb(0, 0, 0); color: violet">
-              
-            <option value = 0 > Reading </option> 
-            <option value = 1 > Writing </option>
-            <option value = 2 > Painting </option>
-            <option value = 3 > Playing </option>
-             
-          </select>
-          
-          <br> <br>
-         
-          Focus:
-
-          <select id="zLayer" name="Z" style="background-color: rgb(0, 0, 0); color: orange">
-              
-            
-            <option value = 1 > Oikos </option>
-            <option value = 0 > Gaia </option>
-             
-          </select> 
-
-
-          <div id = "Playing"> 
-
+        <div id = "popUp" style = "display:none;"> 
+      
+          <div id = "AbilityScores" style = "float: left; padding: 10px; border-left: cyan;">
             <br> <br>
 
-            <input id="loadPlayers" type="button" value="Load Players"  /> 
-
-            <br> <br>
-
-           Name: <select id="Player" style="width: 300px; background-color: rgb(0, 0, 0); color: violet; font-family: 'Courier Prime', monospace; ">
+           <select id="Player" style=" width: 300px; background-color: rgb(0, 0, 0); color: violet; font-family: 'Courier Prime', monospace; ">
                              
             </select>
 
@@ -157,16 +113,71 @@
 
             <p id = "Combat" style="color: violet ; "></p>
 
-            <input id="showInventory" type="button" value="Show Full Inventory"/>  <input id="hideInventory" type="button" value="Hide Inventory" style = "display: none"/> 
+
+        </div>
+
+       
+        <div id = "Inventory" style = "color: violet; opacity: 1; padding: 10px;">
+                
+      </div>
+
+        
+
+      </div> 
+
+    
+  </div>
+
+    </div>
+
+ 
+    <div id="sidebarwrapper">
+
+      <div id="sidebar">
+
+        <div id="sidebaritem" class="mousescroll">
+
+          <img id = 'logo'  src="images/BannerLogo.gif" alt="EXCEL_DM_LOGO" >  <br><br>
+
+          Author:
+          <input id= "user" name = "user" form = "mapData" type="text" > 
+
+          <select id="Usertype" style="float: right; background-color: rgb(0, 0, 0); color: orange">
+              
+            <option value = 0 > Player </option> 
+            <option value = 1 > Dungeon Master </option>
+                     
+          </select> <br><br>
+
+          <select id="Activity" style=" display: none; float: right; background-color: rgb(0, 0, 0); color: violet">
+              
+            <option value = 0 > Reading </option> 
+            <option value = 1 > Writing </option>
+            <option value = 2 > Painting </option>
+            <option value = 3 > Playing </option>
+                        
+          </select>
+ 
+
+          <div id = "Playing"> 
+  
+            <input id="loadPlayers" type="button" value="Load Players"  /> <br><br>
+           
+            <input id="showInventory" type="button" value="Show Character Interface"/>   <input id="hideInventory" type="button" value="Hide Character Interface" style = "display: none"/>
                
 
           </div>
         
-          
-          <br><br>
-
           <div id = "Painting">
            
+            Focus:
+
+           <select id="zLayer" name="Z" style="background-color: rgb(0, 0, 0); color: orange"> 
+            
+               <option value = 1 > Oikos </option>
+                <option value = 0 > Gaia </option>
+           
+        </select>  <br> <br>
 
             URL:  <input id= "backgroundImage"  type="text" style="width: 75%; background-color: rgb(0, 0, 0); color: violet" >  <br> <br> 
 
@@ -275,171 +286,187 @@
           </canvas>            
           
           </div>
-
-        <br>
-
-          
-
+   
           <div id = "Writing">
+
+            <div id = "EditorButtons">
+
+
+            <br> <br> <button id="editLocation" style = "float: right ;" >  Edit Location </button><br>
+            <br> <button id="EditWeather"  style = "float: right ;" >  Edit Weather  </button><br>
+            <br> <button id="editEffects"  style = "float: right ;" >  Edit Effects  </button><br>
+            <br> <button id="editNPCs"     style = "float: right ;" >  Edit NPCs     </button><br>
+
+            </div>
+      
+            <div id = "Weather" style = "display: none"> 
+              
+              <button id="HideEditWeather" > Hide Weather Editor </button>
+
+              <br> <br>
+
+              Season:
+
+              <select id="Season" name = "Season" form = "mapData" style="width: 90px; background-color: rgb(0, 0, 0); color: grey">  </select> 
+           
+  
+              <select id="Time" name = "Day" form = "mapData" style="width: 90px; background-color: rgb(0, 0, 0); color: grey">   </select>      <br><br>  
+
+
+              Select:
+  
+              <select id="weatherEntries" style="width: 190px; background-color: rgb(0, 0, 0); color: grey"> </select>    
+              
+              <br>
+  
+
+              <br><br>
+              Weather Name:   
+              <br> <br>
+              <textarea id = "WeatherName" name = "Name" form = "mapData" style = "height: 25px; width: 100%; background-color: black; color: orange;"> </textarea> <br><br>
+              Initial Description:   
+              <br> <br>
+              <textarea id = "WeatherDesc" name = "Description" form = "mapData" style = "height: 50px; width: 100%; background-color: black; color: orange;"> </textarea> <br><br>
+              Threaded Description:
+              <br> <br>
+              <textarea id = "WeatherMod" name = "Modifier"     form = "mapData" style = "height: 50px; width: 100%; background-color: black; color: orange;"> </textarea> <br><br>
+              NPC Weather Reaction:
+              <br> <br>
+              <textarea id = "WeatherReact" name = "Reaction"   form = "mapData" style = "height: 50px; width: 100%; background-color: black; color: orange;"> </textarea> 
+              
+               <br><br>
+
+               <button id="SubmitWeather" >Save</button> <br> <br>
+  
+  
+            </div>
+
+            <div id = "Effects" style = "display: none">
+
+               <button id="hideEditEffects" >Hide Effects Editor</button>
+
+               <br> <br>
+
+              Effects: <br> <br>
+
+              <select id="effectOne"  name = "effectOne" form = "mapData" style="width: 220px; background-color: rgb(0, 0, 0); color: grey">  </select> <br> <br>
+           
+              <select id="effectTwo"   name = "effectTwo" form = "mapData" style="width: 220px; background-color: rgb(0, 0, 0); color: grey">   </select>  <br> <br>
+              
+              <select id="effectThree" name = "effectThree" form = "mapData" style="width: 220px; background-color: rgb(0, 0, 0); color: grey">   </select>  <br> <br>
+               
+             
+  
+              <br> <br>
+
+              Select:
+  
+              <select id="effectEntries" style="width: 190px; background-color: rgb(0, 0, 0); color: grey"> </select> 
+  
+
+              <br><br>
+              Effect Name:   
+              <br> <br>
+              <textarea id = "effectName" name = "effectName"  form = "mapData" style = "height: 25px; width: 100%; background-color: black; color: orange;"> </textarea> <br><br>
+              Initial Description:   
+              <br> <br>
+              <textarea id = "effectDesc"  name = "effectDesc"  form = "mapData" style = "height: 50px; width: 100%; background-color: black; color: orange;"> </textarea> <br><br>
+              Threaded Description:
+              <br> <br>
+              <textarea id = "effectMod"   name = "effectMod"   form = "mapData" style = "height: 50px; width: 100%; background-color: black; color: orange;"> </textarea> <br><br>
+              NPC Effect Reaction:
+              <br> <br>
+              <textarea id = "effectReact" name = "effectReact" form = "mapData" style = "height: 50px; width: 100%; background-color: black; color: orange;"> </textarea> 
+              
+               <br><br>
+
+               <button id="submitEffect" >Save</button>
+  
+  
+            </div>
+
+            <div id = "NPCs" style = "display: none"> 
+
+              <button id="hideEditNPCs" >Hide NPCs Editor</button>
+
+              <br> <br> 
+
+              <p id = "npcTitleOne" style = "color: cyan"></p> </p>
+
+              <select id="oneNPC"   name = "oneNPC"    form = "mapData" style="width: 220px; background-color: rgb(0, 0, 0); color: grey">  </select> <br> <br>
+           
+              <select id="twoNPC"   name = "twoNPC"    form = "mapData" style="width: 220px; background-color: rgb(0, 0, 0); color: grey">   </select>  <br> <br>
+              
+              <select id="threeNPC" name = "threeNPC"  form = "mapData" style="width: 220px; background-color: rgb(0, 0, 0); color: grey">   </select>  <br> <br>
+    
+              <p id = "npcTitleTwo" style = "color: cyan"></p>  
+              <select id="npcEntries" style="width: 190px; background-color: rgb(0, 0, 0); color: grey"> </select>   <br>
+  
+            
+
+              <p id = "npcTitleThree" style = "color: cyan"></p>             
+              <textarea id = "npcName" name = "npcName"  form = "mapData" style = "height: 25px; width: 100%; background-color: black; color: orange;"> </textarea> <br>
+              
+              <p id = "npcTitleFour" style = "color: cyan"></p>              
+              <textarea id = "npc1"    name = "npc1"  form = "mapData" style = "height: 150px; width: 100%; background-color: black; color: orange;"> </textarea> <br>
+              
+              <p id = "npcTitleFive" style = "color: cyan"></p> 
+              <textarea id = "npc2"    name = "npc2"   form = "mapData" style = "height: 150px; width: 100%; background-color: black; color: orange;"> </textarea> <br>
+              
+              <p id = "npcTitleSix" style = "color: cyan"></p> 
+              <textarea id = "npc3"    name = "npc3" form = "mapData" style = "height: 150px; width: 100%; background-color: black; color: orange;"> </textarea> 
+              
+               <br><br>
+
+               <button id="submitNPC" >Save</button>
+  
+  
+            </div>
                    
-          Location Name:
-          <input id= "Location" name = "Location" form = "mapData" type="text" autocomplete="off" style = "width: 100%;"> <br><br>
-          Category:   
-          <input id= "Category" name = "Category" form = "mapData" type="text" autocomplete="off" style = "width: 100%;"> <br> <br>
-          
-  Question 1:   
-  <input id= "QA" name="QA" type="text"  form = "mapData"> <br> <br>
-  <textarea id = "TextA" name = "Desc1" form = "mapData"></textarea> <br><br>
-  Question 2:
-  <input id= "QB" name="QB" type="text"  form = "mapData"> <br> <br>
-  <textarea id = "TextB" name = "Desc2" form = "mapData"></textarea> <br><br>
-  Question 3:
-  <input id= "QC" name="QC" type="text"  form = "mapData"> <br> <br>
-  <textarea id = "TextC" name = "Desc3" form = "mapData"></textarea> <br><br>
-  Question 4:
-  <input id= "QD" name="QD" type="text"  form = "mapData"> <br> <br>
-  <textarea id = "TextD" name = "Desc4" form = "mapData"></textarea> <br><br>
-  Question 5:
-  <input id= "QE" name="QE" type="text"  form = "mapData"> <br> <br>
-  <textarea id = "TextE" name = "Desc5" form = "mapData"></textarea> <br><br>
+            <div id = "LocationEditor" style = "display: none">
 
-        
+              <button id="hideLocationEditor" >Hide Location Editor</button>
 
-  <button id = "mapFormSubmit" type="submit" form = "mapData" style="float: left;"> Commit Changes </button> &nbsp;
+              <br> <br> 
 
-  <input id= "sheetName"  type="text"  >
-  <input id= "parentID"   type="text"  >
-  <input id= "uniqueID"   type="text"  > 
+                Location Name:
+                <input id= "Location" name = "Location" form = "mapData" type="text" autocomplete="off" style = "width: 100%;"> <br><br>
+                Category:   
+                <input id= "Category" name = "Category" form = "mapData" type="text" autocomplete="off" style = "width: 100%;"> <br> <br>
+                
+                Question 1:   
+                <input id= "QA" name="QA" type="text"  form = "mapData"> <br> <br>
+                <textarea id = "TextA" name = "Desc1" form = "mapData"></textarea> <br><br>
+                Question 2:
+                <input id= "QB" name="QB" type="text"  form = "mapData"> <br> <br>
+                <textarea id = "TextB" name = "Desc2" form = "mapData"></textarea> <br><br>
+                Question 3:
+                <input id= "QC" name="QC" type="text"  form = "mapData"> <br> <br>
+                <textarea id = "TextC" name = "Desc3" form = "mapData"></textarea> <br><br>
+                Question 4:
+                <input id= "QD" name="QD" type="text"  form = "mapData"> <br> <br>
+                <textarea id = "TextD" name = "Desc4" form = "mapData"></textarea> <br><br>
+                Question 5:
+                <input id= "QE" name="QE" type="text"  form = "mapData"> <br> <br>
+                <textarea id = "TextE" name = "Desc5" form = "mapData"></textarea> <br><br>
 
-          </div>
+                      
 
-         
+                <button id = "mapFormSubmit" type="submit" form = "mapData" style="float: left;"> Commit Changes </button> &nbsp;
+
+                <input id= "sheetName"  type="text"  >
+                <input id= "parentID"   type="text"  >
+                <input id= "uniqueID"   type="text"  > 
+
+            </div>
+
+            </div>
 
           <div id = "Reading">
-                    
-                 
-             
-            <button id="EditWeather" >Edit Weather</button> <br> <br> <button id="editEffects" >Edit Effects</button> <br> <br> <button id="editNPCs" >Edit NPCs</button> <br> <br>
-      
+
+            <br>
+          
            
-                <div id = "Weather" style = "display: none">
-
-                  Season:
-
-                  <select id="Season" name = "Season" form = "mapData" style="width: 90px; background-color: rgb(0, 0, 0); color: grey">  </select> 
-               
-      
-                  <select id="Time" name = "Day" form = "mapData" style="width: 90px; background-color: rgb(0, 0, 0); color: grey">   </select>      <br><br>  
-
-
-                  Select:
-      
-                  <select id="weatherEntries" style="width: 190px; background-color: rgb(0, 0, 0); color: grey"> </select>    
-                  
-                  <br><br> <button id="HideEditWeather" >Hide Weather Editor</button>
-      
-
-                  <br><br>
-                  Weather Name:   
-                  <br> <br>
-                  <textarea id = "WeatherName" name = "Name" form = "mapData" style = "height: 25px; width: 100%; background-color: black; color: orange;"> </textarea> <br><br>
-                  Initial Description:   
-                  <br> <br>
-                  <textarea id = "WeatherDesc" name = "Description" form = "mapData" style = "height: 50px; width: 100%; background-color: black; color: orange;"> </textarea> <br><br>
-                  Threaded Description:
-                  <br> <br>
-                  <textarea id = "WeatherMod" name = "Modifier"     form = "mapData" style = "height: 50px; width: 100%; background-color: black; color: orange;"> </textarea> <br><br>
-                  NPC Weather Reaction:
-                  <br> <br>
-                  <textarea id = "WeatherReact" name = "Reaction"   form = "mapData" style = "height: 50px; width: 100%; background-color: black; color: orange;"> </textarea> 
-                  
-                   <br><br>
-
-                   <button id="SubmitWeather" >Save</button> <br> <br>
-      
-      
-                </div>
-
-
-                <div id = "Effects" style = "display: none">
-
-                  Effects: <br> <br>
-
-                  <select id="effectOne"  name = "effectOne" form = "mapData" style="width: 220px; background-color: rgb(0, 0, 0); color: grey">  </select> <br> <br>
-               
-                  <select id="effectTwo"   name = "effectTwo" form = "mapData" style="width: 220px; background-color: rgb(0, 0, 0); color: grey">   </select>  <br> <br>
-                  
-                  <select id="effectThree" name = "effectThree" form = "mapData" style="width: 220px; background-color: rgb(0, 0, 0); color: grey">   </select>  <br> <br>
-                   
-                 
-      
-                  <br> <br>
-
-                  Select:
-      
-                  <select id="effectEntries" style="width: 190px; background-color: rgb(0, 0, 0); color: grey"> </select> <br> <br> <button id="hideEditEffects" >Hide Effects Editor</button>
-      
-
-                  <br><br>
-                  Effect Name:   
-                  <br> <br>
-                  <textarea id = "effectName" name = "effectName"  form = "mapData" style = "height: 25px; width: 100%; background-color: black; color: orange;"> </textarea> <br><br>
-                  Initial Description:   
-                  <br> <br>
-                  <textarea id = "effectDesc"  name = "effectDesc"  form = "mapData" style = "height: 50px; width: 100%; background-color: black; color: orange;"> </textarea> <br><br>
-                  Threaded Description:
-                  <br> <br>
-                  <textarea id = "effectMod"   name = "effectMod"   form = "mapData" style = "height: 50px; width: 100%; background-color: black; color: orange;"> </textarea> <br><br>
-                  NPC Effect Reaction:
-                  <br> <br>
-                  <textarea id = "effectReact" name = "effectReact" form = "mapData" style = "height: 50px; width: 100%; background-color: black; color: orange;"> </textarea> 
-                  
-                   <br><br>
-
-                   <button id="submitEffect" >Save</button>
-      
-      
-                </div>
-
-
-                <div id = "NPC's" style = "display: none">
-
-                  NPC's: <br> <br>
-
-                  <select id="oneNPC"   name = "oneNPC"    form = "mapData" style="width: 220px; background-color: rgb(0, 0, 0); color: grey">  </select> <br> <br>
-               
-                  <select id="twoNPC"   name = "twoNPC"    form = "mapData" style="width: 220px; background-color: rgb(0, 0, 0); color: grey">   </select>  <br> <br>
-                  
-                  <select id="threeNPC" name = "threeNPC"  form = "mapData" style="width: 220px; background-color: rgb(0, 0, 0); color: grey">   </select>  <br> <br>
-                   
-             
-                       
-
-                  Select:
-      
-                  <select id="effectEntries" style="width: 190px; background-color: rgb(0, 0, 0); color: grey"> </select> <br> <br> <button id="hideEditEffects" >Hide Effects Editor</button>
-      
-
-                  <br><br>
-                  Effect Name:   
-                  <br> <br>
-                  <textarea id = "effectName" name = "effectName"  form = "mapData" style = "height: 25px; width: 100%; background-color: black; color: orange;"> </textarea> <br><br>
-                  Initial Description:   
-                  <br> <br>
-                  <textarea id = "effectDesc"  name = "effectDesc"  form = "mapData" style = "height: 50px; width: 100%; background-color: black; color: orange;"> </textarea> <br><br>
-                  Threaded Description:
-                  <br> <br>
-                  <textarea id = "effectMod"   name = "effectMod"   form = "mapData" style = "height: 50px; width: 100%; background-color: black; color: orange;"> </textarea> <br><br>
-                  NPC Effect Reaction:
-                  <br> <br>
-                  <textarea id = "effectReact" name = "effectReact" form = "mapData" style = "height: 50px; width: 100%; background-color: black; color: orange;"> </textarea> 
-                  
-                   <br><br>
-
-                   <button id="submitEffect" >Save</button>
-      
-      
-                </div>
 
 
 
