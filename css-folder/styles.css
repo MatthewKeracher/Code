@@ -18,31 +18,163 @@
 }
 
 div#popUp{
-
-  width:75%;    
   position: fixed;
-  height: 100%;
-  top:0; 
-  left:0;
-  background-color: rgb(24, 23, 23);
-  opacity: 0.9;
-  color: rgb(3, 182, 3);
+  width:100%;    
+  height: 90%;
+  top:5%; 
+  left: 1%; 
+  right: 5%; 
+  bottom: 15%; 
+    
+  color: Ivory;
   font-family: 'Courier Prime', monospace;
   border: none;
   z-index : 5
 
 }
 
-#Inventory {
-  display: block;
-  margin-top: 20px;
+div#popUpButtons{
+  position: fixed;
+  width:10%;    
+  height: 10%;
+  top:2%; 
+  right: 4.5%; 
+  bottom: 15%; 
+  
+  color: Ivory;
+  font-family: 'Courier Prime', monospace;
+  border: none;
+  z-index : 6
+
+}
+
+div#popUpBackground{
+  position: fixed;
+  width:95%;    
+  height: 90%;
+  top:5%; 
+  left: 1%; 
+  right: 10%; 
+  bottom: 15%; 
+  background-color: rgb(41, 38, 38);
+  opacity: 0.9;
+  color: Ivory;
+  font-family: 'Courier Prime', monospace;
+  border: none;
+  z-index : 5;
+  
+
+}
+
+#AbilityScores {
+  position: fixed;
+  float: left;
+  padding: 10px;
+  width:40%;    
+  height: 10%;
+  top: 2%; 
+  left: 1%; 
+  right: 20%; 
+  bottom: 15%; 
+  color: Ivory;
+  font-family: 'Courier Prime', monospace;
+  border: none;
+  z-index : 5
+ 
   
 }
-th, td {
-  border: 1px solid ivory;
-  color: violet;
-  padding: 2px;
+
+
+
+
+#Locations {
+  position: absolute;
+  float: left;
+  left: 15%; 
+  top: 10%; 
+  width: auto;
+  height: 80%;
+  overflow-y : auto;
+  overflow-x: hidden;
+  z-index : 6;
+ 
 }
+
+#Containers {
+  position: absolute;
+  left: 35%; 
+  top: 10%; 
+  width: auto;
+  height: 80%;
+  overflow-y : auto;
+  overflow-x: hidden;
+  z-index : 6;
+ 
+}
+
+
+#Contents {
+  position: absolute;
+  left: 45%; 
+  top: 10%; 
+  width: auto;
+  height: 80%;
+  overflow-y : auto;
+  overflow-x: hidden;
+  z-index : 6;
+ 
+}
+
+
+#itemDisplay {
+  position: absolute;
+  right: 10%; 
+  top: 10%; 
+  width: 20%;
+  height: 80%;
+  z-index : 6;
+  font-size: 12px;
+ 
+  
+}
+
+#edititemDisplay {
+
+  position: absolute;
+  right: 10%; 
+  top: 10%; 
+  width: 20%;
+  height: 80%;
+  z-index : 6;
+  font-size: 12px;
+  
+ 
+  
+}
+
+
+  	.InventoryClass{
+		width:100%; 
+		border-collapse:collapse; 
+    font-size: 12px;
+	}
+	.InventoryClass td{ 
+		padding:1px; border:rgb(41, 38, 38) 1px solid;
+	}
+	/* Define the default color for all the table rows */
+	.InventoryClass tr{
+		background: rgb(41, 38, 38);
+    color: ivory;
+	}
+  
+	/* Define the hover highlight color for the table row */
+    .InventoryClass tr:hover {
+          background-color: orange;
+          color: rgb(41, 38, 38);
+    }
+
+   
+
 
    
 #wrapper {
@@ -98,15 +230,12 @@ th, td {
   
   }
   
-
-
-
-
   div#sidebarwrapper{
     position: absolute;
     right: 0px;
     top: 0;
     width: 25%;
+   
   } 
 
   div#sidebar{
@@ -130,9 +259,7 @@ th, td {
   color: ivory
 
 }
-  
-  
-
+ 
 #weather{
 
   color: rgb(219, 51, 224);

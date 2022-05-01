@@ -53,6 +53,123 @@
   </div>
 
   <body id = 'body' >
+
+    <div id = "popUp" style = "display:none;"> 
+   
+      <div id = "popUpBackground">
+
+        <div id = "Locations" class="InventoryClass" ></div>
+     
+        <div id = "Containers" class="InventoryClass" ></div>
+
+        <div id = "Contents" class="InventoryClass" > </div>
+
+        <div id = "itemDisplay">
+
+          <p id = "itemName"></p> <br>
+
+          <p id = "itemType"></p>
+          
+          <p id = "itemLbs"></p>
+          
+          <p id = "itemQuant"></p>
+          
+          <p id = "itemTotalWeight"></p>
+          
+          <p id = "itemDescription"></p>
+
+        </div>
+
+
+        <div id = "EdititemDisplay" style = "display: none;">
+
+              Name: 
+              <br> <br>
+              <textarea id = "itemName" name = "itemName"  form = "mapData" style = "height: 20px; width:  450px; background-color: rgb(0, 0, 0); color: orange" ></textarea> </textarea> <br><br>
+
+              Type: 
+              <br> <br>
+              <textarea id = "itemType"  name = "itemType"  form = "mapData" style = "height: 20px; width:  450px; background-color: rgb(0, 0, 0); color: orange" > </textarea> <br><br>
+
+              Weight, each. Lbs. 
+              <br> <br>
+              <textarea id = "itemWeight"   name = "itemWeight" form = "mapData" style = "height: 20px; width:  50px; background-color: rgb(0, 0, 0); color: orange" > </textarea><br><br>
+
+              # Portions. 
+              <br> <br>
+              <textarea id = "itemPortions" name = "itemPortions"  form = "mapData" style = "height: 20px; width:  50px; background-color: rgb(0, 0, 0); color: orange" > </textarea>   <br> <br>
+
+              Description One
+              <br> <br>            
+              <textarea id = "itemDesc1" name = "itemDesc1"  form = "mapData" style = "height: 120px; width:  450px; background-color: rgb(0, 0, 0); color: orange" > </textarea>   <br> <br>
+
+              Description Two
+              <br> <br>             
+              <textarea id = "itemDesc2" name = "itemDesc2"  form = "mapData" style = "height: 120px; width:  450px; background-color: rgb(0, 0, 0); color: orange" > </textarea>   <br> <br>
+              
+              Description Three
+              <br> <br>            
+              <textarea id = "itemDesc3" name = "itemDesc3"  form = "mapData" style = "height: 120px; width: 450px; background-color: rgb(0, 0, 0); color: orange" > </textarea>   <br> <br>
+
+              <input id="saveItem" type="button" value="Save" /> 
+
+        </div>
+      
+
+      <div id = "popUpButtons"> 
+
+       <br><br>
+
+      <input id="hideInventory" type="button" value="X" style = "float: right"/>  <br><br>
+  
+
+      </div>
+
+
+      <div id = "AbilityScores" >
+        <br> <br>
+
+       <select id="Player" style=" width: 400px; background-color: rgb(0, 0, 0); color: violet; font-family: 'Courier Prime', monospace;  font-size: 20px;">
+                         
+        </select>
+
+        <input id="loadCharacter" type="button" value="Load" /> <input id="editItem" type="button" value="Edit" />
+
+        <br><br>
+
+        <p id = "Combat" style="color: violet ; "></p> <br>
+
+        <p id = "Strength"></p>
+        
+        <p id = "Dexterity"></p>
+        
+        <p id = "Intelligence"></p>
+        
+        <p id = "Wisdom"></p>
+        
+        <p id = "Constitution"></p>
+        
+        <p id = "Charisma"></p>
+        
+        <p id = "Psyche"></p>
+       
+        <p id = "Luck"></p>
+
+       
+
+
+      </div>
+
+      
+
+    </div> 
+
+   
+   
+
+    
+
+    </div> 
    
     <div id='wrapper'> 
 
@@ -85,52 +202,13 @@
         height="1600"
         ></canvas>
 
-        <div id = "popUp" style = "display:none;"> 
-      
-          <div id = "AbilityScores" style = "float: left; padding: 10px; border-left: cyan;">
-            <br> <br>
-
-           <select id="Player" style=" width: 300px; background-color: rgb(0, 0, 0); color: violet; font-family: 'Courier Prime', monospace; ">
-                             
-            </select>
-
-            <br><br>
-            <p id = "Strength"></p>
-            
-            <p id = "Dexterity"></p>
-            
-            <p id = "Intelligence"></p>
-            
-            <p id = "Wisdom"></p>
-            
-            <p id = "Constitution"></p>
-            
-            <p id = "Charisma"></p>
-            
-            <p id = "Psyche"></p>
-           
-            <p id = "Luck"></p>
-
-            <p id = "Combat" style="color: violet ; "></p>
-
-
-        </div>
-
        
-        <div id = "Inventory" style = "color: violet; opacity: 1; padding: 10px;">
-                
-      </div>
-
-        
-
-      </div> 
 
     
   </div>
 
     </div>
-
- 
+    
     <div id="sidebarwrapper">
 
       <div id="sidebar">
@@ -161,9 +239,9 @@
 
           <div id = "Playing"> 
   
-            <input id="loadPlayers" type="button" value="Load Players"  /> <br><br>
+            
            
-            <input id="showInventory" type="button" value="Show Character Interface"/>   <input id="hideInventory" type="button" value="Hide Character Interface" style = "display: none"/>
+            <input id="showInventory" type="button" value="Show Character Interface"/>   
                
 
           </div>
@@ -498,38 +576,10 @@
           </div>
           </div>
 
-          
-
-
-
-    </div>  </div>  </div>
-
-    <div id='header' style = "z-index: 3">
-    
+      </div> 
+    </div> 
  
-    
-</div>
-
-
-
-
-<div id= "painter" name = "painter">
-
-  <br><br>
-
- 
-  
-  
-  
-  <br> <br>
-  
-
-</div>
-
-
-
     <div class="output"></div>
-
 
     <script src="game.js" type="module"></script>
 
@@ -538,4 +588,3 @@
   </body>
 </html>
 
-</div>

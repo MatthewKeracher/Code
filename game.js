@@ -14,6 +14,7 @@ var currentEffects = []
 var players = []
 var npcArray = []
 var currentNPCs = []
+var inventory = []
 
 //Google Sheet Queries
 var sheetName = 'Global'
@@ -71,9 +72,13 @@ const Season = document.getElementById("Season")
 const Time = document.getElementById("Time") 
 const Player = document.getElementById('Player')
 
+var currentPlayer
+
 
 var rUsername = 'Gaia' //prompt("What is your name?");
 document.addEventListener('DOMContentLoaded',permMap);
+
+
 
 
 
@@ -121,6 +126,10 @@ document.getElementById('mapData_isEffect').value = "0";
 document.getElementById('mapData_isNPC').value = "0";
 
 checkSidebar()
+
+
+LoadPlayers()
+
 
 
 setInterval(gridLoop, 1000 / 60);
@@ -1255,11 +1264,16 @@ document.getElementById('showInventory').onclick = function () {
   document.getElementById("popUp").style.display = "block";
   document.getElementById("hideInventory").style.display = "block";
   document.getElementById("showInventory").style.display = "none";
+   document.getElementById("wrapper").style.width = "100%";
+   
+    fillCharacterSheet()
+
 }
 
 document.getElementById('hideInventory').onclick = function () {
   document.getElementById("popUp").style.display = "none";
   document.getElementById("hideInventory").style.display = "none";
+  document.getElementById("wrapper").style.width = "75%";
   document.getElementById("showInventory").style.display = "block";
 }
 
@@ -2264,9 +2278,12 @@ document.onkeyup = function(e) {
 
   var ignoreElement = document.getElementById('sidebarwrapper');
   var isNOTEditor = ignoreElement.contains(event.target);
+
+  var ignoreElement2 = document.getElementById('popUp');
+  var isNOTEditor2 = ignoreElement2.contains(event.target);
  
 
-  if (!isNOTEditor) {
+  if (!isNOTEditor && !isNOTEditor2) {
 
   if (e.shiftKey && e.which == 40 ) {
     
@@ -2576,6 +2593,7 @@ textCategory.onblur=function() {
 //FUNCTION TO IMPORT PLAYER-CHARACTER DATA FROM SPREADSHEET
 
 
+
 const STR = document.getElementById('Strength');
 const DEX = document.getElementById('Dexterity');
 const INT = document.getElementById('Intelligence');
@@ -2586,20 +2604,83 @@ const PSY = document.getElementById('Psyche');
 const LUK = document.getElementById('Luck');
 const CBT = document.getElementById('Combat');
 
+//CHANGE PLAYER
+//---------------------------------
+document.getElementById('Player').onchange = function () {
 
-document.getElementById('loadPlayers').onclick = function () {
-
-try{
-  
-  LoadPlayers();
-  //players = []
-  
-  }catch{
-    console.log('!!!!! Could not complete LoadPlayers() !!!!!')
-  }
+  getPlayer()
 
 }
 
+document.getElementById('loadCharacter').onclick = function () {
+ 
+  console.log('')
+  console.log('++++++++LOAD_PLAYER_INVENTORY+++++++++++')
+  console.log('Finding ' + inventory.length + ' inventory items.')
+  document.getElementById('itemDisplay').style.display = "block";
+  document.getElementById('EdititemDisplay').style.display = "none";
+
+  makeInventory()
+
+
+}
+
+document.getElementById('editItem').onclick = function () {
+ 
+
+  document.getElementById('itemDisplay').style.display = "none";
+  document.getElementById('EdititemDisplay').style.display = "block";
+ 
+
+}
+
+
+function fillCharacterSheet(){
+
+try{
+
+  console.log('')
+  console.log('++++++++LOAD_PLAYERS+++++++++++')
+  console.log('Finding ' + players.length + ' players.')
+
+  if( players.length == 0){
+  
+  //players = []  
+  LoadPlayers();
+  
+  }
+  }catch{
+
+    console.log('!!!!! Could not complete LoadPlayers() !!!!!')
+  }
+
+  try{
+
+    getPlayerDropdown()
+    getPlayer() 
+        
+  }catch{
+    console.log('!!!!! Could not complete getPlayer()  !!!!!')
+  }
+  
+
+
+}
+
+function getPlayerDropdown(){
+
+  Player.innerHTML = "";
+  Player[Player.length] = new Option('Choose Character','Choose Character')
+
+
+  for(var i = 0; i < players.length; i++) {
+   
+   Player[Player.length] = new Option(players[i].name,players[i].name)
+   
+  }
+   
+
+}
 
 function LoadPlayers(){
 
@@ -2617,7 +2698,7 @@ function LoadPlayers(){
  //const output = document.querySelector('.output');
 
 console.log('')
-console.log('++++++++LOAD_PLAYERS+++++++++++')
+console.log('++++++++LoadPlayers()+++++++++++')
 console.log('Connection to ' + sheet + ' has been made.');
   
  fetch(url)
@@ -2653,45 +2734,35 @@ console.log('Connection to ' + sheet + ' has been made.');
  console.log(players.length + ' rows have returned.');
  console.table(players)
 
- Player.innerHTML = "";
+ LoadInventory()
 
- for(var i = 0; i < players.length; i++) {
-  
-  Player[Player.length] = new Option(players[i].name,players[i].name)
-  
- }
-
-getPlayer() 
-LoadInventory()
-players = []
-inventory = []
 
 }
 
-document.getElementById('Player').onchange = function () {
-
-  getPlayer() 
-  
-
-}
+ 
 
   function getPlayer() {
 
-  const currentPlayer = players.filter(obj => obj.name == Player.value )
+  currentPlayer = []  
+  currentPlayer = players.filter(obj => obj.name == Player.value )
+
+  console.log('')
+  console.log('++++++++CURRENT PLAYER+++++++++++')
+  console.log('current playerid: ' + currentPlayer[0].uniqueid)
 
   console.table(currentPlayer)
 
-const STR_MOD = Math.floor(currentPlayer[0].str / 5);
-const DEX_MOD = Math.floor(currentPlayer[0].dex / 5);
-const INT_MOD = Math.floor(currentPlayer[0].int / 5);
-const WIS_MOD = Math.floor(currentPlayer[0].wis / 5);
-const CON_MOD = Math.floor(currentPlayer[0].con / 5);
-const CHA_MOD = Math.floor(currentPlayer[0].cha / 5);
-const PSY_MOD = Math.floor(currentPlayer[0].psy / 5);
-const LUK_MOD = Math.floor(currentPlayer[0].luk / 5);
+  const STR_MOD = Math.floor(currentPlayer[0].str / 5);
+  const DEX_MOD = Math.floor(currentPlayer[0].dex / 5);
+  const INT_MOD = Math.floor(currentPlayer[0].int / 5);
+  const WIS_MOD = Math.floor(currentPlayer[0].wis / 5);
+  const CON_MOD = Math.floor(currentPlayer[0].con / 5);
+  const CHA_MOD = Math.floor(currentPlayer[0].cha / 5);
+  const PSY_MOD = Math.floor(currentPlayer[0].psy / 5);
+  const LUK_MOD = Math.floor(currentPlayer[0].luk / 5);
 
-const ATT_BON = STR_MOD + DEX_MOD
-const MGC_BON = INT_MOD + WIS_MOD
+  const ATT_BON = STR_MOD + DEX_MOD
+  const MGC_BON = INT_MOD + WIS_MOD
 
   
   STR.innerHTML = "STR: " + currentPlayer[0].str + '  (' + STR_MOD + ')';
@@ -2705,10 +2776,9 @@ const MGC_BON = INT_MOD + WIS_MOD
 
   CBT.innerHTML = "Attack Bonus: " + ATT_BON + newLine + "Spell  Bonus: " + MGC_BON;
 
+  
+
 }
-
-
-var inventory = []
 
 function LoadInventory(){
 
@@ -2719,7 +2789,7 @@ function LoadInventory(){
 
  //SPECIFICS THAT CHANGE
  const sheet = 'Inventory'
- const query = 'Select *';
+ const query = 'Select * ';
 
  //AGGREGATE
  const url = `${base}&sheet=${sheet}&tq=${query}`;
@@ -2762,31 +2832,70 @@ console.log('Connection to ' + sheet + ' has been made.');
  console.log(inventory.length + ' rows have returned.');
  console.table(inventory)
 
-
-makeInventory()
-inventory = []
-
 }
 
-function makeInventory(){ 
+var locationSelected = ''
+var containerSelected = ''
+var itemSelected = ''
 
+
+function makeInventory(){
+
+  var myTable 
+  var filterID
+      filterID = currentPlayer[0].uniqueid
+  var filterInventory  
+  var locations
   
-  let myTable = document.querySelector('#Inventory');
-  let employees = inventory
+  var tableArray
+  var headers
+  var table  
+  let headerRow 
+       
+      filterInventory = []
+      filterInventory = inventory.filter(obj => obj.container == "Location" && obj.playerid == filterID)
+
+      locations = []
+      
+      locations = filterInventory.map(row => ({
+
+        Location: row.name,
+       
+      }));
+    
+      myTable = document.querySelector('#Locations');
+      myTable.innerHTML= ''
+      tableArray = locations
   
-  let headers = []
-  
-      let table = document.createElement('table');
-      let headerRow = document.createElement('tr');
+       headers = []
+      
+      table = document.createElement('tableLocations');
+      headerRow = document.createElement('tr');
       headers.forEach(headerText => {
           let header = document.createElement('th');
+          
           let textNode = document.createTextNode(headerText);
           header.appendChild(textNode);
           headerRow.appendChild(header);
       });
       table.appendChild(headerRow);
-      employees.forEach(emp => {
+      tableArray.forEach(emp => {
           let row = document.createElement('tr');
+
+          //Click on Container filters items.
+            row.onclick = function () {
+
+            //Need a way to make all...  style =	'background: rgb(41, 38, 38); color: ivory;'
+
+
+            locationSelected = emp.Location;
+            containerSelected = ''
+            itemSelected = ''  
+            fillLocationContents()
+            fillitemContents()
+            row.style = 'background-color: orange; color: rgb(41, 38, 38)'
+        };
+
           Object.values(emp).forEach(text => {
               let cell = document.createElement('td');
               let textNode = document.createTextNode(text);
@@ -2797,9 +2906,171 @@ function makeInventory(){
       });
       myTable.appendChild(table);
 
-  ;
-
-  inventory = []
+    }
 
 
-}
+function fillLocationContents(){ 
+
+  var myTable 
+  var filterID
+      filterID = currentPlayer[0].uniqueid
+  var filterInventory  
+  var containers
+  var tableArray
+  var headers
+  var table  
+  let headerRow 
+       
+      filterInventory = []
+      filterInventory = inventory.filter(obj => obj.container == locationSelected && obj.playerid == filterID)  
+      
+      containers = [] 
+      containers = filterInventory.map(row => ({
+
+        item: row.name,
+       
+      }));
+    
+      myTable = document.querySelector('#Containers');
+      myTable.innerHTML= ''
+      document.querySelector('#Contents').innerHTML= ''
+      tableArray = containers
+  
+       headers = []
+      
+      table = document.createElement('tableContainers');
+      headerRow = document.createElement('tr');
+      headers.forEach(headerText => {
+          let header = document.createElement('th');
+          let textNode = document.createTextNode(headerText);
+          header.appendChild(textNode);
+          headerRow.appendChild(header);
+      });
+      table.appendChild(headerRow);
+      tableArray.forEach(emp => {
+          let row = document.createElement('tr');
+
+          //Click on Container filters items.
+          row.onclick = function () {
+            containerSelected = emp.item;
+            itemSelected = '' 
+            fillContainerContents()
+            fillitemContents()
+            row.style = ' background-color: orange; color: rgb(41, 38, 38)'
+        };
+
+          Object.values(emp).forEach(text => {
+              let cell = document.createElement('td');
+              let textNode = document.createTextNode(text);
+              cell.appendChild(textNode);
+              row.appendChild(cell);
+          })
+          table.appendChild(row);
+      });
+      myTable.appendChild(table);
+
+    }
+
+//---------------------------------
+
+function fillContainerContents(){ 
+
+  var myTable 
+  var filterID
+      filterID = currentPlayer[0].uniqueid
+  var filterInventory  
+  var contents
+
+  var tableArray
+  var headers
+  var table  
+  let headerRow 
+       
+      filterInventory = []
+      filterInventory = inventory.filter(obj => obj.container == containerSelected && obj.playerid == filterID)
+
+      contents = []
+      
+
+      contents = filterInventory.map(row => ({
+
+        item: row.name,
+       
+      }));
+    
+      myTable = document.querySelector('#Contents');
+      myTable.innerHTML= ''
+      tableArray = contents
+  
+       headers = []
+      
+      table = document.createElement('tableContents');
+      headerRow = document.createElement('tr');
+      headers.forEach(headerText => {
+          let header = document.createElement('th');
+          let textNode = document.createTextNode(headerText);
+          header.appendChild(textNode);
+          headerRow.appendChild(header);
+      });
+      table.appendChild(headerRow);
+      tableArray.forEach(emp => {
+          let row = document.createElement('tr');
+
+          //Click on Container filters items.
+          row.onclick = function () {
+            itemSelected = emp.item;
+            fillitemContents()
+            row.style = 'background-color: orange; color: rgb(41, 38, 38)'
+        };
+
+          Object.values(emp).forEach(text => {
+              let cell = document.createElement('td');
+              let textNode = document.createTextNode(text);
+              cell.appendChild(textNode);
+              row.appendChild(cell);
+          })
+          table.appendChild(row);
+      });
+      myTable.appendChild(table);
+
+    }
+
+
+    function fillitemContents(){
+
+      var filterInventory  
+      var filterID
+      filterID = currentPlayer[0].uniqueid
+
+      const itemName = document.getElementById('itemName');
+      const itemType = document.getElementById('itemType');
+      const itemLbs = document.getElementById('itemLbs');
+      const itemQuant = document.getElementById('itemQuant');
+      const itemTotalWeight = document.getElementById('itemTotalWeight');
+      const itemDescription = document.getElementById('itemDescription');
+
+      filterInventory = []
+
+      filterInventory = inventory.filter(obj => obj.name == itemSelected)
+
+      if(filterInventory.length == 0){
+        filterInventory = inventory.filter(obj => obj.name == containerSelected)
+      }
+   
+      if(filterInventory.length == 0){
+        filterInventory = inventory.filter(obj => obj.name == locationSelected)
+      }
+
+      itemName.innerHTML = filterInventory[0].name
+      itemType.innerHTML = filterInventory[0].type
+      itemLbs.innerHTML = filterInventory[0].lbs
+      itemQuant.innerHTML = filterInventory[0].portions
+      itemTotalWeight.innerHTML = filterInventory[0].totallbs
+      itemDescription.innerHTML = filterInventory[0].description
+  
+    }
+
+
+//---------------------------------
+
+
