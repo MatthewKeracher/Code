@@ -70,13 +70,17 @@
 
           <p id = "itemType"></p>
           
-          <p id = "itemLbs"></p>
+          <p id = "itemWeight"></p>
           
-          <p id = "itemQuant"></p>
+          <p id = "itemPortions"></p>
           
           <p id = "itemTotalWeight"></p>
           
-          <p id = "itemDescription"></p>
+          <p id = "itemDesc1"></p>
+
+          <p id = "itemDesc2"></p>
+
+          <p id = "itemDesc3"></p>
 
         </div>
 
@@ -85,33 +89,37 @@
 
               Name: 
               <br> <br>
-              <textarea id = "itemName" name = "itemName"  form = "mapData" style = "height: 20px; width:  450px; background-color: rgb(0, 0, 0); color: orange" ></textarea> </textarea> <br><br>
+              <textarea id = "EdititemName" name = "name"  form = "mapData" style = "height: 20px; width:  450px; background-color: rgb(0, 0, 0); color: orange" ></textarea> </textarea> <br><br>
 
               Type: 
               <br> <br>
-              <textarea id = "itemType"  name = "itemType"  form = "mapData" style = "height: 20px; width:  450px; background-color: rgb(0, 0, 0); color: orange" > </textarea> <br><br>
+              <textarea id = "EdititemType"  name = "itemType"  form = "mapData" style = "height: 20px; width:  450px; background-color: rgb(0, 0, 0); color: orange" > </textarea> <br><br>
 
               Weight, each. Lbs. 
               <br> <br>
-              <textarea id = "itemWeight"   name = "itemWeight" form = "mapData" style = "height: 20px; width:  50px; background-color: rgb(0, 0, 0); color: orange" > </textarea><br><br>
+              <textarea id = "EdititemWeight"   name = "itemWeight" form = "mapData" style = "height: 20px; width:  50px; background-color: rgb(0, 0, 0); color: orange" > </textarea><br><br>
 
               # Portions. 
               <br> <br>
-              <textarea id = "itemPortions" name = "itemPortions"  form = "mapData" style = "height: 20px; width:  50px; background-color: rgb(0, 0, 0); color: orange" > </textarea>   <br> <br>
+              <textarea id = "EdititemPortions" name = "itemPortions"  form = "mapData" style = "height: 20px; width:  50px; background-color: rgb(0, 0, 0); color: orange" > </textarea>   <br> <br>
 
               Description One
               <br> <br>            
-              <textarea id = "itemDesc1" name = "itemDesc1"  form = "mapData" style = "height: 120px; width:  450px; background-color: rgb(0, 0, 0); color: orange" > </textarea>   <br> <br>
+              <textarea id = "EdititemDesc1" name = "itemDesc1"  form = "mapData" style = "height: 120px; width:  450px; background-color: rgb(0, 0, 0); color: orange" > </textarea>   <br> <br>
 
               Description Two
               <br> <br>             
-              <textarea id = "itemDesc2" name = "itemDesc2"  form = "mapData" style = "height: 120px; width:  450px; background-color: rgb(0, 0, 0); color: orange" > </textarea>   <br> <br>
+              <textarea id = "EdititemDesc2" name = "itemDesc2"  form = "mapData" style = "height: 120px; width:  450px; background-color: rgb(0, 0, 0); color: orange" > </textarea>   <br> <br>
               
               Description Three
               <br> <br>            
-              <textarea id = "itemDesc3" name = "itemDesc3"  form = "mapData" style = "height: 120px; width: 450px; background-color: rgb(0, 0, 0); color: orange" > </textarea>   <br> <br>
+              <textarea id = "EdititemDesc3" name = "itemDesc3"  form = "mapData" style = "height: 120px; width: 450px; background-color: rgb(0, 0, 0); color: orange" > </textarea>   <br> <br>
 
-              <input id="saveItem" type="button" value="Save" /> 
+              <select id="setContainer" name = "container"  form = "mapData" style="background-color: rgb(0, 0, 0); color: violet">
+              
+                <option value = 0 > Holding or Wearing </option>                 
+                            
+              </select> <input id="saveItem" type="button" value="Save" /> 
 
         </div>
       

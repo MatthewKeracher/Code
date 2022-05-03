@@ -75,6 +75,7 @@ const Player = document.getElementById('Player')
 var currentPlayer
 
 
+
 var rUsername = 'Gaia' //prompt("What is your name?");
 document.addEventListener('DOMContentLoaded',permMap);
 
@@ -112,7 +113,8 @@ function gridLoop() {
 
   //Draw The Map  
   loopMap()
-  
+
+  //Persistent User Effects
 }
 
 //Something to do with how long each loop is...
@@ -126,11 +128,7 @@ document.getElementById('mapData_isEffect').value = "0";
 document.getElementById('mapData_isNPC').value = "0";
 
 checkSidebar()
-
-
 LoadPlayers()
-
-
 
 setInterval(gridLoop, 1000 / 60);
 setInterval(setFlashing, 1500);
@@ -877,12 +875,12 @@ let Q6 = document.getElementById("npcTitleSix")
 
 if(sheetName == "Global"){
 
-Q1.innerHTML = 'Select Global Groups active in location: '
-Q2.innerHTML = 'Select Group to Edit:'
-Q3.innerHTML = 'Name of Organisation:'
-Q4.innerHTML = 'Briefly describe the Organisation:'
-Q5.innerHTML = 'Where is this organisation centred and who runs it?'
-Q6.innerHTML = 'What do all members of this organisation carry with them?'
+Q1.innerHTML = 'Select Networks active in location: '
+Q2.innerHTML = 'Select Network to Edit:'
+Q3.innerHTML = 'Name of Network:'
+Q4.innerHTML = 'Briefly describe the Network:'
+Q5.innerHTML = 'Where is this Network centred and who runs it?'
+Q6.innerHTML = 'What do all members of this Network carry with them?'
 
 }
 
@@ -1095,23 +1093,29 @@ document.getElementById('effectEntries').onchange = function () {
             document.getElementById("AskQC").style.display = "none";
             document.getElementById("AskQD").style.display = "none";
             document.getElementById("AskQE").style.display = "none";
-
                     
             }
+
+          var BorrowedDesc = []
 
           function fillStoryteller(){
 
            
             const storyTeller = document.getElementById("storyTeller") 
-            
-            
-
+                       
             var  Location = currentLocation[0].location
             var  Category = currentLocation[0].category
             var Message
+
+            //Collect all similar entries. 
+            BorrowedDesc = []
+            BorrowedDesc = carto.filter(obj => obj.category == Category)
+
             
             console.log('')
             console.log('+++++++++ FILL STORYTELLER ++++++++++')
+            console.log('DESCRIPTIONS TO BORROW FROM:')
+            console.table(BorrowedDesc)
 
             if( sheetName == 'Global'){
 
@@ -1122,8 +1126,6 @@ document.getElementById('effectEntries').onchange = function () {
               Message = "You are at " + Location + "'s "  + Category +  "."
             
             }
-            
-          
             
             if( Location.length > 0 ){
             
@@ -1154,11 +1156,48 @@ document.getElementById('effectEntries').onchange = function () {
 
             const storyTeller = document.getElementById("storyTeller") 
             
-              var  newText = document.getElementById("TextA").value
+            var  newText = document.getElementById("TextA").value
+            var isBorrowing = 0
 
+            if(newText.length == 0){    
+           
+                      
+              var options = 0
+
+              for (var i = 0; i < BorrowedDesc.length; i++) {
+
+                let check = BorrowedDesc[i].desc1  
+
+                //console.log(check)
+
+                if(check.length > 0){
+
+                  options ++
+
+                }   
+              }
+
+              //console.log('+++++++++ TEST ++++++++++')
+              //console.table(options)
+            
+              const choice = Math.floor(Math.random() * options)
+             
+               newText = BorrowedDesc[choice].desc1; 
+               isBorrowing = 1
+               
+            }
+            
+              if(isBorrowing == 1){
+              storyTeller.innerHTML += weatherDesc + newLine 
+              storyTeller.innerHTML += "<span style='color:#FF0000'> [Borrowed]  </span>";
+              storyTeller.innerHTML +=  newText + newLine + weatherMod
+              }else{
               storyTeller.innerHTML += weatherDesc + newLine + newText + newLine + weatherMod
+              }
 
-              storyTeller.innerHTML += " There are [NPCs] around. "  + weatherReact
+              storyTeller.innerHTML += "There are "
+              storyTeller.innerHTML += "<span style='color:#FF0000'> [NPCs] </span>";              
+              storyTeller.innerHTML +=  "around. ";
 
               document.getElementById("Reading_QA").style.display = "none";
               document.getElementById("AskQA").style.display = "none";
@@ -1171,7 +1210,43 @@ document.getElementById('effectEntries').onchange = function () {
            
             var  newText = document.getElementById("TextB").value
 
-            storyTeller.innerHTML += newLine + newText 
+            var isBorrowing = 0
+
+            if(newText.length == 0){    
+           
+                      
+              var options = 0
+
+              for (var i = 0; i < BorrowedDesc.length; i++) {
+
+                let check = BorrowedDesc[i].desc2  
+
+                console.log(check)
+
+                if(check.length > 0){
+
+                  options ++
+
+                }   
+              }
+
+              //console.log('+++++++++ TEST ++++++++++')
+              //console.table(options)
+            
+              const choice = Math.floor(Math.random() * options)
+             
+               newText = BorrowedDesc[choice].desc2; 
+               isBorrowing = 1
+               
+            }
+
+            if(isBorrowing == 1){
+              storyTeller.innerHTML += newLine
+              storyTeller.innerHTML += "<span style='color:#FF0000'> [Borrowed]  </span>";
+              storyTeller.innerHTML += newText 
+              }else{
+              storyTeller.innerHTML += newLine  + newText 
+              }
 
             document.getElementById("Reading_QB").style.display = "none";
             document.getElementById("AskQB").style.display = "none";
@@ -1183,8 +1258,47 @@ document.getElementById('effectEntries').onchange = function () {
             const storyTeller = document.getElementById("storyTeller") 
            
             var  newText = document.getElementById("TextC").value
+      
 
-            storyTeller.innerHTML += newLine + newText 
+            var isBorrowing = 0
+
+            if(newText.length == 0){    
+           
+                      
+              var options = 0
+
+              for (var i = 0; i < BorrowedDesc.length; i++) {
+
+                let check = BorrowedDesc[i].desc3  
+
+                console.log(check)
+
+                if(check.length > 0){
+
+                  options ++
+
+                }   
+              }
+
+              //console.log('+++++++++ TEST ++++++++++')
+              //console.table(options)
+            
+              const choice = Math.floor(Math.random() * options)
+             
+               newText = BorrowedDesc[choice].desc3; 
+               isBorrowing = 1
+
+
+               
+            }
+
+            if(isBorrowing == 1){
+              storyTeller.innerHTML += newLine
+              storyTeller.innerHTML += "<span style='color:#FF0000'> [Borrowed]  </span>";
+              storyTeller.innerHTML += newText
+              }else{
+              storyTeller.innerHTML += newLine  + newText 
+              }
 
             document.getElementById("Reading_QC").style.display = "none";
             document.getElementById("AskQC").style.display = "none";
@@ -1197,7 +1311,43 @@ document.getElementById('effectEntries').onchange = function () {
             
             var  newText = document.getElementById("TextD").value
 
-            storyTeller.innerHTML += newLine + newText 
+            var isBorrowing = 0
+
+            if(newText.length == 0){    
+           
+                      
+              var options = 0
+
+              for (var i = 0; i < BorrowedDesc.length; i++) {
+
+                let check = BorrowedDesc[i].desc4  
+
+                console.log(check)
+
+                if(check.length > 0){
+
+                  options ++
+
+                }   
+              }
+
+              //console.log('+++++++++ TEST ++++++++++')
+              //console.table(options)
+            
+              const choice = Math.floor(Math.random() * options)
+             
+               newText = BorrowedDesc[choice].desc4; 
+               isBorrowing = 1
+               
+            }
+
+            if(isBorrowing == 1){
+              storyTeller.innerHTML += newLine
+              storyTeller.innerHTML += "<span style='color:#FF0000'> [Borrowed]  </span>";
+              storyTeller.innerHTML += newText 
+              }else{
+              storyTeller.innerHTML += newLine  + newText 
+              }
 
             document.getElementById("Reading_QD").style.display = "none";
             document.getElementById("AskQD").style.display = "none";
@@ -1210,7 +1360,43 @@ document.getElementById('effectEntries').onchange = function () {
              
               var  newText = document.getElementById("TextE").value
 
-              storyTeller.innerHTML += newLine + newText 
+              var isBorrowing = 0
+
+              if(newText.length == 0){    
+             
+                        
+                var options = 0
+  
+                for (var i = 0; i < BorrowedDesc.length; i++) {
+  
+                  let check = BorrowedDesc[i].desc5  
+  
+                  console.log(check)
+  
+                  if(check.length > 0){
+  
+                    options ++
+  
+                  }   
+                }
+  
+                //console.log('+++++++++ TEST ++++++++++')
+                //console.table(options)
+              
+                const choice = Math.floor(Math.random() * options)
+               
+                 newText = BorrowedDesc[choice].desc5; 
+                 isBorrowing = 1
+                 
+              }
+
+              if(isBorrowing == 1){
+                storyTeller.innerHTML += newLine
+                storyTeller.innerHTML += "<span style='color:#FF0000'> [Borrowed]  </span>";
+                storyTeller.innerHTML += newText
+                }else{
+                storyTeller.innerHTML += newLine  + newText 
+                }
 
               document.getElementById("Reading_QE").style.display = "none";
               document.getElementById("AskQE").style.display = "none";
@@ -1218,10 +1404,6 @@ document.getElementById('effectEntries').onchange = function () {
           }
 
            
-          
-
-          
-
 //-----------------------------------------------------------------------------
 // DRAW MAP!
 var mapwidth = 3800
@@ -2592,6 +2774,9 @@ textCategory.onblur=function() {
 //-----------------------------------------------------------------------------
 //FUNCTION TO IMPORT PLAYER-CHARACTER DATA FROM SPREADSHEET
 
+var highlightLocation
+var highlightContainer
+var highlightItem
 
 
 const STR = document.getElementById('Strength');
@@ -2838,6 +3023,10 @@ var locationSelected = ''
 var containerSelected = ''
 var itemSelected = ''
 
+var locationHighlight = ''
+var containerHighlight = ''
+var itemHighlight = ''
+
 
 function makeInventory(){
 
@@ -2879,21 +3068,24 @@ function makeInventory(){
           headerRow.appendChild(header);
       });
       table.appendChild(headerRow);
+      var j = 0
       tableArray.forEach(emp => {
           let row = document.createElement('tr');
-
+          row.id =  'L'+j
+          j++
           //Click on Container filters items.
             row.onclick = function () {
 
             //Need a way to make all...  style =	'background: rgb(41, 38, 38); color: ivory;'
-
-
-            locationSelected = emp.Location;
+            locationSelected = emp.Location;            
+           
             containerSelected = ''
             itemSelected = ''  
             fillLocationContents()
             fillitemContents()
-            row.style = 'background-color: orange; color: rgb(41, 38, 38)'
+            locationHighlight = row.id
+            colourInventorySelection()
+             
         };
 
           Object.values(emp).forEach(text => {
@@ -2947,8 +3139,13 @@ function fillLocationContents(){
           headerRow.appendChild(header);
       });
       table.appendChild(headerRow);
+
+
+      var j = 0
       tableArray.forEach(emp => {
           let row = document.createElement('tr');
+          row.id =  'C'+j
+          j++
 
           //Click on Container filters items.
           row.onclick = function () {
@@ -2956,7 +3153,9 @@ function fillLocationContents(){
             itemSelected = '' 
             fillContainerContents()
             fillitemContents()
-            row.style = ' background-color: orange; color: rgb(41, 38, 38)'
+            containerHighlight = row.id
+            colourInventorySelection()
+           
         };
 
           Object.values(emp).forEach(text => {
@@ -2970,8 +3169,6 @@ function fillLocationContents(){
       myTable.appendChild(table);
 
     }
-
-//---------------------------------
 
 function fillContainerContents(){ 
 
@@ -3013,14 +3210,20 @@ function fillContainerContents(){
           headerRow.appendChild(header);
       });
       table.appendChild(headerRow);
+
+      var j = 0
       tableArray.forEach(emp => {
           let row = document.createElement('tr');
-
+          row.id =  'I'+j
+          j++
+          
           //Click on Container filters items.
           row.onclick = function () {
             itemSelected = emp.item;
             fillitemContents()
-            row.style = 'background-color: orange; color: rgb(41, 38, 38)'
+            itemHighlight = row.id
+            colourInventorySelection()
+            
         };
 
           Object.values(emp).forEach(text => {
@@ -3035,7 +3238,6 @@ function fillContainerContents(){
 
     }
 
-
     function fillitemContents(){
 
       var filterInventory  
@@ -3044,33 +3246,97 @@ function fillContainerContents(){
 
       const itemName = document.getElementById('itemName');
       const itemType = document.getElementById('itemType');
-      const itemLbs = document.getElementById('itemLbs');
-      const itemQuant = document.getElementById('itemQuant');
+      const itemWeight = document.getElementById('itemWeight');
+      const itemPortions = document.getElementById('itemPortions');
       const itemTotalWeight = document.getElementById('itemTotalWeight');
-      const itemDescription = document.getElementById('itemDescription');
+      const itemDesc1 = document.getElementById('itemDesc1');
+      const itemDesc2 = document.getElementById('itemDesc2');
+      const itemDesc3 = document.getElementById('itemDesc3');
+
+      const EdititemName = document.getElementById('EdititemName');
+      const EdititemType = document.getElementById('EdititemType');
+      const EdititemWeight = document.getElementById('EdititemWeight');
+      const EdititemPortions = document.getElementById('EdititemPortions');
+      //const EdititemTotalWeight = document.getElementById('EdititemTotalWeight');
+      const EdititemDesc1 = document.getElementById('EdititemDesc1');
+      const EdititemDesc2 = document.getElementById('EdititemDesc2');
+      const EdititemDesc3 = document.getElementById('EdititemDesc3');
 
       filterInventory = []
 
-      filterInventory = inventory.filter(obj => obj.name == itemSelected)
+      
+
+      filterInventory = inventory.filter(obj => obj.name == itemSelected && obj.playerid == filterID)
 
       if(filterInventory.length == 0){
-        filterInventory = inventory.filter(obj => obj.name == containerSelected)
+        filterInventory = inventory.filter(obj => obj.name == containerSelected  && obj.playerid == filterID)
       }
    
       if(filterInventory.length == 0){
-        filterInventory = inventory.filter(obj => obj.name == locationSelected)
+        filterInventory = inventory.filter(obj => obj.name == locationSelected  && obj.playerid == filterID)
       }
 
+      console.table(filterInventory)
+
       itemName.innerHTML = filterInventory[0].name
-      itemType.innerHTML = filterInventory[0].type
-      itemLbs.innerHTML = filterInventory[0].lbs
-      itemQuant.innerHTML = filterInventory[0].portions
-      itemTotalWeight.innerHTML = filterInventory[0].totallbs
-      itemDescription.innerHTML = filterInventory[0].description
+      itemType.innerHTML = filterInventory[0].itemtype
+      itemWeight.innerHTML = filterInventory[0].itemweight + ' lbs'
+      itemPortions.innerHTML = filterInventory[0].itemportions + ' portions.'
+      itemTotalWeight.innerHTML = filterInventory[0].itemtotalweight + ' lbs'
+      itemDesc1.innerHTML = filterInventory[0].itemdesc1
+      //itemDesc2.innerHTML = filterInventory[0].itemdesc2
+      //itemDesc3.innerHTML = filterInventory[0].itemdesc3
+
+      EdititemName.innerHTML = filterInventory[0].name
+      EdititemType.innerHTML = filterInventory[0].itemtype
+      EdititemWeight.innerHTML = filterInventory[0].itemweight
+      EdititemPortions.innerHTML = filterInventory[0].itemportions
+      //EdititemTotalWeight.innerHTML = filterInventory[0].itemtotalweight
+      EdititemDesc1.innerHTML = filterInventory[0].itemdesc1
+      //EdititemDesc2.innerHTML = filterInventory[0].itemdesc2
+      //EdititemDesc3.innerHTML = filterInventory[0].itemdesc3
   
     }
 
 
 //---------------------------------
+var lastLocationHighlight 
+var lastContainerHighlight
+var lastItemHighlight
 
+function colourInventorySelection(){
+
+  try{
+
+    document.getElementById(lastLocationHighlight).style = 'background-color: none; color: ivory'
+
+  }catch{}
+
+    document.getElementById(locationHighlight).style = 'background-color: orange; color: rgb(41, 38, 38)'
+  
+    lastLocationHighlight = locationHighlight
+ 
+
+  try{
+
+    document.getElementById(lastContainerHighlight).style = 'background-color: none; color: ivory'
+
+  }catch{}
+
+  document.getElementById(containerHighlight).style = 'background-color: orange; color: rgb(41, 38, 38)'
+
+  lastContainerHighlight = containerHighlight
+
+
+  try{
+
+    document.getElementById(lastItemHighlight).style = 'background-color: none; color: ivory'
+
+  }catch{}
+
+    document.getElementById(itemHighlight).style = 'background-color: orange; color: rgb(41, 38, 38)'
+
+    lastItemHighlight = itemHighlight
+ 
+}
 
