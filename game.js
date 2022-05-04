@@ -771,9 +771,12 @@ function LoadNPCs(){
 
   NPCEntries.innerHTML = "";
 
+  oneNPC[oneNPC.length]     = new Option(currentLocation[0].onenpc,currentLocation[0].onenpc)
+  twoNPC[twoNPC.length]     = new Option(currentLocation[0].twonpc,currentLocation[0].twonpc)
+  threeNPC[threeNPC.length] = new Option(currentLocation[0].threenpc,currentLocation[0].threenpc)
+ 
+ 
   for(var i = 0; i < currentNPCs.length; i++) {
-
-    console.log(currentNPCs[i].npcname)
   
     NPCEntries[NPCEntries.length] = new Option(currentNPCs[i].npcname,currentNPCs[i].npcname)
   
@@ -784,7 +787,6 @@ function LoadNPCs(){
   }
 
   
-  
   NPCEntries[NPCEntries.length] = new Option("New Entry","New Entry")
 
   const random1 = Math.floor(Math.random() * currentNPCs.length)
@@ -794,13 +796,22 @@ function LoadNPCs(){
   var oneNPCChildren   = oneNPC.children;
   var twoNPCChildren   = twoNPC.children;
   var threeNPCChildren = threeNPC.children;
-
   
+   
+    // set the value of the dropdown to a random option
 
-   // set the value of the dropdown to a random option
-   oneNPC.value = oneNPCChildren[random1].value; 
-   twoNPC.value = twoNPCChildren[random2].value; 
-   threeNPC.value = threeNPCChildren[random3].value; 
+   if(oneNPC.length == 0){
+    oneNPC.value = oneNPCChildren[random1].value; 
+   }
+
+   if(twoNPC.length == 0){
+    twoNPC.value = twoNPCChildren[random2].value; 
+   }
+
+   if(threeNPC.length == 0){
+    threeNPC.value = threeNPCChildren[random3].value; 
+   }
+
 
 }
 
@@ -991,6 +1002,11 @@ document.getElementById('hideEditEffects').onclick = function () {
   effectTwo.innerHTML = "";
   effectThree.innerHTML = "";
 
+  effectOne[effectOne.length]     = new Option(currentLocation[0].effectone,currentLocation[0].effectone)
+  effectTwo[effectTwo.length]     = new Option(currentLocation[0].effecttwo,currentLocation[0].effecttwo)
+  effectThree[effectThree.length] = new Option(currentLocation[0].effectthree,currentLocation[0].effectthree)
+ 
+
   effectsEntries.innerHTML = "";
 
   for(var i = 0; i < currentEffects.length; i++) {
@@ -1016,10 +1032,20 @@ document.getElementById('hideEditEffects').onclick = function () {
   var effectThreeChildren = effectThree.children;
 
    // set the value of the dropdown to a random option
-   effectOne.value = effectOneChildren[random1].value; 
-   effectTwo.value = effectTwoChildren[random2].value; 
-   effectThree.value = effectThreeChildren[random3].value; 
 
+   
+   if(effectOne.length == 0){
+    effectOne.value = effectOneChildren[random1].value;
+   }
+
+   if(effectTwo.length == 0){
+    effectTwo.value = effectTwoChildren[random2].value; 
+   }
+
+   if(effectThree.length == 0){
+    effectThree.value = effectThreeChildren[random3].value; 
+   }
+ 
    fillEffectDescriptions()
 
 }
@@ -1195,13 +1221,43 @@ document.getElementById('effectEntries').onchange = function () {
               storyTeller.innerHTML += weatherDesc + newLine + newText + newLine + weatherMod
               }
 
-              storyTeller.innerHTML += "There are "
-              storyTeller.innerHTML += "<span style='color:#FF0000'> [NPCs] </span>";              
-              storyTeller.innerHTML +=  "around. ";
+
+              
+
+              storyTeller.innerHTML += "A network known as "
+              //storyTeller.innerHTML += "<span style='color:#FF0000'> [NPCs] </span>";              
+              storyTeller.innerHTML +=  npcArray[0].npcname;
+              storyTeller.innerHTML += " has agents here." + newLine
+            
+              document.getElementById("Expand").style.display = "block";
 
               document.getElementById("Reading_QA").style.display = "none";
               document.getElementById("AskQA").style.display = "none";
 
+          }
+
+          var npcExpand = 0
+
+          document.getElementById('Expand').onclick = function () {
+                        
+
+              if(npcExpand == 0){
+              //storyTeller.style = "color: cyan;"    
+              storyTeller.innerHTML +=  npcArray[0].npc1 + newLine;
+              npcExpand++
+
+              }else if(npcExpand == 1){
+
+                storyTeller.innerHTML +=  npcArray[0].npc2 + newLine;
+                npcExpand++
+  
+                }else if(npcExpand == 2){
+
+                  storyTeller.innerHTML +=  npcArray[0].npc3 + newLine;
+                  npcExpand = 0
+                  document.getElementById("Expand").style.display = "none";
+    
+                  }
           }
 
           document.getElementById('AskQB').onclick = function () {
@@ -2937,17 +2993,19 @@ console.log('Connection to ' + sheet + ' has been made.');
 
   console.table(currentPlayer)
 
-  const STR_MOD = Math.floor(currentPlayer[0].str / 5);
-  const DEX_MOD = Math.floor(currentPlayer[0].dex / 5);
-  const INT_MOD = Math.floor(currentPlayer[0].int / 5);
-  const WIS_MOD = Math.floor(currentPlayer[0].wis / 5);
-  const CON_MOD = Math.floor(currentPlayer[0].con / 5);
-  const CHA_MOD = Math.floor(currentPlayer[0].cha / 5);
-  const PSY_MOD = Math.floor(currentPlayer[0].psy / 5);
-  const LUK_MOD = Math.floor(currentPlayer[0].luk / 5);
+  const STR_MOD = Math.ceil(currentPlayer[0].str / 5);
+  const DEX_MOD = Math.ceil(currentPlayer[0].dex / 5);
+  const INT_MOD = Math.ceil(currentPlayer[0].int / 5);
+  const WIS_MOD = Math.ceil(currentPlayer[0].wis / 5);
+  const CON_MOD = Math.ceil(currentPlayer[0].con / 5);
+  const CHA_MOD = Math.ceil(currentPlayer[0].cha / 5);
+  const PSY_MOD = Math.ceil(currentPlayer[0].psy / 5);
+  const LUK_MOD = Math.ceil(currentPlayer[0].luk / 5);
 
   const ATT_BON = STR_MOD + DEX_MOD
   const MGC_BON = INT_MOD + WIS_MOD
+  const NoActions = DEX_MOD
+  const Movement = DEX_MOD * 5
 
   
   STR.innerHTML = "STR: " + currentPlayer[0].str + '  (' + STR_MOD + ')';
@@ -2959,8 +3017,12 @@ console.log('Connection to ' + sheet + ' has been made.');
   PSY.innerHTML = "PSY: " + currentPlayer[0].psy + '  (' + PSY_MOD + ')';
   LUK.innerHTML = "LUK: " + currentPlayer[0].luk + '  (' + LUK_MOD + ')';
 
-  CBT.innerHTML = "Attack Bonus: " + ATT_BON + newLine + "Spell  Bonus: " + MGC_BON;
+// "<span style='color:#FF0000'> [Borrowed]  </span>";
 
+  CBT.innerHTML = "Attack Bonus: " + ATT_BON + newLine;
+  CBT.innerHTML += "Spell  Bonus: " + MGC_BON + newLine; 
+  CBT.innerHTML += "# Actions: " + NoActions + newLine; 
+  CBT.innerHTML += "Movement: " + Movement + " ft. or " +  DEX_MOD + " Hexes." + newLine; 
   
 
 }
@@ -3049,8 +3111,16 @@ function makeInventory(){
       locations = filterInventory.map(row => ({
 
         Location: row.name,
-       
+
       }));
+
+      //itemColour = filterInventory.map(row => ({
+
+        //Colour: row.itemColour,
+               
+      //}));
+
+      //console.table(itemColour)
     
       myTable = document.querySelector('#Locations');
       myTable.innerHTML= ''
@@ -3073,6 +3143,9 @@ function makeInventory(){
           let row = document.createElement('tr');
           row.id =  'L'+j
           j++
+          //Colour Items?
+
+
           //Click on Container filters items.
             row.onclick = function () {
 

@@ -133,7 +133,7 @@ div#popUpBackground{
   width: 20%;
   height: 80%;
   z-index : 6;
-  font-size: 12px;
+  font-size: 16px;
  
   
 }
@@ -146,7 +146,7 @@ div#popUpBackground{
   width: 20%;
   height: 80%;
   z-index : 6;
-  font-size: 12px;
+  font-size: 16px;
   
  
   
@@ -156,7 +156,7 @@ div#popUpBackground{
   	.InventoryClass{
 		width:100%; 
 		border-collapse:collapse; 
-    font-size: 12px;
+    font-size: 16px;
 	}
 	.InventoryClass td{ 
 		padding:1px; border:rgb(41, 38, 38) 1px solid;
@@ -186,7 +186,7 @@ div#popUpBackground{
   background: black;
   overflow-y: scroll;
   overflow-x: scroll; 
-  ;}
+  }
 
 
   #gridImg {
