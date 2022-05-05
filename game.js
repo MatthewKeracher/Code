@@ -126,6 +126,7 @@ document.getElementById('sheetName').value = sheetName
 document.getElementById('mapData_isWeather').value = "0";
 document.getElementById('mapData_isEffect').value = "0";
 document.getElementById('mapData_isNPC').value = "0";
+document.getElementById('mapData_isInventory').value = "0";
 
 checkSidebar()
 LoadPlayers()
@@ -1269,8 +1270,7 @@ document.getElementById('effectEntries').onchange = function () {
             var isBorrowing = 0
 
             if(newText.length == 0){    
-           
-                      
+                                 
               var options = 0
 
               for (var i = 0; i < BorrowedDesc.length; i++) {
@@ -1503,6 +1503,11 @@ document.getElementById('showInventory').onclick = function () {
   document.getElementById("hideInventory").style.display = "block";
   document.getElementById("showInventory").style.display = "none";
    document.getElementById("wrapper").style.width = "100%";
+
+   document.getElementById("sidebarwrapper").style.display = "none";
+
+
+  document.getElementById('wrapper').scrollLeft = 0;
    
     fillCharacterSheet()
 
@@ -1513,6 +1518,7 @@ document.getElementById('hideInventory').onclick = function () {
   document.getElementById("hideInventory").style.display = "none";
   document.getElementById("wrapper").style.width = "75%";
   document.getElementById("showInventory").style.display = "block";
+  document.getElementById("sidebarwrapper").style.display = "block";
 }
 
 
@@ -1567,27 +1573,40 @@ var Painting = document.getElementById("Painting"); //2
 var Writing =  document.getElementById("Writing"); //1
 var Reading =  document.getElementById("Reading"); //0
 var Playing =  document.getElementById("Playing"); //3
+var mapForm =  document.getElementById("mapForm"); //3
 var Activity = document.getElementById("Activity").value;
 
 if (Activity == 2) {
   Painting.style.display = "block";
   Writing.style.display = "none";
   Reading.style.display = "none";
+  mapForm.style.display = "none";
  
 } else if (Activity == 1) {
   Painting.style.display = "none";
   Writing.style.display = "block";
   Reading.style.display = "none";
+  mapForm.style.display = "none";
   paintCheck = 0;
 } else if (Activity == 0) {
   Painting.style.display = "none";
   Writing.style.display = "none";
   Reading.style.display = "block";
+  mapForm.style.display = "none";
   paintCheck = 0;
 } else if (Activity == 3) {
   Painting.style.display = "none";
   Writing.style.display = "none";
   Reading.style.display = "none";
+  mapForm.style.display = "none";
+  paintCheck = 0;
+
+} else if (Activity == 4) {
+  Painting.style.display = "none";
+  Writing.style.display = "none";
+  Reading.style.display = "none";
+  Playing.style.display = "none";
+  mapForm.style.display = "block";
   paintCheck = 0;
 
 }}
@@ -1747,6 +1766,13 @@ document.getElementById('submitNPC').onclick = function () {
   document.getElementById('mapData_isNPC').value = "0";
 }
 
+document.getElementById('saveItem').onclick = function () {
+  document.getElementById('mapData_isInventory').value = "1";
+  document.forms['mapData'].dispatchEvent(new Event('submit'));
+  document.getElementById('mapData_isInventory').value = "0";
+  
+  
+}
 
 document.getElementById('mapFormSubmit').onclick = function () {
  
@@ -2860,6 +2886,8 @@ document.getElementById('loadCharacter').onclick = function () {
   console.log('Finding ' + inventory.length + ' inventory items.')
   document.getElementById('itemDisplay').style.display = "block";
   document.getElementById('EdititemDisplay').style.display = "none";
+ 
+  
 
   makeInventory()
 
@@ -2874,6 +2902,19 @@ document.getElementById('editItem').onclick = function () {
  
 
 }
+
+document.getElementById('newItem').onclick = function () {
+ 
+
+  document.getElementById('itemDisplay').style.display = "none";
+  document.getElementById('EdititemDisplay').style.display = "block";
+  emptyEditItems()
+  //filterInventory = []
+
+ 
+
+}
+
 
 
 function fillCharacterSheet(){
@@ -3023,6 +3064,8 @@ console.log('Connection to ' + sheet + ' has been made.');
   CBT.innerHTML += "Spell  Bonus: " + MGC_BON + newLine; 
   CBT.innerHTML += "# Actions: " + NoActions + newLine; 
   CBT.innerHTML += "Movement: " + Movement + " ft. or " +  DEX_MOD + " Hexes." + newLine; 
+
+
   
 
 }
@@ -3106,6 +3149,10 @@ function makeInventory(){
       filterInventory = []
       filterInventory = inventory.filter(obj => obj.container == "Location" && obj.playerid == filterID)
 
+      document.getElementById('mapData_isInventory').value = 1;
+      document.getElementById('mapData_playerID').value = filterID;
+     
+
       locations = []
       
       locations = filterInventory.map(row => ({
@@ -3156,6 +3203,11 @@ function makeInventory(){
             itemSelected = ''  
             fillLocationContents()
             fillitemContents()
+
+            document.getElementById("hr1").style.visibility = "visible";
+            document.getElementById("hr2").style.visibility = "visible";
+            
+
             locationHighlight = row.id
             colourInventorySelection()
              
@@ -3172,6 +3224,41 @@ function makeInventory(){
       myTable.appendChild(table);
 
     }
+
+    
+
+function filterContainerDropdown(){
+
+  setContainer.innerHTML = ''
+
+  var filterID
+      filterID = currentPlayer[0].uniqueid
+     
+    var containerFilterHelper =  inventory.filter(obj => (obj.playerid == filterID && obj.itemtype == 'Container') || (obj.playerid == filterID && obj.itemtype == 'Location'))
+
+         console.log('')
+         console.log('++++++++ FILTER CONTAINER DROPDOWN 1 +++++++++++')
+         console.table(containerFilterHelper); 
+        
+    var containerOptions = containerFilterHelper.map(row => row.name)  
+  
+        const unique = (x, i, a) => a.indexOf(x) == i;
+         
+        var uniqueContainers = containerOptions.filter(unique);
+  
+         console.log('')
+         console.log('++++++++ FILTER CONTAINER DROPDOWN 2 +++++++++++')
+         console.table(uniqueContainers); 
+
+         setContainer[setContainer.length] = new Option("Location","Location")
+  
+        for(var i = 0; i < uniqueContainers.length; i++) {
+    
+          setContainer[setContainer.length] = new Option(uniqueContainers[i],uniqueContainers[i])
+            
+        }
+
+      }
 
 
 function fillLocationContents(){ 
@@ -3227,6 +3314,7 @@ function fillLocationContents(){
             fillContainerContents()
             fillitemContents()
             containerHighlight = row.id
+
             colourInventorySelection()
            
         };
@@ -3311,9 +3399,11 @@ function fillContainerContents(){
 
     }
 
+    var filterInventory 
+
     function fillitemContents(){
 
-      var filterInventory  
+       
       var filterID
       filterID = currentPlayer[0].uniqueid
 
@@ -3330,15 +3420,12 @@ function fillContainerContents(){
       const EdititemType = document.getElementById('EdititemType');
       const EdititemWeight = document.getElementById('EdititemWeight');
       const EdititemPortions = document.getElementById('EdititemPortions');
-      //const EdititemTotalWeight = document.getElementById('EdititemTotalWeight');
       const EdititemDesc1 = document.getElementById('EdititemDesc1');
       const EdititemDesc2 = document.getElementById('EdititemDesc2');
       const EdititemDesc3 = document.getElementById('EdititemDesc3');
 
       filterInventory = []
-
-      
-
+    
       filterInventory = inventory.filter(obj => obj.name == itemSelected && obj.playerid == filterID)
 
       if(filterInventory.length == 0){
@@ -3351,24 +3438,79 @@ function fillContainerContents(){
 
       console.table(filterInventory)
 
+      //let checkType = filterInventory[0].itemtype
+     
       itemName.innerHTML = filterInventory[0].name
       itemType.innerHTML = filterInventory[0].itemtype
-      itemWeight.innerHTML = filterInventory[0].itemweight + ' lbs'
-      itemPortions.innerHTML = filterInventory[0].itemportions + ' portions.'
-      itemTotalWeight.innerHTML = filterInventory[0].itemtotalweight + ' lbs'
-      itemDesc1.innerHTML = filterInventory[0].itemdesc1
-      //itemDesc2.innerHTML = filterInventory[0].itemdesc2
-      //itemDesc3.innerHTML = filterInventory[0].itemdesc3
 
-      EdititemName.innerHTML = filterInventory[0].name
-      EdititemType.innerHTML = filterInventory[0].itemtype
-      EdititemWeight.innerHTML = filterInventory[0].itemweight
-      EdititemPortions.innerHTML = filterInventory[0].itemportions
+      itemWeight.innerHTML = filterInventory[0].itemweight 
+      document.getElementById("hr3").style.visibility = "hidden";
+
+      if(itemWeight.innerHTML.length > 0){
+
+        itemWeight.innerHTML += ' lbs.'
+        document.getElementById("hr3").style.visibility = "visible";
+
+      }
+
+      itemPortions.innerHTML = filterInventory[0].itemportions 
+
+      if(itemPortions.innerHTML.length > 0){
+
+        itemPortions.innerHTML += ' Quants.'
+
+      }
+
+      itemTotalWeight.innerHTML = ''
+
+      if(filterInventory[0].itemportions * filterInventory[0].itemweight  !=  0 && filterInventory[0].itemportions > 1){
+
+        itemTotalWeight.innerHTML += filterInventory[0].itemportions * filterInventory[0].itemweight 
+
+      }
+   
+      if(itemTotalWeight.innerHTML !=  0 && filterInventory[0].itemportions > 1){
+
+        itemTotalWeight.innerHTML += ' lbs in total.'
+
+      }
+   
+      itemDesc1.innerHTML = filterInventory[0].itemdesc1
+      itemDesc2.innerHTML = filterInventory[0].itemdesc2
+      itemDesc3.innerHTML = filterInventory[0].itemdesc3
+         
+      emptyEditItems()
+
+      EdititemName.value = filterInventory[0].name
+      EdititemType.value = filterInventory[0].itemtype
+      EdititemWeight.value = filterInventory[0].itemweight
+      EdititemPortions.value = filterInventory[0].itemportions
       //EdititemTotalWeight.innerHTML = filterInventory[0].itemtotalweight
-      EdititemDesc1.innerHTML = filterInventory[0].itemdesc1
-      //EdititemDesc2.innerHTML = filterInventory[0].itemdesc2
-      //EdititemDesc3.innerHTML = filterInventory[0].itemdesc3
-  
+      EdititemDesc1.value = filterInventory[0].itemdesc1
+      EdititemDesc2.value = filterInventory[0].itemdesc2
+      EdititemDesc3.value = filterInventory[0].itemdesc3
+
+      document.getElementById('mapData_uniqueinvid').value = filterInventory[0].uniqueinvid;
+
+      filterContainerDropdown()
+
+      document.getElementById('setContainer').value = filterInventory[0].container;
+
+    }
+
+    function emptyEditItems(){
+
+
+      document.getElementById('EdititemName').value = ''
+      document.getElementById('EdititemType').value  = ''
+      document.getElementById('EdititemWeight').value  = ''
+      document.getElementById('EdititemPortions').value  = ''
+      document.getElementById('EdititemDesc1').value  = ''
+      document.getElementById('EdititemDesc2').value  = ''
+      document.getElementById('EdititemDesc3').value  = ''
+
+
+
     }
 
 
@@ -3385,10 +3527,13 @@ function colourInventorySelection(){
 
   }catch{}
 
+  try{
+
     document.getElementById(locationHighlight).style = 'background-color: orange; color: rgb(41, 38, 38)'
   
     lastLocationHighlight = locationHighlight
  
+  }catch{}
 
   try{
 
@@ -3396,10 +3541,13 @@ function colourInventorySelection(){
 
   }catch{}
 
+  try{
+
   document.getElementById(containerHighlight).style = 'background-color: orange; color: rgb(41, 38, 38)'
 
   lastContainerHighlight = containerHighlight
 
+  }catch{}
 
   try{
 
@@ -3407,7 +3555,11 @@ function colourInventorySelection(){
 
   }catch{}
 
+  try{
+
     document.getElementById(itemHighlight).style = 'background-color: orange; color: rgb(41, 38, 38)'
+    
+  }catch{}
 
     lastItemHighlight = itemHighlight
  

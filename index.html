@@ -31,21 +31,9 @@
 
     <form id = "mapData" onsubmit = "google.script.run.processData(this.form);" 
   
-    action = "https://script.google.com/macros/s/AKfycbyJ3hPn6-gH6rhihTDb5TvSSfgGKlNxkIrL-yqjPs9mKxXIkL5M_ywp5-auqUwq-kI/exec" style = "z-index: 5" >    
+    action = "https://script.google.com/macros/s/AKfycbyDiN7G1LKGAuBsShHmORXAIMwfy2fZUyhkvBQGkO-HP9pHzpXQkkCqbiWtP2MWmlxG/exec" style = "z-index: 5" >    
 
-    <input name= "username"  form = "mapData"   id= "mapData_user"        style = "background-color: rgb(0, 0, 0); color: green; width:200px;"               type="text"    >
-    <input name= "sheetName" form = "mapData"   id= "mapData_sheetName"   style = "background-color: rgb(0, 0, 0); color: green; width:50px; border: none;"  type="text"    >
-    <input name= "parentID"  form = "mapData"   id= "mapData_parentID"    style = "background-color: rgb(0, 0, 0); color: green; width:50px; border: none;"  type="text"    >
-    <input name= "uniqueID"  form = "mapData"   id= "mapData_uniqueID"    style = "background-color: rgb(0, 0, 0); color: green; width:100px; border: none;" type="text"    >
-    <input name= "X"         form = "mapData"   id= "mapData_X"           style=  "background-color: rgb(0, 0, 0); color: green"  type="text"    > 
-    <input name= "Y"         form = "mapData"   id= "mapData_Y"           style=  "background-color: rgb(0, 0, 0); color: green"  type="text"    >  
-    <input name= "Z"         form = "mapData"   id= "mapData_Z"           style=  "background-color: rgb(0, 0, 0); color: green"  type="text"    >
-    <input name= "fill"      form = "mapData"   id= "mapData_fill"        style=  "background-color: rgb(0, 0, 0); color: green"  type="text"    >
-    <input name= "Activity"  form = "mapData"   id= "mapData_Activity"    style=  "background-color: rgb(0, 0, 0); color: green"  type="text"    >
-    <input name= "isWeather" form = "mapData"   id= "mapData_isWeather"   style=  "background-color: rgb(0, 0, 0); color: green"  type="text"    >
-    <input name= "isNPC"     form = "mapData"   id= "mapData_isNPC"       style=  "background-color: rgb(0, 0, 0); color: green"  type="text"    >
-    <input name= "isEffect"  form = "mapData"   id= "mapData_isEffect"    style=  "background-color: rgb(0, 0, 0); color: green"  type="text"    >
-
+   
     </form>
    
 
@@ -66,15 +54,23 @@
 
         <div id = "itemDisplay">
 
-          <p id = "itemName"></p> <br>
+          <p id = "itemType" style = "color: orange ; margin: 1px;"></p>
 
-          <p id = "itemType"></p>
+          <hr id = "hr1"  size="3" width="100%" float="left" color="orange">  
+
+          <p id = "itemName" style = "font-size: 30px;  margin: 1px; "></p> 
+
+          <hr id = "hr2"   size="3" width="100%" float="left" color="orange">  
           
-          <p id = "itemWeight"></p>
+          <p id = "itemWeight"  style = "color: orange"></p>
           
-          <p id = "itemPortions"></p>
+          <p id = "itemPortions"  style = "color: orange"></p>
           
-          <p id = "itemTotalWeight"></p>
+          <p id = "itemTotalWeight"  style = "color: orange"></p>
+
+          <hr id = "hr3"   size="3" width="100%" float="left" color="orange">  
+
+          <div id = "itemDescs"> 
           
           <p id = "itemDesc1"></p>
 
@@ -83,13 +79,15 @@
           <p id = "itemDesc3"></p>
 
         </div>
+      </div>
 
 
         <div id = "EdititemDisplay" style = "display: none;">
 
+              
               Name: 
               <br> <br>
-              <textarea id = "EdititemName" name = "name"  form = "mapData" style = "height: 20px; width:  450px; background-color: rgb(0, 0, 0); color: orange" ></textarea> </textarea> <br><br>
+              <textarea id = "EdititemName" name = "itemName"  form = "mapData" style = "height: 20px; width:  450px; background-color: rgb(0, 0, 0); color: orange" ></textarea> </textarea> <br><br>
 
               Type: 
               <br> <br>
@@ -103,23 +101,23 @@
               <br> <br>
               <textarea id = "EdititemPortions" name = "itemPortions"  form = "mapData" style = "height: 20px; width:  50px; background-color: rgb(0, 0, 0); color: orange" > </textarea>   <br> <br>
 
-              Description One
+              Physically Attributes:
               <br> <br>            
               <textarea id = "EdititemDesc1" name = "itemDesc1"  form = "mapData" style = "height: 120px; width:  450px; background-color: rgb(0, 0, 0); color: orange" > </textarea>   <br> <br>
 
-              Description Two
+              Mechanically Attributes:
               <br> <br>             
               <textarea id = "EdititemDesc2" name = "itemDesc2"  form = "mapData" style = "height: 120px; width:  450px; background-color: rgb(0, 0, 0); color: orange" > </textarea>   <br> <br>
               
-              Description Three
+              Historical or Social Attributes:
               <br> <br>            
               <textarea id = "EdititemDesc3" name = "itemDesc3"  form = "mapData" style = "height: 120px; width: 450px; background-color: rgb(0, 0, 0); color: orange" > </textarea>   <br> <br>
 
               <select id="setContainer" name = "container"  form = "mapData" style="background-color: rgb(0, 0, 0); color: violet">
+                                         
+              </select> 
               
-                <option value = 0 > Holding or Wearing </option>                 
-                            
-              </select> <input id="saveItem" type="button" value="Save" /> 
+              <input id="saveItem" type="button" value="Save" /> 
 
         </div>
       
@@ -141,12 +139,10 @@
                          
         </select>
 
-        <input id="loadCharacter" type="button" value="Load" /> <input id="editItem" type="button" value="Edit" />
-
+        <input id="loadCharacter" type="button" value="Load" /> <input id="editItem" type="button" value="Edit" /> <input id="newItem" type="button" value="New" />  
+        
         <br><br>
-
-        <p id = "Combat" style="color: cyan ; "></p> <br>
-
+     
         <p id = "Strength"></p>
         
         <p id = "Dexterity"></p>
@@ -163,16 +159,14 @@
        
         <p id = "Luck"></p>
 
+        <br>
+
+        <p id = "Combat" style="color: cyan ; font-size: 20px;"></p> 
+
        
-
-
       </div>
-
-      
-
-    </div> 
-
-   
+   </div> 
+  
     </div> 
    
     <div id='wrapper'> 
@@ -237,9 +231,31 @@
             <option value = 1 > Writing </option>
             <option value = 2 > Painting </option>
             <option value = 3 > Playing </option>
+            <option value = 4 > mapForm </option>
                         
           </select>
  
+          <div id = "mapForm">  
+
+            <br><br><br><br><br>
+
+            username     <input name= "username"     form = "mapData"   id= "mapData_user"        type="text"    > <br><br>
+            sheetName    <input name= "sheetName"    form = "mapData"   id= "mapData_sheetName"   type="text"    > <br><br>
+            parentID     <input name= "parentID"     form = "mapData"   id= "mapData_parentID"    type="text"    > <br><br>
+            uniqueID     <input name= "uniqueID"     form = "mapData"   id= "mapData_uniqueID"    type="text"    > <br><br>
+            X            <input name= "X"            form = "mapData"   id= "mapData_X"           type="text"    > <br><br>
+            Y            <input name= "Y"            form = "mapData"   id= "mapData_Y"           type="text"    > <br><br>
+            Z            <input name= "Z"            form = "mapData"   id= "mapData_Z"           type="text"    > <br><br>
+            fill         <input name= "fill"         form = "mapData"   id= "mapData_fill"        type="text"    > <br><br>
+            Activity     <input name= "Activity"     form = "mapData"   id= "mapData_Activity"    type="text"    > <br><br>
+            isWeather    <input name= "isWeather"    form = "mapData"   id= "mapData_isWeather"   type="text"    > <br><br>
+            isNPC        <input name= "isNPC"        form = "mapData"   id= "mapData_isNPC"       type="text"    > <br><br>
+            isEffect     <input name= "isEffect"     form = "mapData"   id= "mapData_isEffect"    type="text"    > <br><br>
+            isInventory  <input name= "isInventory"  form = "mapData"   id= "mapData_isInventory" type="text"    > <br><br>
+            playerID     <input name= "playerID"     form = "mapData"   id= "mapData_playerID"    type="text"    > <br><br>
+            uniqueinvid  <input name= "uniqueinvid"  form = "mapData"   id= "mapData_uniqueinvid" type="text"    > <br><br>
+      
+        </div>
 
           <div id = "Playing"> 
   

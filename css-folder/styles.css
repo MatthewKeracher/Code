@@ -79,8 +79,8 @@ div#popUpBackground{
   color: Ivory;
   font-family: 'Courier Prime', monospace;
   border: none;
-  z-index : 5
- 
+  z-index : 5;
+  font-size: 30px;
   
 }
 
@@ -97,6 +97,7 @@ div#popUpBackground{
   overflow-y : auto;
   overflow-x: hidden;
   z-index : 6;
+  
  
 }
 
@@ -115,7 +116,7 @@ div#popUpBackground{
 
 #Contents {
   position: absolute;
-  left: 45%; 
+  left: 50%; 
   top: 10%; 
   width: auto;
   height: 80%;
@@ -125,6 +126,14 @@ div#popUpBackground{
  
 }
 
+#itemDescs{
+font-style: italic
+}
+
+hr {
+  clear: both;
+  visibility: hidden;
+}
 
 #itemDisplay {
   position: absolute;
@@ -133,7 +142,7 @@ div#popUpBackground{
   width: 20%;
   height: 80%;
   z-index : 6;
-  font-size: 16px;
+  font-size: 18px;
  
   
 }
@@ -151,6 +160,7 @@ div#popUpBackground{
  
   
 }
+
 
 
   	.InventoryClass{
@@ -174,7 +184,15 @@ div#popUpBackground{
     }
 
    
+#mapForm {
 
+  
+  color: violet; 
+  
+  float: right;
+  border: none
+
+}
 
    
 #wrapper {
@@ -473,8 +491,7 @@ color: wheat;
 }
 
 #user {
-  
-  
+    
   color: orange;
   font-family: 'Courier Prime', monospace;
   border:none;
