@@ -31,7 +31,7 @@
 
     <form id = "mapData" onsubmit = "google.script.run.processData(this.form);" 
   
-    action = "https://script.google.com/macros/s/AKfycbyDiN7G1LKGAuBsShHmORXAIMwfy2fZUyhkvBQGkO-HP9pHzpXQkkCqbiWtP2MWmlxG/exec" style = "z-index: 5" >    
+    action = "https://script.google.com/macros/s/AKfycbyZeetQLyvCPUav_vm2Xi-I64YrOotBWgAHycyfc3ICw7RpXW1-aQ34eSVOwYKL8t9O/exec" style = "z-index: 5" >    
 
    
     </form>
@@ -56,11 +56,11 @@
 
           <p id = "itemType" style = "color: orange ; margin: 1px;"></p>
 
-          <hr id = "hr1"  size="3" width="100%" float="left" color="orange">  
+          <hr id = "hr1"  size="3" width="100%" float="left" color="DarkOrange">  
 
           <p id = "itemName" style = "font-size: 30px;  margin: 1px; "></p> 
 
-          <hr id = "hr2"   size="3" width="100%" float="left" color="orange">  
+          <hr id = "hr2"   size="3" width="100%" float="left" color="DarkOrange">  
           
           <p id = "itemWeight"  style = "color: orange"></p>
           
@@ -68,7 +68,7 @@
           
           <p id = "itemTotalWeight"  style = "color: orange"></p>
 
-          <hr id = "hr3"   size="3" width="100%" float="left" color="orange">  
+          <hr id = "hr3"   size="3" width="100%" float="left" color="DarkOrange">  
 
           <div id = "itemDescs"> 
           
@@ -139,9 +139,12 @@
                          
         </select>
 
-        <input id="loadCharacter" type="button" value="Load" /> <input id="editItem" type="button" value="Edit" /> <input id="newItem" type="button" value="New" />  
-        
-        <br><br>
+        <div id = "AbilityScoreButtons" style = "opacity: 0.5">
+
+          <input id="loadCharacter" type="button" value="Show Inventory" /> <input id="editItem" type="button" value="Edit Current Item" /> <input id="newItem" type="button" value="Define New Item" /> 
+          </div>
+     
+        <hr id = "hr4"  size="3" width="100%" float="left" color="Ivory">  
      
         <p id = "Strength"></p>
         
@@ -159,9 +162,13 @@
        
         <p id = "Luck"></p>
 
+        
         <br>
 
-        <p id = "Combat" style="color: cyan ; font-size: 20px;"></p> 
+        <hr id = "hr5"  size="3" width="100%"  float="left" color="Ivory">  
+        
+
+        <p id = "Combat"></p> 
 
        
       </div>
@@ -254,6 +261,7 @@
             isInventory  <input name= "isInventory"  form = "mapData"   id= "mapData_isInventory" type="text"    > <br><br>
             playerID     <input name= "playerID"     form = "mapData"   id= "mapData_playerID"    type="text"    > <br><br>
             uniqueinvid  <input name= "uniqueinvid"  form = "mapData"   id= "mapData_uniqueinvid" type="text"    > <br><br>
+            isNewItem    <input name= "isNewItem"    form = "mapData"   id= "mapData_isNewItem"   type="text"    > <br><br>
       
         </div>
 
