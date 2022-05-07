@@ -232,6 +232,8 @@
                      
           </select> <br><br>
 
+
+
           <select id="Activity" style=" display: none; float: right; background-color: rgb(0, 0, 0); color: violet">
               
             <option value = 0 > Reading </option> 
@@ -280,8 +282,9 @@
 
            <select id="zLayer" name="Z" style="background-color: rgb(0, 0, 0); color: orange"> 
             
-               <option value = 1 > Oikos </option>
+                <option value = 1 > Locations </option>
                 <option value = 0 > Gaia </option>
+                <option value = 2 > Level 1 </option>
            
         </select>  <br> <br>
 
@@ -395,6 +398,8 @@
    
           <div id = "Writing">
 
+            <input id="run_permMap" type="button" value="Reload"/>  
+
             <div id = "EditorButtons">
 
 
@@ -489,7 +494,7 @@
              <br> <br>
     
               <p id = "npcTitleTwo" style = "color: cyan"></p>  
-              <select id="npcEntries" style="width: 190px; background-color: rgb(0, 0, 0); color: grey"> </select>   <br>
+              <select id="npcEntries" style="width: 190px; background-color: rgb(0, 0, 0); color: grey"> </select>  <button id="loadNPCDescriptions" >Load</button> <br>
   
             
 
@@ -521,7 +526,11 @@
                 Location Name:
                 <input id= "Location" name = "Location" form = "mapData" type="text" autocomplete="off" style = "width: 100%;"> <br><br>
                 Category:   
-                <input id= "Category" name = "Category" form = "mapData" type="text" autocomplete="off" style = "width: 100%;"> <br> <br>
+                <input id= "Category" name = "Category" form = "mapData" type="text" autocomplete="off" style = "width: 100%;"> <br> 
+                
+                <button id = "mapFormSubmit" type="submit" form = "mapData" style="float: left;"> Commit Changes </button>
+                
+                <br>
 
                 
 
@@ -563,7 +572,7 @@
 
                       
 
-                <button id = "mapFormSubmit" type="submit" form = "mapData" style="float: left;"> Commit Changes </button> &nbsp;
+                &nbsp;
 
                 <input id= "sheetName"  type="text"  >
                 <input id= "parentID"   type="text"  >
@@ -573,15 +582,11 @@
 
             </div>
 
-          <div id = "Reading">
+          <div id = "Reading"> 
 
             <br>
           
-           
-
-
-
-
+            <button id="clearStory" >Clear Story</button>
 
             <p id = "storyTeller">  </p>  <button id="Expand" style = "display: none">Tell me more...</button>
 

@@ -15,6 +15,8 @@ var players = []
 var npcArray = []
 var currentNPCs = []
 var inventory = []
+var monsters = []
+var selectEffects = []
 
 //Google Sheet Queries
 var sheetName = 'Global'
@@ -79,6 +81,10 @@ var currentPlayer
 var rUsername = 'Gaia' //prompt("What is your name?");
 document.addEventListener('DOMContentLoaded',permMap);
 
+const randColor = () =>  {
+  return "#" + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0').toUpperCase();
+}
+
 
 
 
@@ -121,7 +127,7 @@ function gridLoop() {
 
 //ONCE
 document.getElementById('user').value = rUsername
-document.getElementById('wrapper').scrollLeft += screen.width/10*6;
+document.getElementById('wrapper').scrollLeft += 0 //screen.width/10*6;
 document.getElementById('sheetName').value = sheetName
 document.getElementById('mapData_isWeather').value = "0";
 document.getElementById('mapData_isEffect').value = "0";
@@ -351,6 +357,7 @@ if( document.getElementById('Reading_QA').value != "" ){
 
   document.getElementById("Reading_QA").style.display = "block";
   document.getElementById("AskQA").style.display = "block";
+  
  
 }
 
@@ -486,6 +493,26 @@ console.log('++++++++LOAD WEATHER+++++++++++')
 
 }
 
+function randomEffects(){
+
+  console.log('')
+  console.log('+++++++++ randEffects ++++++++++')
+  
+
+  var seed = document.getElementById('effectEntries')
+  var options = currentEffects.length 
+  const choice = Math.floor(Math.random() * options)
+  
+  var seedChildren = seed.children;
+   
+   // set the value of the dropdown to a random option
+   seed.value = seedChildren[choice].value; 
+
+  fillEffectDescriptions()
+   //fillWeatherEntrySelection()
+  
+}
+
 function randomWeather(){
 
   console.log('')
@@ -516,6 +543,9 @@ function getWeather(){
 
  currentWeather = weather.filter(obj => obj.season == Season.value && obj.day == Time.value)
  console.table(currentWeather)
+
+ fillWeatherEntrySelection()
+ fillWeatherDescriptions()
 
  randomWeather()
 
@@ -746,13 +776,13 @@ function LoadNPCs(){
 
   }else if(sheetName == "Dungeon"){
 
-    currentNPCs = npcArray.filter(obj => obj.category == currentCategory && obj.scale == sheetName)
+    currentNPCs = npcArray.filter(obj => obj.scale == sheetName) //
 
   }
  
  
   console.log('Rows returned from Filter ' + currentNPCs.length)
-  console.table(currentNPCs)
+  //console.table(currentNPCs)
  
  
 
@@ -802,17 +832,23 @@ function LoadNPCs(){
    
     // set the value of the dropdown to a random option
 
-   if(oneNPC.length == 0){
+    console.log('NPC 1 Length ' + oneNPC.length)
+    console.log('NPC 2 Length ' + twoNPC.length)
+    console.log('NPC 3Length ' + threeNPC.length)
+
+   if(oneNPC.value.length == 0){
     oneNPC.value = oneNPCChildren[random1].value; 
    }
 
-   if(twoNPC.length == 0){
+   if(twoNPC.value.length == 0){
     twoNPC.value = twoNPCChildren[random2].value; 
    }
 
-   if(threeNPC.length == 0){
+   if(threeNPC.value.length == 0){
     threeNPC.value = threeNPCChildren[random3].value; 
    }
+
+   NPCEntries.value = oneNPC.value
 
 
 }
@@ -851,7 +887,7 @@ function fillNPCDescriptions(){
 
   }else if(sheetName == "Dungeon"){
 
-     chosenNPC = npcArray.filter(obj => obj.category == currentCategory && obj.scale == sheetName && obj.npcname == selection)
+     chosenNPC = npcArray.filter(obj => obj.scale == sheetName && obj.npcname == selection)
 
   }
   
@@ -869,6 +905,13 @@ function fillNPCDescriptions(){
  
 
 }
+
+document.getElementById('loadNPCDescriptions').onclick = function () {
+
+  fillNPCDescriptions()
+
+}
+
 
 document.getElementById('npcEntries').onchange = function () {
 
@@ -894,6 +937,24 @@ Q3.innerHTML = 'Name of Network:'
 Q4.innerHTML = 'Briefly describe the Network:'
 Q5.innerHTML = 'Where is this Network centred and who runs it?'
 Q6.innerHTML = 'What do all members of this Network carry with them?'
+
+}else if(sheetName == "Local"){
+
+  Q1.innerHTML = 'Select Groups active in location: '
+  Q2.innerHTML = 'Select Groups to Edit:'
+  Q3.innerHTML = 'Name of Group:'
+  Q4.innerHTML = 'Briefly describe the Group:'
+  Q5.innerHTML = 'Where is this Group centred locally and who runs it?'
+  Q6.innerHTML = 'What do all members of this Group carry with them?'
+
+}else if(sheetName == "Dungeon"){
+
+  Q1.innerHTML = 'Select NPCs/Monster active in vicinity: '
+  Q2.innerHTML = 'Select NPCs/Monster to Edit:'
+  Q3.innerHTML = 'Name:'
+  Q4.innerHTML = 'Physically describe:'
+  Q5.innerHTML = 'Mechanics:'
+  Q6.innerHTML = 'Tactics:'
 
 }
 
@@ -968,6 +1029,12 @@ function LoadEffects(){
   currentEffects = Effects.filter(obj => obj.category == currentCategory && obj.scale == sheetName)
   console.log('Rows returned from Filter ' + currentEffects.length)
   console.table(currentEffects)
+
+ fillEffectsDropdowns()
+ fillEffectDescriptions()
+
+ randomEffects()
+
 
   
  
@@ -1097,6 +1164,12 @@ document.getElementById('effectEntries').onchange = function () {
  //-----------------------------------------------------------------------------
           // STORYTELLER
           const newLine = " <br> <br> "; //carriage return and newline.
+
+          document.getElementById('clearStory').onclick = function () {
+
+            storyTeller.innerHTML = ""
+          
+          }
           
           function copyQuestions(){
 
@@ -1140,30 +1213,42 @@ document.getElementById('effectEntries').onchange = function () {
             BorrowedDesc = carto.filter(obj => obj.category == Category)
 
             
+            
             console.log('')
             console.log('+++++++++ FILL STORYTELLER ++++++++++')
             console.log('DESCRIPTIONS TO BORROW FROM:')
             console.table(BorrowedDesc)
 
-            if( sheetName == 'Global'){
+            if( sheetName == "Global"){
 
-             Message = "You are at the "  + Category +  " of " + Location + "." + newLine    
-
-            }else{
-
-              Message = "You are at " + Location + "'s "  + Category +  "."
-            
+              storyTeller.innerHTML += "<span style='color:#FFB6C1'> [***]  </span>";
+              Message = "You are at the "  + Category +  " of " + Location + "." + newLine    
+          
+            }else if(sheetName == "Local"){
+          
+              storyTeller.innerHTML += "<span style='color:#87CEFA'> [**]  </span>";
+              Message = "You are at " + Location + "'s "  + Category +  "." + newLine
+          
+            }else if(sheetName == "Dungeon"){
+          
+              storyTeller.innerHTML += "<span style='color:#FFD700'> [*]  </span>";
+              Message =  Location + newLine  + Category + newLine
+          
             }
+
+          
             
             if( Location.length > 0 ){
             
-            storyTeller.innerHTML = Message
+            storyTeller.innerHTML += Message
           
           }}
 
         
 
           document.getElementById('AskQA').onclick = function () {
+
+           
 
           try{   
 
@@ -1220,21 +1305,75 @@ document.getElementById('effectEntries').onchange = function () {
               storyTeller.innerHTML += "<span style='color:#FF0000'> [Borrowed]  </span>";
               storyTeller.innerHTML +=  newText + newLine + weatherMod
               }else{
-              storyTeller.innerHTML += weatherDesc + newLine + newText + newLine + weatherMod
+              storyTeller.innerHTML += weatherDesc + newLine + newText + newLine + weatherMod + newLine
               }
 
+              selectEffects = []
+              monsters = []
+              var npc1 = currentLocation[0].onenpc
+              var npc2 = currentLocation[0].twonpc
+              var npc3 = currentLocation[0].threenpc
+              var eff1 = currentLocation[0].effectone
+              var eff2 = currentLocation[0].effecttwo
+              var eff3 = currentLocation[0].effectthree
 
+              monsters = npcArray.filter(obj => obj.npcname == npc1 && obj.scale == sheetName)
+              selectEffects = Effects.filter(obj => obj.name == eff1 && obj.scale == sheetName)
+              console.table(monsters)
               
+              
+  if( sheetName == "Global"){
 
-              storyTeller.innerHTML += "A network known as "
-              //storyTeller.innerHTML += "<span style='color:#FF0000'> [NPCs] </span>";              
-              storyTeller.innerHTML +=  npcArray[0].npcname;
-              storyTeller.innerHTML += " has agents here." + newLine
+    
+    //storyTeller.innerHTML += "<span style='color:#FF0000'> [NPCs] </span>";   
+    
+    //There is an orange ball
+    storyTeller.innerHTML +=  selectEffects[0].description + newLine;       
+    // A man is here. 
+    storyTeller.innerHTML += "A network known as "
+    storyTeller.innerHTML +=  currentLocation[0].onenpc 
+    storyTeller.innerHTML += " has agents here." + newLine
+    //They are bouncing the ball.
+    storyTeller.innerHTML +=  selectEffects[0].modifier + newLine;  
+   
+    
+  
+    document.getElementById("Expand").style.display = "block";
+
+    document.getElementById("Reading_QA").style.display = "none";
+    document.getElementById("AskQA").style.display = "none";
+
+  }else if(sheetName == "Local"){
+
+    storyTeller.innerHTML +=  selectEffects[0].description + newLine;
+    storyTeller.innerHTML += "A group of  "
+    //storyTeller.innerHTML += "<span style='color:#FF0000'> [NPCs] </span>";              
+    storyTeller.innerHTML +=  currentLocation[0].onenpc 
+    storyTeller.innerHTML += " are here. " 
+    storyTeller.innerHTML +=  selectEffects[0].modifier + newLine;  
+    storyTeller.innerHTML +=  selectEffects[0].reaction + newLine; 
+
+    document.getElementById("Expand").style.display = "block";
+
+    document.getElementById("Reading_QA").style.display = "none";
+    document.getElementById("AskQA").style.display = "none";
+
+  }else if(sheetName == "Dungeon"){
+
+    storyTeller.innerHTML +=  selectEffects[0].description + newLine;
+    storyTeller.innerHTML += "BEWARE! There may be a  "
+    //storyTeller.innerHTML += "<span style='color:#FF0000'> [NPCs] </span>";              
+    storyTeller.innerHTML +=  currentLocation[0].onenpc + '. '
+  
+    document.getElementById("Expand").style.display = "block";
+
+    document.getElementById("Reading_QA").style.display = "none";
+    document.getElementById("AskQA").style.display = "none";
+
+  }
+
+
             
-              document.getElementById("Expand").style.display = "block";
-
-              document.getElementById("Reading_QA").style.display = "none";
-              document.getElementById("AskQA").style.display = "none";
 
           }
 
@@ -1245,24 +1384,29 @@ document.getElementById('effectEntries').onchange = function () {
 
               if(npcExpand == 0){
               //storyTeller.style = "color: cyan;"    
-              storyTeller.innerHTML +=  npcArray[0].npc1 + newLine;
+              storyTeller.innerHTML +=  monsters[0].npc1 + newLine;
               npcExpand++
 
               }else if(npcExpand == 1){
 
-                storyTeller.innerHTML +=  npcArray[0].npc2 + newLine;
+                storyTeller.innerHTML +=  monsters[0].npc2 + newLine;
                 npcExpand++
   
                 }else if(npcExpand == 2){
 
-                  storyTeller.innerHTML +=  npcArray[0].npc3 + newLine;
+                  storyTeller.innerHTML +=  monsters[0].npc3 + newLine;
                   npcExpand = 0
                   document.getElementById("Expand").style.display = "none";
     
                   }
+
+
+                  document.getElementById('sidebar').scrollTop = objDiv.scrollHeight;
           }
 
           document.getElementById('AskQB').onclick = function () {
+
+            
 
             const storyTeller = document.getElementById("storyTeller") 
            
@@ -1308,9 +1452,13 @@ document.getElementById('effectEntries').onchange = function () {
             document.getElementById("Reading_QB").style.display = "none";
             document.getElementById("AskQB").style.display = "none";
 
+            document.getElementById('sidebar').scrollTop = objDiv.scrollHeight;
+
           }
 
           document.getElementById('AskQC').onclick = function () {
+
+            
 
             const storyTeller = document.getElementById("storyTeller") 
            
@@ -1360,9 +1508,14 @@ document.getElementById('effectEntries').onchange = function () {
             document.getElementById("Reading_QC").style.display = "none";
             document.getElementById("AskQC").style.display = "none";
 
+            document.getElementById('sidebar').scrollTop = objDiv.scrollHeight;
+
           }
 
           document.getElementById('AskQD').onclick = function () {
+
+           
+            
 
             const storyTeller = document.getElementById("storyTeller") 
             
@@ -1409,9 +1562,13 @@ document.getElementById('effectEntries').onchange = function () {
             document.getElementById("Reading_QD").style.display = "none";
             document.getElementById("AskQD").style.display = "none";
 
+            document.getElementById('sidebar').scrollTop = objDiv.scrollHeight;
+
           }
 
           document.getElementById('AskQE').onclick = function () {
+
+            document.getElementById('sidebar').scrollTop = objDiv.scrollHeight;
 
             const storyTeller = document.getElementById("storyTeller") 
              
@@ -1457,6 +1614,8 @@ document.getElementById('effectEntries').onchange = function () {
 
               document.getElementById("Reading_QE").style.display = "none";
               document.getElementById("AskQE").style.display = "none";
+
+              document.getElementById('sidebar').scrollTop = objDiv.scrollHeight;
 
           }
 
@@ -1780,8 +1939,13 @@ document.getElementById('saveItem').onclick = function () {
   
 }
 
-document.getElementById('mapFormSubmit').onclick = function () {
+document.getElementById('run_permMap').onclick = function () {
  
+    //bookmark
+   
+    permMap()
+
+
   }
 
 document.getElementById('enlargeImage').onclick = function () {
@@ -1897,7 +2061,15 @@ CTX.fillRect(x * tileSize, y * tileSize, tileSize, tileSize)
 
   function paint() {
 
- 
+    document.getElementById('Location').value =  ""
+    document.getElementById('Category').value = ""
+    //document.getElementById('paintFill').value = currentLocation[0].fill
+    document.getElementById('TextA').value = ""
+    document.getElementById('TextB').value = ""
+    document.getElementById('TextC').value = ""
+    document.getElementById('TextD').value = ""
+    document.getElementById('TextE').value = ""
+    document.getElementById("Expand").style.display = "none";
              
   gridTopCTX.fillStyle = paintColour;
 
@@ -2041,6 +2213,17 @@ function filterCarto(){
   try{
 
   //EDITOR VARIABLES
+
+    document.getElementById('Location').value =  ""
+    document.getElementById('Category').value = ""
+    //document.getElementById('paintFill').value = currentLocation[0].fill
+    document.getElementById('TextA').value = ""
+    document.getElementById('TextB').value = ""
+    document.getElementById('TextC').value = ""
+    document.getElementById('TextD').value = ""
+    document.getElementById('TextE').value = ""
+    document.getElementById("Expand").style.display = "none";
+
    
     document.getElementById('Location').value =  currentLocation[0].location
     document.getElementById('Category').value = currentLocation[0].category
@@ -2263,7 +2446,13 @@ try{
   }catch{
     noQuestions()
     console.log('!!!!! Could not complete filterCarto() !!!!!')
-    document.getElementById('storyTeller').innerHTML = 'You travel the wilderness.'
+    
+    document.getElementById('storyTeller').innerHTML += newLine 
+    document.getElementById('storyTeller').innerHTML += "<span style='color:#40E0D0'> [*]  </span>";
+    document.getElementById('storyTeller').innerHTML += newLine 
+
+    document.getElementById('sidebar').scrollTop = objDiv.scrollHeight;
+    
   }
 
 
@@ -2299,7 +2488,7 @@ try{
     }
 
 
-
+    document.getElementById('sidebar').scrollTop = objDiv.scrollHeight;
 
 }
 
@@ -2646,6 +2835,11 @@ document.onkeyup = function(e) {
       carto = [] 
       console.log('carto length: '+ carto.length)
       permMap()
+
+      //Storyteller Changes
+      fillNPCQuestions()
+
+
       //LoadMap()
       
       
@@ -2661,6 +2855,10 @@ document.onkeyup = function(e) {
       carto = [] 
       console.log('carto length: '+ carto.length)
       permMap()
+
+       //Storyteller Changes
+       fillNPCQuestions()
+
       //LoadMap()
     }
 
