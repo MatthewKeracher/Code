@@ -119,6 +119,8 @@ function gridLoop() {
 
   //Draw The Map  
   loopMap()
+  InvIDLoop()
+  
 
   //Persistent User Effects
 }
@@ -821,9 +823,9 @@ function LoadNPCs(){
   
   NPCEntries[NPCEntries.length] = new Option("New Entry","New Entry")
 
-  const random1 = Math.floor(Math.random() * currentNPCs.length)
-  const random2 = Math.floor(Math.random() * currentNPCs.length)
-  const random3 = Math.floor(Math.random() * currentNPCs.length)
+  const random1 = Math.floor(Math.random() * currentNPCs.length) + 1
+  const random2 = Math.floor(Math.random() * currentNPCs.length) + 1
+  const random3 = Math.floor(Math.random() * currentNPCs.length) + 1
 
   var oneNPCChildren   = oneNPC.children;
   var twoNPCChildren   = twoNPC.children;
@@ -3108,13 +3110,16 @@ document.getElementById('editItem').onclick = function () {
 document.getElementById('newItem').onclick = function () {
  
 
+  filterInventory[0].uniqueinvid = "New"
+
   document.getElementById('itemDisplay').style.display = "none";
   document.getElementById('EdititemDisplay').style.display = "block";
   document.getElementById('mapData_isNewItem').value = "1"
-  document.getElementById('mapData_uniqueinvid').value = "0"
+  document.getElementById('mapData_uniqueinvid').value = "NEW"
   emptyEditItems()
   //filterInventory = []
 
+ 
 }
 
 function fillCharacterSheet(){
@@ -3598,12 +3603,27 @@ function fillContainerContents(){
 
     var filterInventory 
 
+    function InvIDLoop(){
+
+      const showInvID = document.getElementById('showInvID');
+      const showInvID2 = document.getElementById('showInvID2');
+
+      let invID = filterInventory[0].uniqueinvid; 
+
+      showInvID.innerHTML = invID
+      showInvID2.innerHTML = 'UniqueID: ' + invID
+
+
+    }
+
+
     function fillitemContents(){
 
        
       var filterID
       filterID = currentPlayer[0].uniqueid
 
+     
       const itemName = document.getElementById('itemName');
       const itemType = document.getElementById('itemType');
       const itemWeight = document.getElementById('itemWeight');
@@ -3615,6 +3635,7 @@ function fillContainerContents(){
       const hr1 = document.getElementById('hr1');
       const hr2 = document.getElementById('hr2');
 
+      
       const EdititemName = document.getElementById('EdititemName');
       const EdititemType = document.getElementById('EdititemType');
       const EdititemWeight = document.getElementById('EdititemWeight');
@@ -3643,6 +3664,8 @@ function fillContainerContents(){
       itemName.innerHTML = filterInventory[0].name
 
       itemType.innerHTML = filterInventory[0].itemtype
+
+      
 
      
 
@@ -3808,6 +3831,8 @@ function fillContainerContents(){
          
       emptyEditItems()
 
+      
+
       EdititemName.value = filterInventory[0].name
       EdititemType.value = filterInventory[0].itemtype
       EdititemWeight.value = filterInventory[0].itemweight
@@ -3827,7 +3852,7 @@ function fillContainerContents(){
 
     function emptyEditItems(){
 
-
+      document.getElementById('showInvID2').value = ''
       document.getElementById('EdititemName').value = ''
       document.getElementById('EdititemType').value  = ''
       document.getElementById('EdititemWeight').value  = ''

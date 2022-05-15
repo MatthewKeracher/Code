@@ -31,7 +31,7 @@
 
     <form id = "mapData" onsubmit = "google.script.run.processData(this.form);" 
   
-    action = "https://script.google.com/macros/s/AKfycbyZeetQLyvCPUav_vm2Xi-I64YrOotBWgAHycyfc3ICw7RpXW1-aQ34eSVOwYKL8t9O/exec" style = "z-index: 5" >    
+    action = "https://script.google.com/macros/s/AKfycbyBpsRqwOziwGZX1p17Bq5v81vVCYGO7aRugmwZQSk_4sJ4iTBAPpJd0xhd_4QY0NGc/exec" style = "z-index: 5" >    
 
    
     </form>
@@ -41,6 +41,8 @@
   </div>
 
   <body id = 'body' >
+
+    <!--  Character interface -->
 
     <div id = "popUp" style = "display:none;"> 
    
@@ -53,6 +55,8 @@
         <div id = "Contents" class="InventoryClass" > </div>
 
         <div id = "itemDisplay">
+
+          <p id = "showInvID"></p>
 
           <p id = "itemType" style = "color: orange ; margin: 1px;"></p>
 
@@ -84,6 +88,7 @@
 
         <div id = "EdititemDisplay" style = "display: none;">
 
+          
               
               Name: 
               <br> <br>
@@ -117,7 +122,7 @@
                                          
               </select> 
               
-              <input id="saveItem" type="button" value="Save" /> 
+              <input id="saveItem" type="button" value="Save" /> <p id = "showInvID2"></p>
 
         </div>
       
