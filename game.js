@@ -3066,6 +3066,8 @@ var highlightLocation
 var highlightContainer
 var highlightItem
 
+var FTG = 0
+
 const STR = document.getElementById('Strength');
 const DEX = document.getElementById('Dexterity');
 const INT = document.getElementById('Intelligence');
@@ -3253,15 +3255,39 @@ console.log('Connection to ' + sheet + ' has been made.');
   const NoActions = DEX_MOD
   const Movement = DEX_MOD * 5
 
+  const STR_FTG = Math.ceil(currentPlayer[0].str);
+  const DEX_FTG = Math.ceil(currentPlayer[0].dex);
+  const INT_FTG = Math.ceil(currentPlayer[0].int);
+  const WIS_FTG = Math.ceil(currentPlayer[0].wis);
+  const CON_FTG = Math.ceil(currentPlayer[0].con);
+  const CHA_FTG = Math.ceil(currentPlayer[0].cha);
+  const PSY_FTG = Math.ceil(currentPlayer[0].psy);
+  const LUK_FTG = Math.ceil(currentPlayer[0].luk);
+
   
-  STR.innerHTML = "STR: " + currentPlayer[0].str + '  (' + STR_MOD + ')';
-  DEX.innerHTML = "DEX: " + currentPlayer[0].dex + '  (' + DEX_MOD + ')';
-  INT.innerHTML = "INT: " + currentPlayer[0].int + '  (' + INT_MOD + ')';
-  WIS.innerHTML = "WIS: " + currentPlayer[0].wis + '  (' + WIS_MOD + ')';
-  CON.innerHTML = "CON: " + currentPlayer[0].con + '  (' + CON_MOD + ')';
-  CHA.innerHTML = "CHA: " + currentPlayer[0].cha + '  (' + CHA_MOD + ')';
-  PSY.innerHTML = "PSY: " + currentPlayer[0].psy + '  (' + PSY_MOD + ')';
-  LUK.innerHTML = "LUK: " + currentPlayer[0].luk + '  (' + LUK_MOD + ')';
+  STR.innerHTML = "<span style='color: Gold'> STR: </span>";
+  STR.innerHTML += STR_FTG + '  (' + STR_MOD + ')';
+
+  DEX.innerHTML = "<span style='color: LightSeaGreen'> DEX: </span>";
+  DEX.innerHTML += DEX_FTG + '  (' + DEX_MOD + ')';
+
+  INT.innerHTML = "<span style='color: Violet'> INT: </span>";
+  INT.innerHTML += INT_FTG + '  (' + INT_MOD + ')';
+
+  WIS.innerHTML = "<span style='color: skyblue'> WIS: </span>";
+  WIS.innerHTML += WIS_FTG + '  (' + WIS_MOD + ')';
+
+  CON.innerHTML = "<span style='color: DarkOrange'> CON: </span>";
+  CON.innerHTML += CON_FTG + '  (' + CON_MOD + ')';
+
+  CHA.innerHTML = "<span style='color:cyan'> CHA: </span>";
+  CHA.innerHTML += CHA_FTG + '  (' + CHA_MOD + ')';
+
+  PSY.innerHTML = "<span style='color: #FF69B4'> PSY: </span>";
+  PSY.innerHTML += PSY_FTG + '  (' + PSY_MOD + ')';
+
+  LUK.innerHTML = "<span style='color: Ivory'> LUK: </span>";
+  LUK.innerHTML += LUK_FTG + '  (' + LUK_MOD + ')';
 
   document.getElementById("hr4").style.visibility = "visible";
   document.getElementById("hr5").style.visibility = "visible";
@@ -3274,7 +3300,151 @@ console.log('Connection to ' + sheet + ' has been made.');
   CBT.innerHTML += "MVMT: " +  DEX_MOD +  newLine; 
 
 
+  colourScore()
+
+}
+
+function colourScore(){
+
+  unfadeAbilityScores()
+
+  //str
+
+if(currentPlayer[0].str_if == -1 ){
+
+  STR.style.color = "OrangeRed" 
+
+}else if(currentPlayer[0].str_if == 0 ){
+
+  STR.style.color = "Ivory" 
+
+}else if(currentPlayer[0].str_if == 1 ){
+
+  STR.style.color = "Lime" 
   
+}
+
+  //dex
+
+  if(currentPlayer[0].dex_if == -1 ){
+
+    DEX.style.color = "OrangeRed" 
+
+  }else if(currentPlayer[0].dex_if == 0 ){
+
+    DEX.style.color = "Ivory" 
+  
+  }else if(currentPlayer[0].dex_if == 1 ){
+
+    DEX.style.color = "Lime" 
+    
+  }
+
+    //wis
+
+if(currentPlayer[0].wis_if == -1 ){
+
+  WIS.style.color = "OrangeRed" 
+
+}else if(currentPlayer[0].wis_if == 0 ){
+ 
+  WIS.style.color = "Ivory" 
+  
+
+}else if(currentPlayer[0].wis_if == 1 ){
+
+  WIS.style.color = "Lime" 
+  
+}
+
+ //int
+
+ if(currentPlayer[0].int_if == -1 ){
+
+  INT.style.color = "OrangeRed" 
+
+}else if(currentPlayer[0].int_if == 0 ){
+ 
+  INT.style.color = "Ivory" 
+  
+}else if(currentPlayer[0].int_if == 1 ){
+
+  INT.style.color = "Lime" 
+  
+}
+
+
+  //con
+
+  if(currentPlayer[0].con_if == -1 ){
+
+    CON.style.color = "OrangeRed" 
+
+  }else if(currentPlayer[0].con_if == 0 ){
+
+    CON.style.color = "Ivory" 
+  
+  }else if(currentPlayer[0].con_if == 1 ){
+
+    CON.style.color = "Lime" 
+    
+  }
+
+    //cha
+
+if(currentPlayer[0].cha_if == -1 ){
+
+  CHA.style.color = "OrangeRed" 
+
+}else if(currentPlayer[0].cha_if == 0 ){
+
+  CHA.style.color = "Ivory" 
+
+}else if(currentPlayer[0].cha_if == 1 ){
+
+  CHA.style.color = "Lime" 
+  
+}
+
+  //psy
+
+  if(currentPlayer[0].psy_if ){
+
+    PSY.style.color = "OrangeRed" 
+
+  }else if(currentPlayer[0].psy_if){
+
+    PSY.style.color = "Ivory" 
+  
+  }else if(currentPlayer[0].psy_if ){
+    
+    PSY.style.color = "Lime" 
+
+  }
+
+    //luk
+
+if(currentPlayer[0].luk_if == -1 ){
+
+  LUK.style.color = "OrangeRed" 
+
+}else if(currentPlayer[0].luk_if== 0 ){
+  LUK.style.color = "Ivory" 
+
+}else if(currentPlayer[0].luk_if == 1 ){
+  
+  LUK.style.color = "Lime" 
+}
+
+
+
+
+
+
+
+
+
+
 
 }
 
@@ -3608,11 +3778,14 @@ function fillContainerContents(){
       const showInvID = document.getElementById('showInvID');
       const showInvID2 = document.getElementById('showInvID2');
 
+      try{
+
       let invID = filterInventory[0].uniqueinvid; 
 
       showInvID.innerHTML = invID
       showInvID2.innerHTML = 'UniqueID: ' + invID
 
+      }catch{}
 
     }
 
@@ -3702,17 +3875,10 @@ function fillContainerContents(){
 
       }
 
-      STR.style.color = "Ivory" 
-      DEX.style.color = "Ivory" 
 
-      INT.style.color = "Ivory" 
-      WIS.style.color = "Ivory" 
-     
-      CON.style.color = "Ivory" 
-      PSY.style.color = "Ivory" 
-      LUK.style.color = "Ivory" 
+//recolour based on Boons, Active Effects...
 
-      unfadeAbilityScores()
+colourScore()
 
 
       itemName.style.color = "Ivory"
@@ -3729,7 +3895,7 @@ function fillContainerContents(){
 
         if(filterInventory[0].itemtype == "STR"){
 
-        STR.style.color = "Gold"  
+        
         fadeAbilityScores()
         STR.style.opacity = 1
 
@@ -3745,7 +3911,7 @@ function fillContainerContents(){
 
         }else if(filterInventory[0].itemtype == "CON"){
 
-          CON.style.color = "OrangeRed"  
+          
           fadeAbilityScores()
           CON.style.opacity = 1
 
@@ -3762,7 +3928,7 @@ function fillContainerContents(){
 
         }else if(filterInventory[0].itemtype == "DEX"){
 
-          DEX.style.color = "LightSeaGreen"  
+         
           fadeAbilityScores()
           DEX.style.opacity = 1
 
@@ -3776,6 +3942,8 @@ function fillContainerContents(){
           itemWeight.innerHTML += " Half: " + Math.floor(currentPlayer[0].dex/2)   + newLine
           itemWeight.innerHTML += " Third: " + Math.floor(currentPlayer[0].dex/3)
 
+       
+
         }
 
 
@@ -3788,7 +3956,7 @@ function fillContainerContents(){
 
         if(filterInventory[0].itemtype == "INT"){
 
-        INT.style.color = "Violet"    
+         
         fadeAbilityScores()
         INT.style.opacity = 1
 
@@ -3805,7 +3973,7 @@ function fillContainerContents(){
 
         }else if(filterInventory[0].itemtype == "WIS"){
 
-          WIS.style.color = "skyblue"  
+           
           fadeAbilityScores()
           WIS.style.opacity = 1
 
@@ -3820,10 +3988,24 @@ function fillContainerContents(){
           itemWeight.innerHTML += " Half: " + Math.floor(currentPlayer[0].wis/2)   + newLine
           itemWeight.innerHTML += " Third: " + Math.floor(currentPlayer[0].wis/3)
 
-        }
+        }else if(filterInventory[0].itemtype == "CHA"){
+
+         
+          fadeAbilityScores()
+          CHA.style.opacity = 1
+
+          itemName.style.color = "cyan"
+          itemType.style.color = "cyan"
+          hr1.color = "Teal"
+          hr2.color = "Teal"
+          hr3.color = "Teal"
+          itemWeight.style.color = "cyan"
+          itemWeight.innerHTML += " Whole: " + currentPlayer[0].cha  + newLine
+          itemWeight.innerHTML += " Half: " + Math.floor(currentPlayer[0].cha/2)   + newLine
+          itemWeight.innerHTML += " Third: " + Math.floor(currentPlayer[0].cha/3)
 
 
-      }
+      }}
    
       itemDesc1.innerHTML = filterInventory[0].itemdesc1
       itemDesc2.innerHTML = filterInventory[0].itemdesc2
