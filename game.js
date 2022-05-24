@@ -3888,13 +3888,14 @@ colourScore()
       hr3.color = "DarkOrange"
       itemWeight.style.color = "Orange"
 
-      if(filterInventory[0].container == "Actions"){
+     
 
-        document.getElementById("hr3").style.visibility = "visible";
-        itemType.innerHTML += " ACTION"
+        //document.getElementById("hr3").style.visibility = "visible";
+        
 
         if(filterInventory[0].itemtype == "STR"){
-
+        itemType.innerHTML += " Ability"
+        document.getElementById("hr3").style.visibility = "visible";
         
         fadeAbilityScores()
         STR.style.opacity = 1
@@ -3909,8 +3910,10 @@ colourScore()
         itemWeight.innerHTML += " Half: " + Math.floor(currentPlayer[0].str/2)   + newLine
         itemWeight.innerHTML += " Third: " + Math.floor(currentPlayer[0].str/3)
 
-        }else if(filterInventory[0].itemtype == "CON"){
 
+        }else if(filterInventory[0].itemtype == "CON"){
+          itemType.innerHTML += " Ability"
+          document.getElementById("hr3").style.visibility = "visible";
           
           fadeAbilityScores()
           CON.style.opacity = 1
@@ -3922,13 +3925,14 @@ colourScore()
           hr2.color = "FireBrick"
           hr3.color = "FireBrick"
           itemWeight.style.color = "OrangeRed"
-          itemWeight.innerHTML += " Whole: " + currentPlayer[0].wis  + newLine
-          itemWeight.innerHTML += " Half: " + Math.floor(currentPlayer[0].wis/2)   + newLine
-          itemWeight.innerHTML += " Third: " + Math.floor(currentPlayer[0].wis/3)
+          itemWeight.innerHTML += " Whole: " + currentPlayer[0].con  + newLine
+          itemWeight.innerHTML += " Half: " + Math.floor(currentPlayer[0].con/2)   + newLine
+          itemWeight.innerHTML += " Third: " + Math.floor(currentPlayer[0].con/3)
 
         }else if(filterInventory[0].itemtype == "DEX"){
+          itemType.innerHTML += " Ability"
+          document.getElementById("hr3").style.visibility = "visible";
 
-         
           fadeAbilityScores()
           DEX.style.opacity = 1
 
@@ -3946,15 +3950,9 @@ colourScore()
 
         }
 
-
-      }
-      
-      if(filterInventory[0].container == "Spells"){
-
-        document.getElementById("hr3").style.visibility = "visible";
-        itemType.innerHTML += " SPELL"
-
         if(filterInventory[0].itemtype == "INT"){
+          itemType.innerHTML += " Ability"
+          document.getElementById("hr3").style.visibility = "visible";
 
          
         fadeAbilityScores()
@@ -3972,6 +3970,8 @@ colourScore()
         itemWeight.innerHTML += " Third: " + Math.floor(currentPlayer[0].int/3)
 
         }else if(filterInventory[0].itemtype == "WIS"){
+          itemType.innerHTML += " Ability"
+          document.getElementById("hr3").style.visibility = "visible";
 
            
           fadeAbilityScores()
@@ -3989,6 +3989,8 @@ colourScore()
           itemWeight.innerHTML += " Third: " + Math.floor(currentPlayer[0].wis/3)
 
         }else if(filterInventory[0].itemtype == "CHA"){
+          itemType.innerHTML += " Ability"
+          document.getElementById("hr3").style.visibility = "visible";
 
          
           fadeAbilityScores()
@@ -4005,7 +4007,26 @@ colourScore()
           itemWeight.innerHTML += " Third: " + Math.floor(currentPlayer[0].cha/3)
 
 
-      }}
+      }else if(filterInventory[0].itemtype == "PSY"){
+        itemType.innerHTML += " Action"
+        document.getElementById("hr3").style.visibility = "visible";
+        
+         
+        fadeAbilityScores()
+        PSY.style.opacity = 1
+
+        itemName.style.color = " #FF69B4"
+        itemType.style.color = " #FF69B4"
+        hr1.color = "#9400d3"
+        hr2.color = "#9400d3"
+        hr3.color = "#9400d3"
+        itemWeight.style.color = " #FF69B4"
+        itemWeight.innerHTML += " Whole: " + currentPlayer[0].psy  + newLine
+        itemWeight.innerHTML += " Half: " + Math.floor(currentPlayer[0].psy/2)   + newLine
+        itemWeight.innerHTML += " Third: " + Math.floor(currentPlayer[0].psy/3)
+
+
+    }
    
       itemDesc1.innerHTML = filterInventory[0].itemdesc1
       itemDesc2.innerHTML = filterInventory[0].itemdesc2
