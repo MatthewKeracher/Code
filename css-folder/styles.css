@@ -84,14 +84,33 @@ div#popUpBackground{
   
 }
 
+#Combat {
+  position: fixed;
+  float: left;
+  padding: 10px;
+  width:15%;    
+  height: 80%;
+  top: 15%; 
+  left: 20%; 
+  right: 20%; 
+  bottom: 15%; 
+  color: Ivory;
+  font-family: 'Courier Prime', monospace;
+  border: none;
+  z-index : 5;
+  font-size: 26px;
+  
+}
+
+
 
 
 
 #Locations {
   position: absolute;
   float: left;
-  left: 20%; 
-  top: 60%; 
+  left: 1%; 
+  top: 69%; 
   width: auto;
   height: 30%;
   overflow-y : auto;
@@ -103,8 +122,8 @@ div#popUpBackground{
 
 #Containers {
   position: absolute;
-  left: 40%; 
-  top: 60%; 
+  left: 20%; 
+  top: 50%; 
   width: auto;
   height: 30%;
   overflow-y : auto;
@@ -116,8 +135,8 @@ div#popUpBackground{
 
 #Contents {
   position: absolute;
-  left: 55%; 
-  top: 60%; 
+  left: 35%; 
+  top: 50%; 
   width: auto;
   height: 30%;
   overflow-y : auto;

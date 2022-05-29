@@ -3294,12 +3294,12 @@ console.log('Connection to ' + sheet + ' has been made.');
 
 // "<span style='color:#FF0000'> [Borrowed]  </span>";
 
+  CBT.innerHTML += "ACLS: " +  currentPlayer[0].ac +  newLine; 
   CBT.innerHTML = "ATKB: " + ATT_BON + newLine;
   CBT.innerHTML += "SPLB: " + MGC_BON + newLine; 
   CBT.innerHTML += "#ACT: " + NoActions + newLine; 
   CBT.innerHTML += "MVMT: " +  DEX_MOD +  newLine; 
-
-
+ 
   colourScore()
 
 }
@@ -3853,27 +3853,10 @@ function fillContainerContents(){
 
       }
 
-      itemPortions.innerHTML = filterInventory[0].itemportions 
-
-      if(itemPortions.innerHTML.length > 0){
-
-        itemPortions.innerHTML += ' Quants.'
-
-      }
-
+     
       itemTotalWeight.innerHTML = ''
 
-      if(filterInventory[0].itemportions * filterInventory[0].itemweight  !=  0 && filterInventory[0].itemportions > 1){
-
-        itemTotalWeight.innerHTML += filterInventory[0].itemportions * filterInventory[0].itemweight 
-
-      }
-   
-      if(itemTotalWeight.innerHTML !=  0 && filterInventory[0].itemportions > 1){
-
-        itemTotalWeight.innerHTML += ' lbs in total.'
-
-      }
+      
 
 
 //recolour based on Boons, Active Effects...
@@ -3887,6 +3870,7 @@ colourScore()
       hr2.color = "DarkOrange"
       hr3.color = "DarkOrange"
       itemWeight.style.color = "Orange"
+      itemPortions.innerHTML = ''
 
      
 
@@ -4026,7 +4010,14 @@ colourScore()
         itemWeight.innerHTML += " Third: " + Math.floor(currentPlayer[0].psy/3)
 
 
-    }
+    }else if(filterInventory[0].itemtype == "Armour"){
+      
+      document.getElementById("hr3").style.visibility = "visible";
+       
+      itemPortions.innerHTML += "  Armour Class: " + filterInventory[0].itemportions  
+           
+  }
+ 
    
       itemDesc1.innerHTML = filterInventory[0].itemdesc1
       itemDesc2.innerHTML = filterInventory[0].itemdesc2
