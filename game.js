@@ -3294,8 +3294,8 @@ console.log('Connection to ' + sheet + ' has been made.');
 
 // "<span style='color:#FF0000'> [Borrowed]  </span>";
 
-  CBT.innerHTML += "ACLS: " +  currentPlayer[0].ac +  newLine; 
-  CBT.innerHTML = "ATKB: " + ATT_BON + newLine;
+  CBT.innerHTML = "ACLS: " +  currentPlayer[0].ac +  newLine; 
+  CBT.innerHTML += "ATKB: " + ATT_BON + newLine;
   CBT.innerHTML += "SPLB: " + MGC_BON + newLine; 
   CBT.innerHTML += "#ACT: " + NoActions + newLine; 
   CBT.innerHTML += "MVMT: " +  DEX_MOD +  newLine; 
