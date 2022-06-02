@@ -103,7 +103,19 @@ div#popUpBackground{
 }
 
 
-
+#charImage {
+  position: absolute;
+  float: left;
+  left: 50%; 
+  top: 15%; 
+  width: auto;
+  height: 30%;
+  overflow-y : auto;
+  overflow-x: hidden;
+  z-index : 6;
+  
+ 
+}
 
 
 #Locations {

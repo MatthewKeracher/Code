@@ -1860,6 +1860,7 @@ function drawBlackground() {
   }
 }
 
+
 function drawBackImage(){
 
   var backImage = new Image()
@@ -3241,14 +3242,14 @@ console.log('Connection to ' + sheet + ' has been made.');
 
   console.table(currentPlayer)
 
-  const STR_MOD = Math.ceil(currentPlayer[0].str / 5);
-  const DEX_MOD = Math.ceil(currentPlayer[0].dex / 5);
-  const INT_MOD = Math.ceil(currentPlayer[0].int / 5);
-  const WIS_MOD = Math.ceil(currentPlayer[0].wis / 5);
-  const CON_MOD = Math.ceil(currentPlayer[0].con / 5);
-  const CHA_MOD = Math.ceil(currentPlayer[0].cha / 5);
-  const PSY_MOD = Math.ceil(currentPlayer[0].psy / 5);
-  const LUK_MOD = Math.ceil(currentPlayer[0].luk / 5);
+  const STR_MOD = Math.ceil(currentPlayer[0].str_base / 5);
+  const DEX_MOD = Math.ceil(currentPlayer[0].dex_base / 5);
+  const INT_MOD = Math.ceil(currentPlayer[0].int_base / 5);
+  const WIS_MOD = Math.ceil(currentPlayer[0].wis_base / 5);
+  const CON_MOD = Math.ceil(currentPlayer[0].con_base / 5);
+  const CHA_MOD = Math.ceil(currentPlayer[0].cha_base / 5);
+  const PSY_MOD = Math.ceil(currentPlayer[0].psy_base / 5);
+  const LUK_MOD = Math.ceil(currentPlayer[0].luk_base / 5);
 
   const ATT_BON = STR_MOD + DEX_MOD
   const MGC_BON = INT_MOD + WIS_MOD
