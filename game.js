@@ -2737,11 +2737,12 @@ function LoadColours(){
 var Reload 
 
 document.onkeyup = function(e) {
-
+  
   var ignoreElement = document.getElementById('sidebarwrapper');
   var isNOTEditor = ignoreElement.contains(event.target);
 
   var ignoreElement2 = document.getElementById('popUp');
+  var ignoreElement3 = document.getElementById('sidebarwrapper');
   var isNOTEditor2 = ignoreElement2.contains(event.target);
  
 
@@ -3295,11 +3296,11 @@ console.log('Connection to ' + sheet + ' has been made.');
 
 // "<span style='color:#FF0000'> [Borrowed]  </span>";
 
-  CBT.innerHTML = "ACLS: " +  currentPlayer[0].ac +  newLine; 
-  CBT.innerHTML += "ATKB: " + ATT_BON + newLine;
-  CBT.innerHTML += "SPLB: " + MGC_BON + newLine; 
-  CBT.innerHTML += "#ACT: " + NoActions + newLine; 
-  CBT.innerHTML += "MVMT: " +  DEX_MOD +  newLine; 
+  //CBT.innerHTML = "ACLS: " +  currentPlayer[0].ac +  newLine; 
+  //CBT.innerHTML += "ATKB: " + ATT_BON + newLine;
+ // CBT.innerHTML += "SPLB: " + MGC_BON + newLine; 
+  //CBT.innerHTML += "#ACT: " + NoActions + newLine; 
+ // CBT.innerHTML += "MVMT: " +  DEX_MOD +  newLine; 
  
   colourScore()
 

@@ -106,8 +106,8 @@ div#popUpBackground{
 #charImage {
   position: absolute;
   float: left;
-  left: 50%; 
-  top: 15%; 
+  left: 1%; 
+  top: 80%; 
   width: auto;
   height: 30%;
   overflow-y : auto;
@@ -121,8 +121,8 @@ div#popUpBackground{
 #Locations {
   position: absolute;
   float: left;
-  left: 1%; 
-  top: 69%; 
+  right: 60%; 
+  top: 15%; 
   width: auto;
   height: 30%;
   overflow-y : auto;
@@ -134,10 +134,11 @@ div#popUpBackground{
 
 #Containers {
   position: absolute;
-  left: 20%; 
-  top: 50%; 
+  float: right;
+  right: 42%; 
+  top: 15%; 
   width: auto;
-  height: 30%;
+  height: auto;
   overflow-y : auto;
   overflow-x: hidden;
   z-index : 6;
@@ -147,10 +148,11 @@ div#popUpBackground{
 
 #Contents {
   position: absolute;
-  left: 35%; 
-  top: 50%; 
+  float: right;
+  right: 30%; 
+  top: 15%; 
   width: auto;
-  height: 30%;
+  height: 50%;
   overflow-y : auto;
   overflow-x: hidden;
   z-index : 6;
