@@ -1223,17 +1223,17 @@ document.getElementById('effectEntries').onchange = function () {
 
             if( sheetName == "Global"){
 
-              storyTeller.innerHTML += "<span style='color:#FFB6C1'> [***]  </span>";
+              //storyTeller.innerHTML += "<span style='color:#FFB6C1'> [***]  </span>";
               Message = "You are at the "  + Category +  " of " + Location + "." + newLine    
           
             }else if(sheetName == "Local"){
           
-              storyTeller.innerHTML += "<span style='color:#87CEFA'> [**]  </span>";
+              //storyTeller.innerHTML += "<span style='color:#87CEFA'> [**]  </span>";
               Message = "You are at " + Location + "'s "  + Category +  "." + newLine
           
             }else if(sheetName == "Dungeon"){
           
-              storyTeller.innerHTML += "<span style='color:#FFD700'> [*]  </span>";
+              //storyTeller.innerHTML += "<span style='color:#FFD700'> [*]  </span>";
               Message =  Location + newLine  + Category + newLine
           
             }
@@ -2450,9 +2450,9 @@ try{
     noQuestions()
     console.log('!!!!! Could not complete filterCarto() !!!!!')
     
-    document.getElementById('storyTeller').innerHTML += newLine 
-    document.getElementById('storyTeller').innerHTML += "<span style='color:#40E0D0'> [*]  </span>";
-    document.getElementById('storyTeller').innerHTML += newLine 
+    //document.getElementById('storyTeller').innerHTML += newLine 
+    //document.getElementById('storyTeller').innerHTML += "<span style='color:#40E0D0'> [*]  </span>";
+    //document.getElementById('storyTeller').innerHTML += newLine 
 
     document.getElementById('sidebar').scrollTop = objDiv.scrollHeight;
     
