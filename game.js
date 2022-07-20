@@ -39,6 +39,14 @@ var rx = 0
 var ry = 0
 var rz = 0
 
+//for distance, hypotenuse
+var ax = 0
+var ay = 0
+var bx = 0
+var by = 0
+var hyp = 0
+var hypfloor = 0
+
 var Px = 0
 var Py = 0
 
@@ -667,6 +675,39 @@ document.getElementById('weatherEntries').onchange = function () {
     document.getElementById('EditorButtons').style.display = "block";
   }
 
+//-----------------------------------------------------------------------------
+//DISTANCE CALCULATION STUFF
+//FIRST PART OF DYNAMIC ECONOMY, CALCULATE DISTANCE BETWEEN CLICK ONE AND CLICK TWO
+// RECORD X,Y AND APPLY PYTHAGORAS TO FIND HYPOTENUSE
+
+function RecordDistance(){
+
+//Update variables
+
+bx = mousex
+by = mousey
+
+ax = rx
+ay = ry
+
+//find x and y distances
+
+let DistX = bx - ax
+let DistY = by - ay
+
+//Perform Pythagoras Function
+hyp = Math.sqrt(DistX * DistX + DistY * DistY)
+hypfloor = Math.floor(hyp)
+
+
+
+
+
+
+}
+
+
+
      //-----------------------------------------------------------------------------
 //LOCATION STUFF
 
@@ -1224,7 +1265,7 @@ document.getElementById('effectEntries').onchange = function () {
             if( sheetName == "Global"){
 
               //storyTeller.innerHTML += "<span style='color:#FFB6C1'> [***]  </span>";
-              Message = "You are at the "  + Category +  " of " + Location + "." + newLine    
+              Message = "You are at the "  + Category +  " of " + Location + newLine   
           
             }else if(sheetName == "Local"){
           
@@ -1403,7 +1444,7 @@ document.getElementById('effectEntries').onchange = function () {
                   }
 
 
-                  document.getElementById('sidebar').scrollTop = objDiv.scrollHeight;
+                  //document.getElementById('sidebar').scrollTop = objDiv.scrollHeight;
           }
 
           document.getElementById('AskQB').onclick = function () {
@@ -1454,7 +1495,7 @@ document.getElementById('effectEntries').onchange = function () {
             document.getElementById("Reading_QB").style.display = "none";
             document.getElementById("AskQB").style.display = "none";
 
-            document.getElementById('sidebar').scrollTop = objDiv.scrollHeight;
+            //document.getElementById('sidebar').scrollTop = objDiv.scrollHeight;
 
           }
 
@@ -1510,7 +1551,7 @@ document.getElementById('effectEntries').onchange = function () {
             document.getElementById("Reading_QC").style.display = "none";
             document.getElementById("AskQC").style.display = "none";
 
-            document.getElementById('sidebar').scrollTop = objDiv.scrollHeight;
+            //document.getElementById('sidebar').scrollTop = objDiv.scrollHeight;
 
           }
 
@@ -1564,13 +1605,13 @@ document.getElementById('effectEntries').onchange = function () {
             document.getElementById("Reading_QD").style.display = "none";
             document.getElementById("AskQD").style.display = "none";
 
-            document.getElementById('sidebar').scrollTop = objDiv.scrollHeight;
+            //document.getElementById('sidebar').scrollTop = objDiv.scrollHeight;
 
           }
 
           document.getElementById('AskQE').onclick = function () {
 
-            document.getElementById('sidebar').scrollTop = objDiv.scrollHeight;
+            //document.getElementById('sidebar').scrollTop = objDiv.scrollHeight;
 
             const storyTeller = document.getElementById("storyTeller") 
              
@@ -1617,7 +1658,7 @@ document.getElementById('effectEntries').onchange = function () {
               document.getElementById("Reading_QE").style.display = "none";
               document.getElementById("AskQE").style.display = "none";
 
-              document.getElementById('sidebar').scrollTop = objDiv.scrollHeight;
+              //document.getElementById('sidebar').scrollTop = objDiv.scrollHeight;
 
           }
 
@@ -2310,6 +2351,7 @@ for (let i = 0; i < carto.length; i++) {
                 }             
                             
               }
+             
                  
             }
 
@@ -2329,7 +2371,7 @@ for (let i = 0; i < carto.length; i++) {
                   gridMidCTX.fillStyle = 'orange';
                   gridMidCTX.fillText(rUser, rx * tileSize + (tileSize * 1.2) + 6, ry * tileSize + (tileSize) * 1.75 );
 
-
+                 
                   for (var i = 0; i < users.length; i++) {
 
                   //User Information
@@ -2373,6 +2415,15 @@ for (let i = 0; i < carto.length; i++) {
                 gridMidCTX.fillRect(mousex * tileSize, mousey * tileSize,tileSize,tileSize);
 
                 gridMidCTX.globalAlpha = 1
+
+                //Hover distance!
+                 gridMidCTX.fillStyle = 'black'
+                 gridMidCTX.fillRect(mousex * tileSize + (tileSize * 1.2), mousey * tileSize + tileSize, tileSize * 1.5, tileSize);
+
+                //Write Hyp Distance
+                gridMidCTX.font = "14px Courier";
+                gridMidCTX.fillStyle = 'orange';
+                gridMidCTX.fillText(hypfloor, mousex * tileSize + (tileSize * 1.2) + 6, mousey * tileSize + (tileSize) * 1.75 );
 
                 //Palette Mouse Location    
                 PaletteCTX.strokeStyle = "white";
@@ -2454,7 +2505,7 @@ try{
     //document.getElementById('storyTeller').innerHTML += "<span style='color:#40E0D0'> [*]  </span>";
     //document.getElementById('storyTeller').innerHTML += newLine 
 
-    document.getElementById('sidebar').scrollTop = objDiv.scrollHeight;
+    //document.getElementById('sidebar').scrollTop = objDiv.scrollHeight;
     
   }
 
@@ -2491,7 +2542,7 @@ try{
     }
 
 
-    document.getElementById('sidebar').scrollTop = objDiv.scrollHeight;
+    //document.getElementById('sidebar').scrollTop = objDiv.scrollHeight;
 
 }
 
@@ -2511,6 +2562,8 @@ gridTop.addEventListener('mousedown', e => {
   rz = document.getElementById('zLayer').value  
 
   Move()
+  
+  
 
     
 });
@@ -2553,6 +2606,8 @@ gridTop.addEventListener('mousemove', e => {
   mousey = Math.floor( y / tileSize) 
 
   //console.log('(x: ' + x+','+' y: ' + y+')')
+
+  RecordDistance()
 
 });
 
