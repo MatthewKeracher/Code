@@ -2422,7 +2422,16 @@ for (let i = 0; i < carto.length; i++) {
 
                 //Write Hyp Distance
                 gridMidCTX.font = "14px Courier";
-                gridMidCTX.fillStyle = 'orange';
+
+                if(hypfloor<11){
+                  gridMidCTX.fillStyle = 'green';
+                }else if(hypfloor<21){
+                  gridMidCTX.fillStyle = 'orange';
+                }else{
+                  gridMidCTX.fillStyle = 'red';
+                }
+
+               
                 gridMidCTX.fillText(hypfloor, mousex * tileSize + (tileSize * 1.2) + 6, mousey * tileSize + (tileSize) * 1.75 );
 
                 //Palette Mouse Location    
